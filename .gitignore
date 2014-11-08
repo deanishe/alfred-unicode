@@ -1,0 +1,7 @@
+*.ttf
+src/icons
+extra/fonts.txt
+extra/generate_icons.php
+extra/preview.html
+extra/index.php
+ucd.nounihan.flat.*
