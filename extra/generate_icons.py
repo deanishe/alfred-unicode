@@ -45,10 +45,10 @@ ICON_JSON_FILE = os.path.join(PARENT_DIR, 'icons.json')
 
 FONT_DIR = os.path.join(PARENT_DIR, 'fonts')
 
-# FONT_FILE = os.path.join(PARENT_DIR, 'fonts', 'Universalia+.ttf')
+FONT_FILE = os.path.join(PARENT_DIR, 'fonts', 'Universalia+.ttf')
 # FONT_FILE = os.path.join(PARENT_DIR, 'fonts', 'u0000.ttf')
 # FONT_FILE = os.path.join(PARENT_DIR, 'fonts', 'NotoSans-Regular.ttf')
-FONT_FILE = '/Library/Fonts/Arial Unicode.ttf'
+# FONT_FILE = '/Library/Fonts/Arial Unicode.ttf'
 
 
 ICON_DIR = os.path.join(os.path.dirname(PARENT_DIR),
@@ -73,6 +73,7 @@ FONTS.sort()
 
 
 def get_font(h):
+    return FONT_FILE
     n = int(h, 16)
     for i, (j, path) in enumerate(FONTS):
         if n < j:
@@ -95,19 +96,19 @@ def get_image_path(h):
     return filepath
 
 
-def save_image_gm(char, imagefile, fontpath):
-    cmd = [
-        GRAPHICS_MAGICK,
-        'convert',
-        '-pointsize', unicode(ICON_SIZE),
-        '-font', fontpath,
-        'label:{}'.format(char),
-        imagefile,
-    ]
-    cmd = [u.encode('utf-8') for u in cmd]
-    log.debug(cmd)
-    subprocess.call(cmd)
-    return pngcrush(imagefile)
+# def save_image_gm(char, imagefile, fontpath):
+#     cmd = [
+#         GRAPHICS_MAGICK,
+#         'convert',
+#         '-pointsize', unicode(ICON_SIZE),
+#         '-font', fontpath,
+#         'label:{}'.format(char),
+#         imagefile,
+#     ]
+#     cmd = [u.encode('utf-8') for u in cmd]
+#     log.debug(cmd)
+#     subprocess.call(cmd)
+#     return pngcrush(imagefile)
 
 
 # def save_image_old(char, imagefile, fontpath):
@@ -247,10 +248,10 @@ def handle_duplicates(hash_file_map, hash_hex_map):
 
 def pool_wrapper(h, imagefile, fontpath):
     """multiprocessing wrapper for `save_image()`"""
-    s = '\\u{}'.format(h)
+    s = '\\U{:0>8s}'.format(h)
     char = unicode_escape_decode(s)[0]
     try:
-        hsh = save_image_gm(char, imagefile, fontpath)
+        hsh = save_image(char, imagefile, fontpath)
     except Exception as err:
         log.error(err)
         hsh = None
@@ -324,7 +325,7 @@ def main():
 
         pc = (float(done) / total) * 100
         log.info('[{:5d}/{:d}] {:6.2f}% : Saved `{}` ({})'.format(
-                 done, total, pc, filepath.replace(ICON_DIR, ''),
+                 done, total, pc, filepath.replace(ICON_DIR, '').lstrip('/'),
                  os.path.basename(fontpath)))
 
         if hsh is None:  # Failed

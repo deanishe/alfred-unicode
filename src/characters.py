@@ -97,7 +97,6 @@ def charinfo(name):
     if result is None:
         return None
     name, h, entity, icon = result
-    h8 = '{:0>8}'.format(h)
     dec = int(h, 16)
     s = '\\U{:08x}'.format(dec)
     u = s.decode('unicode-escape')

@@ -18,6 +18,7 @@ directory.
 
 from __future__ import print_function, unicode_literals, absolute_import
 
+# from codecs import unicode_escape_decode
 import json
 import logging
 import os
@@ -52,6 +53,7 @@ class UCDHandler(xml.sax.ContentHandler):
             self.entities = json.load(fp)
         self._stack = []
         self._aliases = []
+        self._control = False
         self.count = 0
         self._characters = {}
         self.tsv_path = 'characters.tsv'
@@ -86,32 +88,45 @@ class UCDHandler(xml.sax.ContentHandler):
 
         if name == 'name-alias':
             self._aliases.append(attrs['alias'])
+            if attrs['type'] in ('control', 'figment'):
+                self._control = True
 
         elif name == 'char':
-            if 'cp' not in attrs:
+            if self._control:
+                log.debug('Ignoring control character : {}'.format(
+                          self._aliases[0]))
+            elif 'cp' not in attrs:
                 log.warning('No codepoint : {}'.format(attrs['na']))
             else:
                 if len(self._characters) % 1000 == 0:
                     log.debug('{:6d} characters in {:0.3f} seconds'.format(
                               len(self._characters), time() - self.start))
                 num = attrs['cp']
-                entity = self.entities.get(num)
-                name = attrs['na']
-                names = self._aliases[:]
-                if name:
-                    names.append(name)
-                for name in names:
-                    # if name == 'CJK UNIFIED IDEOGRAPH-#':
-                    #     name = 'CJK UNIFIED IDEOGRAPH-{}'.format(num)
 
-                    if not ignore(name):
-                        if name in self._characters:
-                            log.warning('Duplicate character : {}'.format(
-                                        name))
-                        self._characters[name] = (num, entity)
-                    # print('{}\t{}'.format(name, num))
+                # Ignore control characters (<= 20)
+                i = int(num, 16)
+                if i > int('20', 16):
+                    # s = '\\U{:0>8s}'.format(num)
+                    # char = unicode_escape_decode(s)[0]
+                    entity = self.entities.get(num)
+                    name = attrs['na']
+                    names = self._aliases[:]
+                    if name:
+                        names.append(name)
+                    for name in names:
+                        # if name == 'CJK UNIFIED IDEOGRAPH-#':
+                        #     name = 'CJK UNIFIED IDEOGRAPH-{}'.format(num)
+
+                        if not ignore(name):
+                            if name in self._characters:
+                                log.warning('Duplicate character : {}'.format(
+                                            name))
+                            self._characters[name] = (num, entity)
+                        # print('{}\t{}'.format(name, num))
+
             # reset
             self._aliases = []
+            self._control = False
 
 
 def main():

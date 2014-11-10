@@ -7,14 +7,6 @@
     "2100", 
     null
   ], 
-  "ACK": [
-    "0006", 
-    null
-  ], 
-  "ACKNOWLEDGE": [
-    "0006", 
-    null
-  ], 
   "ACTIVATE ARABIC FORM SHAPING": [
     "206D", 
     null
@@ -771,10 +763,6 @@
     "2697", 
     null
   ], 
-  "ALERT": [
-    "0007", 
-    null
-  ], 
   "ALIEN MONSTER": [
     "1F47E", 
     null
@@ -921,10 +909,6 @@
   ], 
   "ANTICLOCKWISE TRIANGLE-HEADED TOP U-SHAPED ARROW": [
     "2B8F", 
-    null
-  ], 
-  "APC": [
-    "009F", 
     null
   ], 
   "APL FUNCTIONAL SYMBOL ALPHA": [
@@ -1210,10 +1194,6 @@
   "APOSTROPHE": [
     "0027", 
     "apos"
-  ], 
-  "APPLICATION PROGRAM COMMAND": [
-    "009F", 
-    null
   ], 
   "APPROACHES THE LIMIT": [
     "2250", 
@@ -6875,10 +6855,6 @@
     "2B5D", 
     null
   ], 
-  "BACKSPACE": [
-    "0008", 
-    null
-  ], 
   "BACTRIAN CAMEL": [
     "1F42B", 
     null
@@ -10511,10 +10487,6 @@
     "1F37A", 
     null
   ], 
-  "BEL": [
-    "0007", 
-    null
-  ], 
   "BELL": [
     "1F514", 
     null
@@ -12503,10 +12475,6 @@
     "1F6C9", 
     null
   ], 
-  "BPH": [
-    "0082", 
-    null
-  ], 
   "BRAHMI DANDA": [
     "11047", 
     null
@@ -13971,10 +13939,6 @@
     "1F35E", 
     null
   ], 
-  "BREAK PERMITTED HERE": [
-    "0082", 
-    null
-  ], 
   "BREVE": [
     "02D8", 
     null
@@ -14001,10 +13965,6 @@
   ], 
   "BROKEN HEART": [
     "1F494", 
-    null
-  ], 
-  "BS": [
-    "0008", 
     null
   ], 
   "BUG": [
@@ -15269,10 +15229,6 @@
   ], 
   "CAMPING": [
     "1F3D5", 
-    null
-  ], 
-  "CAN": [
-    "0018", 
     null
   ], 
   "CANADIAN SYLLABICS A": [
@@ -18115,14 +18071,6 @@
     "1537", 
     null
   ], 
-  "CANCEL": [
-    "0018", 
-    null
-  ], 
-  "CANCEL CHARACTER": [
-    "0094", 
-    null
-  ], 
   "CANCEL TAG": [
     "E007F", 
     null
@@ -18387,10 +18335,6 @@
     "1F38F", 
     null
   ], 
-  "CARRIAGE RETURN": [
-    "000D", 
-    null
-  ], 
   "CASTLE": [
     "26EB", 
     null
@@ -18625,10 +18569,6 @@
   ], 
   "CAUTION SIGN": [
     "2621", 
-    null
-  ], 
-  "CCH": [
-    "0094", 
     null
   ], 
   "CEDI SIGN": [
@@ -19269,18 +19209,6 @@
   ], 
   "CHAM VOWEL SIGN UE": [
     "AA32", 
-    null
-  ], 
-  "CHARACTER TABULATION": [
-    "0009", 
-    null
-  ], 
-  "CHARACTER TABULATION SET": [
-    "0088", 
-    null
-  ], 
-  "CHARACTER TABULATION WITH JUSTIFICATION": [
-    "0089", 
     null
   ], 
   "CHARACTER TIE": [
@@ -23155,10 +23083,6 @@
     "1F39B", 
     null
   ], 
-  "CONTROL SEQUENCE INTRODUCER": [
-    "009B", 
-    null
-  ], 
   "CONVENIENCE STORE": [
     "1F3EA", 
     null
@@ -23939,10 +23863,6 @@
     "1F42E", 
     null
   ], 
-  "CR": [
-    "000D", 
-    null
-  ], 
   "CREDIT CARD": [
     "1F4B3", 
     null
@@ -24009,10 +23929,6 @@
   ], 
   "CRYSTAL BALL": [
     "1F52E", 
-    null
-  ], 
-  "CSI": [
-    "009B", 
     null
   ], 
   "CUBE ROOT": [
@@ -29999,30 +29915,6 @@
     "279F", 
     null
   ], 
-  "DATA LINK ESCAPE": [
-    "0010", 
-    null
-  ], 
-  "DC1": [
-    "0011", 
-    null
-  ], 
-  "DC2": [
-    "0012", 
-    null
-  ], 
-  "DC3": [
-    "0013", 
-    null
-  ], 
-  "DC4": [
-    "0014", 
-    null
-  ], 
-  "DCS": [
-    "0090", 
-    null
-  ], 
   "DECIDUOUS TREE": [
     "1F333", 
     null
@@ -30050,14 +29942,6 @@
   "DEGREE SIGN": [
     "00B0", 
     "deg"
-  ], 
-  "DEL": [
-    "007F", 
-    null
-  ], 
-  "DELETE": [
-    "007F", 
-    null
   ], 
   "DELIVERY TRUCK": [
     "1F69A", 
@@ -31027,26 +30911,6 @@
     "0944", 
     null
   ], 
-  "DEVICE CONTROL FOUR": [
-    "0014", 
-    null
-  ], 
-  "DEVICE CONTROL ONE": [
-    "0011", 
-    null
-  ], 
-  "DEVICE CONTROL STRING": [
-    "0090", 
-    null
-  ], 
-  "DEVICE CONTROL THREE": [
-    "0013", 
-    null
-  ], 
-  "DEVICE CONTROL TWO": [
-    "0012", 
-    null
-  ], 
   "DIAERESIS": [
     "00A8", 
     "uml"
@@ -31457,10 +31321,6 @@
   ], 
   "DIZZY SYMBOL": [
     "1F4AB", 
-    null
-  ], 
-  "DLE": [
-    "0010", 
     null
   ], 
   "DO NOT LITTER SYMBOL": [
@@ -37835,52 +37695,12 @@
     "2002", 
     "ensp"
   ], 
-  "END OF GUARDED AREA": [
-    "0097", 
-    null
-  ], 
-  "END OF LINE": [
-    "000A", 
-    null
-  ], 
-  "END OF MEDIUM": [
-    "0019", 
-    null
-  ], 
   "END OF PROOF": [
     "220E", 
     null
   ], 
-  "END OF PROTECTED AREA": [
-    "0097", 
-    null
-  ], 
-  "END OF SELECTED AREA": [
-    "0087", 
-    null
-  ], 
-  "END OF TEXT": [
-    "0003", 
-    null
-  ], 
-  "END OF TRANSMISSION": [
-    "0004", 
-    null
-  ], 
-  "END OF TRANSMISSION BLOCK": [
-    "0017", 
-    null
-  ], 
   "END WITH LEFTWARDS ARROW ABOVE": [
     "1F51A", 
-    null
-  ], 
-  "ENQ": [
-    "0005", 
-    null
-  ], 
-  "ENQUIRY": [
-    "0005", 
     null
   ], 
   "ENTER SYMBOL": [
@@ -37897,22 +37717,6 @@
   ], 
   "ENVELOPE WITH LIGHTNING": [
     "1F584", 
-    null
-  ], 
-  "EOL": [
-    "000A", 
-    null
-  ], 
-  "EOM": [
-    "0019", 
-    null
-  ], 
-  "EOT": [
-    "0004", 
-    null
-  ], 
-  "EPA": [
-    "0097", 
     null
   ], 
   "EQUAL AND PARALLEL TO": [
@@ -38031,28 +37835,12 @@
     "29EE", 
     null
   ], 
-  "ESA": [
-    "0087", 
-    null
-  ], 
-  "ESC": [
-    "001B", 
-    null
-  ], 
-  "ESCAPE": [
-    "001B", 
-    null
-  ], 
   "ESTIMATED SYMBOL": [
     "212E", 
     null
   ], 
   "ESTIMATES": [
     "2259", 
-    null
-  ], 
-  "ETB": [
-    "0017", 
     null
   ], 
   "ETHIOPIC COLON": [
@@ -40035,10 +39823,6 @@
     "1361", 
     null
   ], 
-  "ETX": [
-    "0003", 
-    null
-  ], 
   "EULER CONSTANT": [
     "2107", 
     null
@@ -40287,10 +40071,6 @@
     "26F4", 
     null
   ], 
-  "FF": [
-    "000C", 
-    null
-  ], 
   "FIGURE DASH": [
     "2012", 
     null
@@ -40305,10 +40085,6 @@
   ], 
   "FILE FOLDER": [
     "1F4C1", 
-    null
-  ], 
-  "FILE SEPARATOR": [
-    "001C", 
     null
   ], 
   "FILM FRAMES": [
@@ -40467,10 +40243,6 @@
     "2ADC", 
     null
   ], 
-  "FORM FEED": [
-    "000C", 
-    null
-  ], 
   "FOUNTAIN": [
     "26F2", 
     null
@@ -40565,10 +40337,6 @@
   ], 
   "FROWNING FACE WITH OPEN MOUTH": [
     "1F626", 
-    null
-  ], 
-  "FS": [
-    "001C", 
     null
   ], 
   "FSI": [
@@ -44583,16 +44351,8 @@
     "1F601", 
     null
   ], 
-  "GROUP SEPARATOR": [
-    "001D", 
-    null
-  ], 
   "GROWING HEART": [
     "1F497", 
-    null
-  ], 
-  "GS": [
-    "001D", 
     null
   ], 
   "GUARANI SIGN": [
@@ -93651,10 +93411,6 @@
     "1F506", 
     null
   ], 
-  "HIGH OCTET PRESET": [
-    "0081", 
-    null
-  ], 
   "HIGH VOLTAGE SIGN": [
     "26A1", 
     null
@@ -94063,10 +93819,6 @@
     "1F41D", 
     null
   ], 
-  "HOP": [
-    "0081", 
-    null
-  ], 
   "HORIZONTAL BAR": [
     "2015", 
     null
@@ -94109,18 +93861,6 @@
   ], 
   "HORIZONTAL TAB KEY": [
     "2B7E", 
-    null
-  ], 
-  "HORIZONTAL TABULATION": [
-    "0009", 
-    null
-  ], 
-  "HORIZONTAL TABULATION SET": [
-    "0088", 
-    null
-  ], 
-  "HORIZONTAL TABULATION WITH JUSTIFICATION": [
-    "0089", 
     null
   ], 
   "HORIZONTAL TRAFFIC LIGHT": [
@@ -94185,18 +93925,6 @@
   ], 
   "HRYVNIA SIGN": [
     "20B4", 
-    null
-  ], 
-  "HT": [
-    "0009", 
-    null
-  ], 
-  "HTJ": [
-    "0089", 
-    null
-  ], 
-  "HTS": [
-    "0088", 
     null
   ], 
   "HUNDRED POINTS SYMBOL": [
@@ -94851,14 +94579,6 @@
     "2206", 
     null
   ], 
-  "IND": [
-    "0084", 
-    null
-  ], 
-  "INDEX": [
-    "0084", 
-    null
-  ], 
   "INDIAN RUPEE SIGN": [
     "20B9", 
     null
@@ -94873,22 +94593,6 @@
   ], 
   "INFORMATION DESK PERSON": [
     "1F481", 
-    null
-  ], 
-  "INFORMATION SEPARATOR FOUR": [
-    "001C", 
-    null
-  ], 
-  "INFORMATION SEPARATOR ONE": [
-    "001F", 
-    null
-  ], 
-  "INFORMATION SEPARATOR THREE": [
-    "001D", 
-    null
-  ], 
-  "INFORMATION SEPARATOR TWO": [
-    "001E", 
     null
   ], 
   "INFORMATION SOURCE": [
@@ -105419,10 +105123,6 @@
     "1F39A", 
     null
   ], 
-  "LF": [
-    "000A", 
-    null
-  ], 
   "LIBRA": [
     "264E", 
     null
@@ -105787,10 +105487,6 @@
     "32CF", 
     null
   ], 
-  "LINE FEED": [
-    "000A", 
-    null
-  ], 
   "LINE INTEGRATION NOT INCLUDING THE POLE": [
     "2A14", 
     null
@@ -105805,14 +105501,6 @@
   ], 
   "LINE SEPARATOR": [
     "2028", 
-    null
-  ], 
-  "LINE TABULATION": [
-    "000B", 
-    null
-  ], 
-  "LINE TABULATION SET": [
-    "008A", 
     null
   ], 
   "LINEAR A SIGN A028B": [
@@ -108245,14 +107933,6 @@
   ], 
   "LOCK WITH INK PEN": [
     "1F50F", 
-    null
-  ], 
-  "LOCKING-SHIFT ONE": [
-    "000E", 
-    null
-  ], 
-  "LOCKING-SHIFT ZERO": [
-    "000F", 
     null
   ], 
   "LOGICAL AND": [
@@ -115495,10 +115175,6 @@
     "1099F", 
     null
   ], 
-  "MESSAGE WAITING": [
-    "0095", 
-    null
-  ], 
   "METRICAL BREVE": [
     "23D1", 
     null
@@ -119219,10 +118895,6 @@
     "180E", 
     null
   ], 
-  "MW": [
-    "0095", 
-    null
-  ], 
   "MYANMAR CONSONANT SIGN MEDIAL HA": [
     "103E", 
     null
@@ -120351,10 +120023,6 @@
     "20A6", 
     null
   ], 
-  "NAK": [
-    "0015", 
-    null
-  ], 
   "NAME BADGE": [
     "1F4DB", 
     null
@@ -120375,10 +120043,6 @@
     "1F3DE", 
     null
   ], 
-  "NBH": [
-    "0083", 
-    null
-  ], 
   "NBSP": [
     "00A0", 
     "nbsp"
@@ -120389,10 +120053,6 @@
   ], 
   "NEGATED DOUBLE VERTICAL BAR DOUBLE RIGHT TURNSTILE": [
     "22AF", 
-    null
-  ], 
-  "NEGATIVE ACKNOWLEDGE": [
-    "0015", 
     null
   ], 
   "NEGATIVE CIRCLED DIGIT ZERO": [
@@ -120707,10 +120367,6 @@
     "2278", 
     null
   ], 
-  "NEL": [
-    "0085", 
-    null
-  ], 
   "NEPTUNE": [
     "2646", 
     null
@@ -120721,10 +120377,6 @@
   ], 
   "NEUTRAL FACE": [
     "1F610", 
-    null
-  ], 
-  "NEW LINE": [
-    "000A", 
     null
   ], 
   "NEW MOON SYMBOL": [
@@ -121083,10 +120735,6 @@
     "1F4F0", 
     null
   ], 
-  "NEXT LINE": [
-    "0085", 
-    null
-  ], 
   "NEXT PAGE": [
     "2398", 
     null
@@ -121331,20 +120979,12 @@
     "07F6", 
     null
   ], 
-  "NL": [
-    "000A", 
-    null
-  ], 
   "NNBSP": [
     "202F", 
     null
   ], 
   "NO BICYCLES": [
     "1F6B3", 
-    null
-  ], 
-  "NO BREAK HERE": [
-    "0083", 
     null
   ], 
   "NO ENTRY": [
@@ -121693,14 +121333,6 @@
   ], 
   "NOTEBOOK WITH DECORATIVE COVER": [
     "1F4D4", 
-    null
-  ], 
-  "NUL": [
-    "0000", 
-    null
-  ], 
-  "NULL": [
-    "0000", 
     null
   ], 
   "NUMBER EIGHTEEN FULL STOP": [
@@ -123319,10 +122951,6 @@
     "27BE", 
     null
   ], 
-  "OPERATING SYSTEM COMMAND": [
-    "009D", 
-    null
-  ], 
   "OPHIUCHUS": [
     "26CE", 
     null
@@ -123727,10 +123355,6 @@
     "2626", 
     null
   ], 
-  "OSC": [
-    "009D", 
-    null
-  ], 
   "OSMANYA DIGIT EIGHT": [
     "104A8", 
     null
@@ -123929,14 +123553,6 @@
   ], 
   "PACKAGE": [
     "1F4E6", 
-    null
-  ], 
-  "PAD": [
-    "0080", 
-    null
-  ], 
-  "PADDING CHARACTER": [
-    "0080", 
     null
   ], 
   "PAGE": [
@@ -125202,22 +124818,6 @@
   "PARTIAL DIFFERENTIAL": [
     "2202", 
     "part"
-  ], 
-  "PARTIAL LINE BACKWARD": [
-    "008C", 
-    null
-  ], 
-  "PARTIAL LINE DOWN": [
-    "008B", 
-    null
-  ], 
-  "PARTIAL LINE FORWARD": [
-    "008B", 
-    null
-  ], 
-  "PARTIAL LINE UP": [
-    "008C", 
-    null
   ], 
   "PARTIALLY-RECYCLED PAPER SYMBOL": [
     "267D", 
@@ -126531,14 +126131,6 @@
     "1F0DF", 
     null
   ], 
-  "PLD": [
-    "008B", 
-    null
-  ], 
-  "PLU": [
-    "008C", 
-    null
-  ], 
   "PLUS SIGN": [
     "002B", 
     null
@@ -126593,10 +126185,6 @@
   ], 
   "PLUTO": [
     "2647", 
-    null
-  ], 
-  "PM": [
-    "009E", 
     null
   ], 
   "POCKET CALCULATOR": [
@@ -126887,26 +126475,6 @@
     "1F5B6", 
     null
   ], 
-  "PRIVACY MESSAGE": [
-    "009E", 
-    null
-  ], 
-  "PRIVATE USE ONE": [
-    "0091", 
-    null
-  ], 
-  "PRIVATE USE TWO": [
-    "0092", 
-    null
-  ], 
-  "PRIVATE USE-1": [
-    "0091", 
-    null
-  ], 
-  "PRIVATE USE-2": [
-    "0092", 
-    null
-  ], 
   "PROHIBITED SIGN": [
     "1F6C7", 
     null
@@ -127041,14 +126609,6 @@
   ], 
   "PSALTER PAHLAVI TURNED SECTION MARK": [
     "10B9A", 
-    null
-  ], 
-  "PU1": [
-    "0091", 
-    null
-  ], 
-  "PU2": [
-    "0092", 
     null
   ], 
   "PUBLIC ADDRESS LOUDSPEAKER": [
@@ -127253,10 +126813,6 @@
   ], 
   "RATIO": [
     "2236", 
-    null
-  ], 
-  "RECORD SEPARATOR": [
-    "001E", 
     null
   ], 
   "RECREATIONAL VEHICLE": [
@@ -127607,16 +127163,8 @@
     "1F67F", 
     null
   ], 
-  "REVERSE INDEX": [
-    "008D", 
-    null
-  ], 
   "REVERSE LIGHT FOUR POINTED PINWHEEL STAR": [
     "1F7C8", 
-    null
-  ], 
-  "REVERSE LINE FEED": [
-    "008D", 
     null
   ], 
   "REVERSE SOLIDUS": [
@@ -127737,10 +127285,6 @@
   ], 
   "REVOLVING HEARTS": [
     "1F49E", 
-    null
-  ], 
-  "RI": [
-    "008D", 
     null
   ], 
   "RIAL SIGN": [
@@ -128793,10 +128337,6 @@
   ], 
   "ROWBOAT": [
     "1F6A3", 
-    null
-  ], 
-  "RS": [
-    "001E", 
     null
   ], 
   "RUBLE SIGN": [
@@ -129935,10 +129475,6 @@
     "1F392", 
     null
   ], 
-  "SCI": [
-    "009A", 
-    null
-  ], 
   "SCORPIUS": [
     "264F", 
     null
@@ -130063,16 +129599,8 @@
     "2216", 
     null
   ], 
-  "SET TRANSMIT STATE": [
-    "0093", 
-    null
-  ], 
   "SEXTILE": [
     "26B9", 
-    null
-  ], 
-  "SGC": [
-    "0099", 
     null
   ], 
   "SHADOWED WHITE CIRCLE": [
@@ -130635,14 +130163,6 @@
     "1F6E1", 
     null
   ], 
-  "SHIFT IN": [
-    "000F", 
-    null
-  ], 
-  "SHIFT OUT": [
-    "000E", 
-    null
-  ], 
   "SHINTO SHRINE": [
     "26E9", 
     null
@@ -130734,10 +130254,6 @@
   "SHY": [
     "00AD", 
     "shy"
-  ], 
-  "SI": [
-    "000F", 
-    null
   ], 
   "SIDDHAM DANDA": [
     "115C2", 
@@ -131087,14 +130603,6 @@
     "223F", 
     null
   ], 
-  "SINGLE CHARACTER INTRODUCER": [
-    "009A", 
-    null
-  ], 
-  "SINGLE GRAPHIC CHARACTER INTRODUCER": [
-    "0099", 
-    null
-  ], 
   "SINGLE HIGH-REVERSED-9 QUOTATION MARK": [
     "201B", 
     null
@@ -131110,22 +130618,6 @@
   "SINGLE RIGHT-POINTING ANGLE QUOTATION MARK": [
     "203A", 
     "rsaquo"
-  ], 
-  "SINGLE SHIFT THREE": [
-    "008F", 
-    null
-  ], 
-  "SINGLE SHIFT TWO": [
-    "008E", 
-    null
-  ], 
-  "SINGLE-SHIFT-2": [
-    "008E", 
-    null
-  ], 
-  "SINGLE-SHIFT-3": [
-    "008F", 
-    null
   ], 
   "SINHALA ARCHAIC DIGIT EIGHT": [
     "111E8", 
@@ -131995,10 +131487,6 @@
     "26C4", 
     null
   ], 
-  "SO": [
-    "000E", 
-    null
-  ], 
   "SOCCER BALL": [
     "26BD", 
     null
@@ -132017,10 +131505,6 @@
   ], 
   "SOFTWARE-FUNCTION SYMBOL": [
     "2394", 
-    null
-  ], 
-  "SOH": [
-    "0001", 
     null
   ], 
   "SOLID QUILT SQUARE ORNAMENT": [
@@ -132183,10 +131667,6 @@
     "110DC", 
     null
   ], 
-  "SOS": [
-    "0098", 
-    null
-  ], 
   "SOUND RECORDING COPYRIGHT": [
     "2117", 
     null
@@ -132293,18 +131773,6 @@
   ], 
   "SOUTH WEST WHITE ARROW": [
     "2B03", 
-    null
-  ], 
-  "SP": [
-    "0020", 
-    null
-  ], 
-  "SPA": [
-    "0096", 
-    null
-  ], 
-  "SPACE": [
-    "0020", 
     null
   ], 
   "SPAGHETTI": [
@@ -133755,22 +133223,6 @@
     "27A7", 
     null
   ], 
-  "SS2": [
-    "008E", 
-    null
-  ], 
-  "SS3": [
-    "008F", 
-    null
-  ], 
-  "SSA": [
-    "0086", 
-    null
-  ], 
-  "ST": [
-    "009C", 
-    null
-  ], 
   "STADIUM": [
     "1F3DF", 
     null
@@ -133801,30 +133253,6 @@
   ], 
   "STAR OPERATOR": [
     "22C6", 
-    null
-  ], 
-  "START OF GUARDED AREA": [
-    "0096", 
-    null
-  ], 
-  "START OF HEADING": [
-    "0001", 
-    null
-  ], 
-  "START OF PROTECTED AREA": [
-    "0096", 
-    null
-  ], 
-  "START OF SELECTED AREA": [
-    "0086", 
-    null
-  ], 
-  "START OF STRING": [
-    "0098", 
-    null
-  ], 
-  "START OF TEXT": [
-    "0002", 
     null
   ], 
   "STATION": [
@@ -133875,24 +133303,8 @@
     "2263", 
     null
   ], 
-  "STRING TERMINATOR": [
-    "009C", 
-    null
-  ], 
-  "STS": [
-    "0093", 
-    null
-  ], 
   "STUDIO MICROPHONE": [
     "1F399", 
-    null
-  ], 
-  "STX": [
-    "0002", 
-    null
-  ], 
-  "SUB": [
-    "001A", 
     null
   ], 
   "SUBSCRIPT EIGHT": [
@@ -134009,10 +133421,6 @@
   ], 
   "SUBSET WITH PLUS SIGN BELOW": [
     "2ABF", 
-    null
-  ], 
-  "SUBSTITUTE": [
-    "001A", 
     null
   ], 
   "SUCCEEDS": [
@@ -134887,14 +134295,6 @@
     "232F", 
     null
   ], 
-  "SYN": [
-    "0016", 
-    null
-  ], 
-  "SYNCHRONOUS IDLE": [
-    "0016", 
-    null
-  ], 
   "SYRIAC ABBREVIATION MARK": [
     "070F", 
     null
@@ -135213,10 +134613,6 @@
   ], 
   "T-SHIRT": [
     "1F455", 
-    null
-  ], 
-  "TAB": [
-    "0009", 
     null
   ], 
   "TAG AMPERSAND": [
@@ -140859,10 +140255,6 @@
     "2A42", 
     null
   ], 
-  "UNIT SEPARATOR": [
-    "001F", 
-    null
-  ], 
   "UNIVERSAL RECYCLING SYMBOL": [
     "2672", 
     null
@@ -141289,10 +140681,6 @@
   ], 
   "URANUS": [
     "2645", 
-    null
-  ], 
-  "US": [
-    "001F", 
     null
   ], 
   "VAI COMMA": [
@@ -143771,14 +143159,6 @@
     "2B7F", 
     null
   ], 
-  "VERTICAL TABULATION": [
-    "000B", 
-    null
-  ], 
-  "VERTICAL TABULATION SET": [
-    "008A", 
-    null
-  ], 
   "VERTICAL TILDE": [
     "2E2F", 
     null
@@ -144909,14 +144289,6 @@
   ], 
   "VS99": [
     "E0152", 
-    null
-  ], 
-  "VT": [
-    "000B", 
-    null
-  ], 
-  "VTS": [
-    "008A", 
     null
   ], 
   "VULGAR FRACTION FIVE EIGHTHS": [
