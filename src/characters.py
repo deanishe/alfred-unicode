@@ -18,6 +18,7 @@ HTML entities, CSS entities, Python Unicode literal.
 from __future__ import print_function, unicode_literals, absolute_import
 
 
+import os
 import sqlite3
 import struct
 import subprocess
@@ -203,15 +204,15 @@ def main(wf):
              len(results), query, time() - start))
 
     for (name, h, entity, icon) in results:
-        # subtitle = '&#x{};'.format(h)
-        # if entity:
-        #     subtitle = '&{};'.format(entity)
+        icon = os.path.join('icons', icon)
+        if not os.path.exists(icon):
+            icon = os.path.join('icons', 'unknown.png')
         subtitle = 'U+{}'.format(h)
         wf.add_item(name,
                     subtitle,
                     autocomplete='{} {} '.format(name, DELIMITER),
                     copytext=subtitle,
-                    icon='icons/{}'.format(icon))
+                    icon=icon)
 
     wf.send_feedback()
 

@@ -11,7 +11,7 @@
 #import <stdlib.h>
 #import <stdio.h>
 #import "GBCli.h"
-#import "PreviewApp.h"
+#import "UGApp.h"
 #import "GBSettingsAdditions.h"
 
 // From http://www.cocoabuilder.com/archive/cocoa/193451-finding-out-executable-location-from-c-program.html
@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
         // Create options helper and register options
         GBOptionsHelper *options = [[GBOptionsHelper alloc] init];
         options.printHelpHeader = ^{
-            return @"UnicodeImageGen [-h] [-v] [-f <fontname>] [-s <fontsize>] [-o <outputdir>]\n\nGenerate preview icons for Unicode characters\n"; };
+            return @"UnicodeImageGen [-h] [-v] [-f <fontname>] [-s <fontsize>] [-o <outputdir>] [-i <iconpaths.tsv>]\n\nGenerate preview icons for Unicode characters\n"; };
         [options registerOption:'f'
                            long:@"fontname"
                     description:@"Name of font"
@@ -57,6 +57,10 @@ int main(int argc, const char * argv[]) {
         [options registerOption:'o'
                            long:@"outputdir"
                     description:@"Directory to save icons to"
+                          flags:(GBOptionFlags)GBValueOptional];
+        [options registerOption:'i'
+                           long:@"iconlist"
+                    description:@"TSV file to save codepoint-iconpaths map to"
                           flags:(GBOptionFlags)GBValueOptional];
         [options registerOption:'l'
                            long:@"limit"
@@ -93,12 +97,12 @@ int main(int argc, const char * argv[]) {
 
         if ([settings verbose]) {
             char *path = GetExecutableLocation();
-            NSString *appDirectory = [NSString stringWithUTF8String:path];
+            NSString *appDirectory = [[NSString stringWithUTF8String:path] stringByDeletingLastPathComponent];
             free(path);
             NSLog(@"Application directory : %@", appDirectory);
         }
 
-        PreviewApp *app = [[PreviewApp alloc] init];
+        UGApp *app = [[UGApp alloc] init];
         app.settings = settings;
         [app run];
     }

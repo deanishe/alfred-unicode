@@ -35,9 +35,9 @@ TSV_FILE = os.path.join(PARENT_DIR, 'characters.tsv')
 OBJC_FILE = os.path.join(PARENT_DIR,
                          'UnicodeImageGen',
                          'UnicodeImageGen',
-                         'CharacterDictionary.m')
+                         'UGCharacterDictionary.m')
 
-COCOA_TPL = """
+COCOA_TPL = b"""
 
 //
 //  CharacterArray.m
@@ -47,9 +47,9 @@ COCOA_TPL = """
 //  Copyright (c) 2014 Dean Jackson. All rights reserved.
 //
 
-#import "CharacterDictionary.h"
+#import "UGCharacterDictionary.h"
 
-@implementation CharacterDictionary
+@implementation UGCharacterDictionary
 
 @synthesize characters = _characters;
 
@@ -69,8 +69,13 @@ COCOA_TPL = """
 
 """
 
-ENTRY_TPL = """\
+ENTRY_TPL = b"""\
         [_characters setValue:@"{char}" forKey:@"{codepoint}"];"""
+
+ESCAPED = [
+    '2028',
+    '2029',
+]
 
 
 def main():
@@ -78,20 +83,32 @@ def main():
     with open(TSV_FILE, 'rb') as fp:
         reader = csv.reader(fp, delimiter=b'\t')
         for row in reader:
-            name, h, entity = [v.decode('utf-8') for v in row]
-            s = '\\U{:0>8s}'.format(h)
-            char = unicode_escape_decode(s)[0]
-            if char == '\\':
-                char = '\\\\'
-            elif char == '"':
-                char = '\\"'
+            name, h, entity = [v for v in row]
+            codepoint = b'{:0>8s}'.format(h)
+            i = int(codepoint, 16)
+            if i < 128:
+                char = unichr(i).encode('utf-8')
+                if char == b'\\':
+                    char = b'\\\\'
+                elif char == b'"':
+                    char = b'\\"'
+            else:
+                char = b'\U' + codepoint
+            # s = '\\U{:0>8s}'.format(h)
+            # char = unicode_escape_decode(s)[0]
+            # if char == '\\':
+            #     char = '\\\\'
+            # elif char == '"':
+            #     char = '\\"'
+            # elif codepoint in ESCAPED:
+            #     char = '\\\\\\\\U{:0>8s}'.format(h)
             entries.append(ENTRY_TPL.format(
-                           codepoint='{:0>8s}'.format(h),
+                           codepoint=codepoint,
                            char=char))
     content = '\n'.join(entries)
     text = COCOA_TPL % {'content': content}
     with open(OBJC_FILE, 'wb') as fp:
-        fp.write(text.encode('utf-8'))
+        fp.write(text)
 
 
 if __name__ == '__main__':

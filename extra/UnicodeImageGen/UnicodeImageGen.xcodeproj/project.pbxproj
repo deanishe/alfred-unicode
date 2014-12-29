@@ -8,15 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		27146AE11A0EA30600ACF586 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AE01A0EA30600ACF586 /* main.m */; };
-		27146AE91A0EA69200ACF586 /* PreviewIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AE81A0EA69200ACF586 /* PreviewIcon.m */; };
-		27146AEC1A0EAEDC00ACF586 /* PreviewApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AEB1A0EAEDC00ACF586 /* PreviewApp.m */; };
+		27146AE91A0EA69200ACF586 /* UGIconGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AE81A0EA69200ACF586 /* UGIconGenerator.m */; };
+		27146AEC1A0EAEDC00ACF586 /* UGApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AEB1A0EAEDC00ACF586 /* UGApp.m */; };
 		27146AF61A0ECC7800ACF586 /* GBCommandLineParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AEF1A0ECC7800ACF586 /* GBCommandLineParser.m */; };
 		27146AF71A0ECC7800ACF586 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AF11A0ECC7800ACF586 /* GBOptionsHelper.m */; };
 		27146AF81A0ECC7800ACF586 /* GBPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AF31A0ECC7800ACF586 /* GBPrint.m */; };
 		27146AF91A0ECC7800ACF586 /* GBSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 27146AF51A0ECC7800ACF586 /* GBSettings.m */; };
+		27ECA6D31A114DE10060E9FA /* NSData+SHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = 27ECA6D21A114DE10060E9FA /* NSData+SHA1.m */; };
+		27ECA6D61A115A4D0060E9FA /* NSDictionary+TSV.m in Sources */ = {isa = PBXBuildFile; fileRef = 27ECA6D51A115A4D0060E9FA /* NSDictionary+TSV.m */; };
 		27FFD3F11A0F7167002541EA /* GBSettingsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FFD3F01A0F7167002541EA /* GBSettingsAdditions.m */; };
-		27FFD3F41A0F863E002541EA /* NSStringTSV.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FFD3F31A0F863E002541EA /* NSStringTSV.m */; };
-		27FFD3F71A0FA210002541EA /* CharacterDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FFD3F61A0FA210002541EA /* CharacterDictionary.m */; };
+		27FFD3F41A0F863E002541EA /* NSString+TSV.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FFD3F31A0F863E002541EA /* NSString+TSV.m */; };
+		27FFD3F71A0FA210002541EA /* UGCharacterDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FFD3F61A0FA210002541EA /* UGCharacterDictionary.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,10 +36,10 @@
 /* Begin PBXFileReference section */
 		27146ADD1A0EA30500ACF586 /* UnicodeImageGen */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnicodeImageGen; sourceTree = BUILT_PRODUCTS_DIR; };
 		27146AE01A0EA30600ACF586 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		27146AE71A0EA69200ACF586 /* PreviewIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewIcon.h; sourceTree = "<group>"; };
-		27146AE81A0EA69200ACF586 /* PreviewIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewIcon.m; sourceTree = "<group>"; };
-		27146AEA1A0EAEDC00ACF586 /* PreviewApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewApp.h; sourceTree = "<group>"; };
-		27146AEB1A0EAEDC00ACF586 /* PreviewApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewApp.m; sourceTree = "<group>"; };
+		27146AE71A0EA69200ACF586 /* UGIconGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGIconGenerator.h; sourceTree = "<group>"; };
+		27146AE81A0EA69200ACF586 /* UGIconGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGIconGenerator.m; sourceTree = "<group>"; };
+		27146AEA1A0EAEDC00ACF586 /* UGApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGApp.h; sourceTree = "<group>"; };
+		27146AEB1A0EAEDC00ACF586 /* UGApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGApp.m; sourceTree = "<group>"; };
 		27146AED1A0ECC7800ACF586 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCli.h; sourceTree = "<group>"; };
 		27146AEE1A0ECC7800ACF586 /* GBCommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBCommandLineParser.h; sourceTree = "<group>"; };
 		27146AEF1A0ECC7800ACF586 /* GBCommandLineParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBCommandLineParser.m; sourceTree = "<group>"; };
@@ -47,12 +49,16 @@
 		27146AF31A0ECC7800ACF586 /* GBPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBPrint.m; sourceTree = "<group>"; };
 		27146AF41A0ECC7800ACF586 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSettings.h; sourceTree = "<group>"; };
 		27146AF51A0ECC7800ACF586 /* GBSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSettings.m; sourceTree = "<group>"; };
+		27ECA6D11A114DE10060E9FA /* NSData+SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SHA1.h"; sourceTree = "<group>"; };
+		27ECA6D21A114DE10060E9FA /* NSData+SHA1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SHA1.m"; sourceTree = "<group>"; };
+		27ECA6D41A115A4D0060E9FA /* NSDictionary+TSV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TSV.h"; sourceTree = "<group>"; };
+		27ECA6D51A115A4D0060E9FA /* NSDictionary+TSV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+TSV.m"; sourceTree = "<group>"; };
 		27FFD3EF1A0F7167002541EA /* GBSettingsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBSettingsAdditions.h; sourceTree = "<group>"; };
 		27FFD3F01A0F7167002541EA /* GBSettingsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBSettingsAdditions.m; sourceTree = "<group>"; };
-		27FFD3F21A0F863E002541EA /* NSStringTSV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringTSV.h; sourceTree = "<group>"; };
-		27FFD3F31A0F863E002541EA /* NSStringTSV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringTSV.m; sourceTree = "<group>"; };
-		27FFD3F51A0FA210002541EA /* CharacterDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterDictionary.h; sourceTree = "<group>"; };
-		27FFD3F61A0FA210002541EA /* CharacterDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterDictionary.m; sourceTree = "<group>"; };
+		27FFD3F21A0F863E002541EA /* NSString+TSV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TSV.h"; sourceTree = "<group>"; };
+		27FFD3F31A0F863E002541EA /* NSString+TSV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TSV.m"; sourceTree = "<group>"; };
+		27FFD3F51A0FA210002541EA /* UGCharacterDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCharacterDictionary.h; sourceTree = "<group>"; };
+		27FFD3F61A0FA210002541EA /* UGCharacterDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCharacterDictionary.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,16 +93,20 @@
 			children = (
 				27146AFA1A0ECCA400ACF586 /* GBCli */,
 				27146AE01A0EA30600ACF586 /* main.m */,
-				27146AEA1A0EAEDC00ACF586 /* PreviewApp.h */,
-				27146AEB1A0EAEDC00ACF586 /* PreviewApp.m */,
-				27146AE71A0EA69200ACF586 /* PreviewIcon.h */,
-				27146AE81A0EA69200ACF586 /* PreviewIcon.m */,
+				27146AEA1A0EAEDC00ACF586 /* UGApp.h */,
+				27146AEB1A0EAEDC00ACF586 /* UGApp.m */,
+				27146AE71A0EA69200ACF586 /* UGIconGenerator.h */,
+				27146AE81A0EA69200ACF586 /* UGIconGenerator.m */,
 				27FFD3EF1A0F7167002541EA /* GBSettingsAdditions.h */,
 				27FFD3F01A0F7167002541EA /* GBSettingsAdditions.m */,
-				27FFD3F21A0F863E002541EA /* NSStringTSV.h */,
-				27FFD3F31A0F863E002541EA /* NSStringTSV.m */,
-				27FFD3F51A0FA210002541EA /* CharacterDictionary.h */,
-				27FFD3F61A0FA210002541EA /* CharacterDictionary.m */,
+				27FFD3F21A0F863E002541EA /* NSString+TSV.h */,
+				27FFD3F31A0F863E002541EA /* NSString+TSV.m */,
+				27FFD3F51A0FA210002541EA /* UGCharacterDictionary.h */,
+				27FFD3F61A0FA210002541EA /* UGCharacterDictionary.m */,
+				27ECA6D11A114DE10060E9FA /* NSData+SHA1.h */,
+				27ECA6D21A114DE10060E9FA /* NSData+SHA1.m */,
+				27ECA6D41A115A4D0060E9FA /* NSDictionary+TSV.h */,
+				27ECA6D51A115A4D0060E9FA /* NSDictionary+TSV.m */,
 			);
 			path = UnicodeImageGen;
 			sourceTree = "<group>";
@@ -173,15 +183,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27ECA6D61A115A4D0060E9FA /* NSDictionary+TSV.m in Sources */,
 				27146AF81A0ECC7800ACF586 /* GBPrint.m in Sources */,
-				27FFD3F41A0F863E002541EA /* NSStringTSV.m in Sources */,
+				27FFD3F41A0F863E002541EA /* NSString+TSV.m in Sources */,
 				27FFD3F11A0F7167002541EA /* GBSettingsAdditions.m in Sources */,
-				27FFD3F71A0FA210002541EA /* CharacterDictionary.m in Sources */,
+				27FFD3F71A0FA210002541EA /* UGCharacterDictionary.m in Sources */,
 				27146AF91A0ECC7800ACF586 /* GBSettings.m in Sources */,
-				27146AEC1A0EAEDC00ACF586 /* PreviewApp.m in Sources */,
+				27146AEC1A0EAEDC00ACF586 /* UGApp.m in Sources */,
 				27146AF61A0ECC7800ACF586 /* GBCommandLineParser.m in Sources */,
 				27146AE11A0EA30600ACF586 /* main.m in Sources */,
-				27146AE91A0EA69200ACF586 /* PreviewIcon.m in Sources */,
+				27146AE91A0EA69200ACF586 /* UGIconGenerator.m in Sources */,
+				27ECA6D31A114DE10060E9FA /* NSData+SHA1.m in Sources */,
 				27146AF71A0ECC7800ACF586 /* GBOptionsHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

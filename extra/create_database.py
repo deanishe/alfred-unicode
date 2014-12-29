@@ -32,7 +32,7 @@ log = logging.getLogger('')
 
 
 CHARS_TSV = os.path.join(os.path.dirname(__file__), 'characters.tsv')
-ICONS_TSV = os.path.join(os.path.dirname(__file__), 'icons.tsv')
+# ICONS_TSV = os.path.join(os.path.dirname(__file__), 'icons.tsv')
 DB_FILE = 'characters.sqlite'
 
 
@@ -47,28 +47,40 @@ def create_index_db():
                     fts3(name, hex, entity, icon)""")
 
 
+def get_icon_path(h):
+    """Return icon path from Unicode hex"""
+    name = b'{:0>8s}'.format(h)
+    path = os.path.join(name[:2], name[2:4], name[4:6], '{}.png'.format(name))
+    return path
+
+
 def update_index_db():
     """Read in data file and add it to index database"""
     start = time()
-    icons = {}
 
     log.info('Updating search database at `{}`'.format(DB_FILE))
 
-    with open(ICONS_TSV, 'rb') as fp:
-        reader = csv.reader(fp, delimiter=b'\t')
-        for row in reader:
-            h, icon = row
-            icons[h] = icon
+    # with open(ICONS_TSV, 'rb') as fp:
+    #     reader = csv.reader(fp, delimiter=b'\t')
+    #     for row in reader:
+    #         h, icon = row
+    #         icons[h] = icon
 
     con = sqlite3.connect(DB_FILE)
     count = 0
+    names = set()
     with con:
         cur = con.cursor()
         with open(CHARS_TSV, 'rb') as fp:
             reader = csv.reader(fp, delimiter=b'\t')
             for row in reader:
                 name, h, entity = [v.decode('utf-8') for v in row]
-                icon = icons.get(h, '')
+                if name in names:
+                    log.warning('Ignored duplicate : {}'.format(name))
+                    continue
+                names.add(name)
+                icon = get_icon_path(h)
+                # log.info('{} -> {}'.format(h, icon))
                 cur.execute("""INSERT OR IGNORE INTO
                             chars (name, hex, entity, icon)
                             VALUES (?, ?, ?, ?)
