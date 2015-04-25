@@ -97,7 +97,9 @@
     CGFloat x = (iconSize - charWidth) / 2;
     CGFloat y = ((iconSize - charHeight) / 2) + descent;
     CGContextSetTextDrawingMode(ctx, kCGTextFill);
-    CGContextSetRGBFillColor(ctx, 0.83, 0.0, 0.65, 1.0); // Black
+//    CGContextSetRGBFillColor(ctx, 0.83, 0.0, 0.65, 1.0);  // Fashion Fuchsia
+    CGContextSetRGBFillColor(ctx, 0.21, 0.21, 0.21, 1.0);  // Tuatara (dark grey)
+//    CGContextSetRGBFillColor(ctx, 0.0, 0.0, 0.0, 1.0);  // Black
     CGContextSetTextPosition(ctx, x, y);
     CTLineDraw(line, ctx);
     CGImageRef imageRef = CGBitmapContextCreateImage(ctx);
@@ -123,7 +125,7 @@
 //
 //    CGImageRef maskedImage = CGImageCreateWithMask(imageRef, mask);
 
-    // Save as JPEG
+    // Save as PNG
 
     NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc]
                                   initWithCGImage:imageRef];
