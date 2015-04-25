@@ -33,6 +33,27 @@
     return filePath;
 }
 
+// Return absolute filepath for path
+- (NSString *)resolvePath:(NSString *)path
+{
+    NSString *expandedPath = [path stringByStandardizingPath];
+    NSLog(@"path : %@, expandedPath : %@", path, expandedPath);
+
+    if ([expandedPath hasPrefix:@"/"]) {
+        // expandedPath is absolute
+        return expandedPath;
+    }
+
+    NSString *absolutePath = [[[[[NSFileManager alloc] init]
+                                currentDirectoryPath]
+                               stringByAppendingPathComponent:expandedPath]
+                              stringByStandardizingPath];
+
+    NSLog(@"absolutePath : %@", absolutePath);
+
+    return absolutePath;
+}
+
 - (void)printFontList
 {
     NSFontManager *fontManager = [NSFontManager sharedFontManager];
@@ -68,9 +89,11 @@
     NSArray *characterNames = [_characters allKeys];
 
     // Ensure outputDirectory is absolute path
-    settings.outputDirectory = [[[[[NSFileManager alloc] init] currentDirectoryPath]
-                                 stringByAppendingPathComponent:[settings outputDirectory]]
-                                stringByStandardizingPath];
+//    settings.outputDirectory = [[[[[NSFileManager alloc] init] currentDirectoryPath]
+//                                 stringByAppendingPathComponent:[settings outputDirectory]]
+//                                stringByStandardizingPath];
+    settings.outputDirectory = [self resolvePath:[settings outputDirectory]];
+
 
     if ([settings verbose]) {
         NSLog(@"Saving preview icons to `%@`", [settings outputDirectory]);
@@ -159,8 +182,9 @@
         if (mod == 0) {
             pc = ((float)i / (float)total) * 100.0;
             CFTimeInterval elapsed = CFAbsoluteTimeGetCurrent() - startTime;
-            float perIcon = elapsed / (float)i;
-            NSLog(@"[%6.2f%%] Wrote %5d icons in %6.2fs (%1.4fs/icon)", pc, i, elapsed, perIcon);
+//            float perIcon = elapsed / (float)i;
+            float perSecond = (float)i / elapsed;
+            NSLog(@"[%6.2f%%] Wrote %5d icons in %6.2fs (%1.1f icons/second)", pc, i, elapsed, perSecond);
         }
     }
 
