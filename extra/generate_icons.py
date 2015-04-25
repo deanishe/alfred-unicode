@@ -45,10 +45,10 @@ ICON_JSON_FILE = os.path.join(PARENT_DIR, 'icons.json')
 
 FONT_DIR = os.path.join(PARENT_DIR, 'fonts')
 
-FONT_FILE = os.path.join(PARENT_DIR, 'fonts', 'Universalia+.ttf')
+# FONT_FILE = os.path.join(PARENT_DIR, 'fonts', 'Universalia+.ttf')
 # FONT_FILE = os.path.join(PARENT_DIR, 'fonts', 'u0000.ttf')
 # FONT_FILE = os.path.join(PARENT_DIR, 'fonts', 'NotoSans-Regular.ttf')
-# FONT_FILE = '/Library/Fonts/Arial Unicode.ttf'
+FONT_FILE = '/Library/Fonts/Arial Unicode.ttf'
 
 
 ICON_DIR = os.path.join(os.path.dirname(PARENT_DIR),

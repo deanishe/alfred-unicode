@@ -13,7 +13,6 @@
 
 from __future__ import print_function, unicode_literals, absolute_import
 
-from codecs import unicode_escape_decode
 import csv
 import logging
 import os
