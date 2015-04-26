@@ -24,7 +24,7 @@ import struct
 import subprocess
 import sys
 from time import time
-from urllib import quote_plus
+from urllib import quote
 
 from workflow import Workflow, ICON_WARNING
 
@@ -108,10 +108,10 @@ def charinfo(name):
         'name': name,
         'hex': 'U+{}'.format(h),
         'entity_named': None,
-        'entity_hex': '&#x{};'.format(h),
+        'entity_hex': '&#x{};'.format(h.lstrip('0')),
         'entity_dec': '&#{};'.format(dec),
         'entity_css': '\\{:0>6}'.format(h),
-        'url_encoded': '{}'.format(quote_plus(u.encode('utf-8'))),
+        'url_encoded': '{}'.format(quote(u.encode('utf-8'))),
         'python': '\\u{}'.format(h),
     }
     if entity:

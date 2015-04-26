@@ -18,7 +18,8 @@ directory.
 
 from __future__ import print_function, unicode_literals, absolute_import
 
-# from codecs import unicode_escape_decode
+from codecs import unicode_escape_decode
+import csv
 import json
 import logging
 import os
@@ -69,13 +70,11 @@ class UCDHandler(xml.sax.ContentHandler):
                  len(self._characters), duration))
 
         with open(self.tsv_path, 'wb') as fp:
+            writer = csv.writer(fp, delimiter=b'\t')
             for name, value in self._characters.items():
-                num, entity = value
-                msg = '{}\t{}\t'.format(name, num)
-                if entity:
-                    msg += entity
-                msg += '\n'
-                fp.write(msg.encode('utf-8'))
+                num, entity, char = value
+                writer.writerow([s.encode('utf-8') for s in
+                                 (name, num, entity)])
 
         with open(self.json_path, 'wb') as fp:
             json.dump(self._characters, fp, indent=2, sort_keys=True)
@@ -106,9 +105,10 @@ class UCDHandler(xml.sax.ContentHandler):
                 # Ignore control characters (<= 20)
                 i = int(num, 16)
                 if i > int('20', 16):
-                    # s = '\\U{:0>8s}'.format(num)
-                    # char = unicode_escape_decode(s)[0]
-                    entity = self.entities.get(num)
+                    num = '{:0>8s}'.format(num)
+                    s = '\\U{}'.format(num)
+                    char = unicode_escape_decode(s)[0]
+                    entity = self.entities.get(num, '')
                     name = attrs['na']
                     names = self._aliases[:]
                     if name:
@@ -121,7 +121,7 @@ class UCDHandler(xml.sax.ContentHandler):
                             if name in self._characters:
                                 log.warning('Duplicate character : {}'.format(
                                             name))
-                            self._characters[name] = (num, entity)
+                            self._characters[name] = (num, entity, char)
                         # print('{}\t{}'.format(name, num))
 
             # reset
