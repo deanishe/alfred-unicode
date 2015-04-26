@@ -22,14 +22,21 @@ int main(int argc, char * argv[]) {
         [defaults applyFactoryDefaults];
 
         GBOptionsHelper *options = [[GBOptionsHelper alloc] init];
+//        options.applicationName = ^{ return @"IconGen"; };
+        options.applicationVersion = ^{ return [defaults versionNumber]; };
+        options.applicationBuild = ^{ return @"100"; };
         options.printHelpHeader = ^{
-            return @"IconGen [-v] [-F] [-O] [-s <size>] [-o <dirpath>] [-f <font>] [-l <limit>] [<codepoint> [<codepoint> ...]]\n"
+            return @"IconGen v%APPVERSION (build %APPBUILD)\n\n"
+                   @"Generate icons for specified codepoints in output directory.\n"
                    @"\n"
-                   @"Generate icons for specified codepoints in output directory (-o).\n"
+                   @"Usage:\n"
+                   @"\n"
+                   @"    IconGen [-v] [-F] [-O] [-s <size>] [-o <dirpath>] [-f <font>] [-l <limit>] [<codepoint> [<codepoint> ...]]\n"
                    @"\n"
                    @"If no codepoints are specified, they will be read from STDIN, one per line.\n"
                    @"If no output directory (-o) is specified, the current working directory will be used.\n"
-                   @"\n";
+                   @"\n"
+                   @"Options:\n";
 
         };
 
@@ -43,6 +50,10 @@ int main(int argc, char * argv[]) {
         [options registerOption:'h'
                            long:@"help"
                     description:@"Show this message and exit."
+                          flags:(GBOptionFlags)GBValueNone];
+        [options registerOption:'V'
+                           long:@"version"
+                    description:@"Show version number and exit."
                           flags:(GBOptionFlags)GBValueNone];
 
         // General options

@@ -44,4 +44,6 @@
 
 - (void)printFontList;
 
+- (void)printVersion;
+
 @end

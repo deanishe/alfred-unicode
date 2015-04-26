@@ -35,6 +35,7 @@
 		274549E21AECB70300FBD283 /* IGSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGSettings.m; sourceTree = "<group>"; };
 		274549E41AECCFFF00FBD283 /* IGIconGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGIconGenerator.h; sourceTree = "<group>"; };
 		274549E51AECCFFF00FBD283 /* IGIconGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGIconGenerator.m; sourceTree = "<group>"; };
+		274549F71AECEDBF00FBD283 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2EB492F420091763B74B7C5E /* Pods-IconGenerationHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IconGenerationHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-IconGenerationHelper/Pods-IconGenerationHelper.release.xcconfig"; sourceTree = "<group>"; };
 		B0B9C8A3EC18B50CF4755FC0 /* libPods-IconGenerationHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IconGenerationHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C763398141E5782AB370A7D1 /* Pods-IconGenerationHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IconGenerationHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IconGenerationHelper/Pods-IconGenerationHelper.debug.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +82,7 @@
 		274549C31AEC8A3000FBD283 /* IconGenerationHelper */ = {
 			isa = PBXGroup;
 			children = (
+				274549F71AECEDBF00FBD283 /* Info.plist */,
 				274549D41AEC92AD00FBD283 /* IGApp.h */,
 				274549D51AEC92AD00FBD283 /* IGApp.m */,
 				274549C41AEC8A3000FBD283 /* main.m */,
@@ -113,6 +115,7 @@
 				274549DB1AEC951900FBD283 /* Frameworks */,
 				274549DC1AEC951900FBD283 /* CopyFiles */,
 				F3B92509E825FDF74E19450C /* Copy Pods Resources */,
+				274549F81AECF4FB00FBD283 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -150,6 +153,19 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		274549F81AECF4FB00FBD283 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "${PROJECT_DIR}/tools/bump_build_number.sh \"${PROJECT_DIR}/${INFOPLIST_FILE}\"";
+		};
 		C8A67F051EBB8D136675CC68 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -215,6 +231,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -235,7 +252,15 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					IconGenerationHelper/Info.plist,
+				);
+				PRODUCT_NAME = IconGen;
 				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -257,6 +282,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -270,7 +296,15 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					IconGenerationHelper/Info.plist,
+				);
+				PRODUCT_NAME = IconGen;
 				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -278,6 +312,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C763398141E5782AB370A7D1 /* Pods-IconGenerationHelper.debug.xcconfig */;
 			buildSettings = {
+				INSTALL_PATH = /usr/local/bin;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = IconGen;
 			};
@@ -287,6 +322,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2EB492F420091763B74B7C5E /* Pods-IconGenerationHelper.release.xcconfig */;
 			buildSettings = {
+				INSTALL_PATH = /usr/local/bin;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = IconGen;
 			};

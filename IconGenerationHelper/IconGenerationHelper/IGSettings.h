@@ -17,9 +17,11 @@
 @property (nonatomic, assign) NSInteger limit;
 @property (nonatomic, assign) CGFloat iconSize;
 @property (nonatomic, assign) BOOL verbose;
+@property (nonatomic, assign) NSString* versionNumber;
 @property (nonatomic, assign) BOOL overwrite;
 @property (nonatomic, assign) BOOL printHelp;
 @property (nonatomic, assign) BOOL printFontList;
+@property (nonatomic, assign) BOOL printVersion;
 
 - (void)applyFactoryDefaults;
 

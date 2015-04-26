@@ -16,6 +16,27 @@
 @synthesize outputDirectory;
 @synthesize settings;
 
+
+
+- (void)printFontList
+{
+    NSFontManager *fontManager = [NSFontManager sharedFontManager];
+    NSArray *allFonts = [fontManager availableFonts];
+
+    printf("The following fonts are available on your system:\n");
+
+    for (NSString *fontName in allFonts) {
+        printf("\t%s\n", [fontName UTF8String]);
+    }
+}
+
+
+- (void)printVersion
+{
+    printf("IconGen v%s\n", [[settings versionNumber] UTF8String]);
+}
+
+
 // Return absolute filepath for path
 - (NSString *)resolvePath:(NSString *)path
 {
@@ -49,18 +70,6 @@
     NSString *fileName = [NSString stringWithFormat: @"%@.png", codePoint];
     NSString *filePath = [dirPath stringByAppendingPathComponent: fileName];
     return filePath;
-}
-
-- (void)printFontList
-{
-    NSFontManager *fontManager = [NSFontManager sharedFontManager];
-    NSArray *allFonts = [fontManager availableFonts];
-
-    printf("The following fonts are available on your system:\n");
-
-    for (NSString *fontName in allFonts) {
-        printf("\t%s\n", [fontName UTF8String]);
-    }
 }
 
 // Return int for codePoint
@@ -101,12 +110,23 @@
     NSMutableArray *validCodePoints = [NSMutableArray array];
     outputDirectory = [self resolvePath:[settings outputDirectory]];
 
+    // Alternative actions
+    if ([settings printFontList]) {
+        [self printFontList];
+        return EXIT_SUCCESS;
+    }
+
+    if ([settings printVersion]) {
+        [self printVersion];
+        return EXIT_SUCCESS;
+    }
+
     // Check output directory isn't a file
     BOOL isDir;
     if ([fileManager fileExistsAtPath:outputDirectory
                           isDirectory:&isDir] && !isDir) {
         printf("ERROR: Is not a directory : %s", [outputDirectory UTF8String]);
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     // Load codepoints from ARGV or STDIN
