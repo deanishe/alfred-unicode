@@ -28,6 +28,8 @@
 
 - (NSString *)filePathForCodePoint:(NSString *)codePoint;
 
+- (NSString *)stringWithCodePoint:(uint32_t)codePoint;
+
 - (NSString *)resolvePath:(NSString *)path;
 
 - (void)printFontList;

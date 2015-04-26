@@ -12,6 +12,7 @@
 
 GB_SYNTHESIZE_OBJECT(NSString*, fontName, setFontName, @"fontname");
 GB_SYNTHESIZE_OBJECT(NSString*, outputDirectory, setOutputDirectory, @"outputdir");
+GB_SYNTHESIZE_OBJECT(NSString*, characterListPath, setCharacterListPath, @"charlist");
 GB_SYNTHESIZE_OBJECT(NSString*, iconListPath, setIconListPath, @"iconlist");
 GB_SYNTHESIZE_INT(limit, setLimit, @"limit");
 GB_SYNTHESIZE_BOOL(verbose, setVerbose, @"verbose");
@@ -34,6 +35,8 @@ GB_SYNTHESIZE_BOOL(printFontList, setPrintFontList, @"fontlist");
     self.outputDirectory = [[[NSFileManager alloc] init] currentDirectoryPath];
     self.iconListPath = [self.outputDirectory
                          stringByAppendingPathComponent:@"iconpaths.tsv"];
+    self.characterListPath = [self.outputDirectory
+                              stringByAppendingPathComponent:@"characters.tsv"];
     self.verbose = NO;
     self.limit = 0;
     self.printFontList = NO;

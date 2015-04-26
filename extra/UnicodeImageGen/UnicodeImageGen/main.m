@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
         // Create options helper and register options
         GBOptionsHelper *options = [[GBOptionsHelper alloc] init];
         options.printHelpHeader = ^{
-            return @"UnicodeImageGen [-h] [-v] [-f <fontname>] [-s <fontsize>] [-o <outputdir>] [-i <iconpaths.tsv>]\n\nGenerate preview icons for Unicode characters\n"; };
+            return @"UnicodeImageGen [-h] [-v] [-f <fontname>] [-c <charlist>] [-s <fontsize>] [-o <outputdir>] [-i <iconpaths.tsv>]\n\nGenerate preview icons for Unicode characters\n"; };
         [options registerOption:'f'
                            long:@"fontname"
                     description:@"Name of font"
@@ -57,6 +57,10 @@ int main(int argc, const char * argv[]) {
         [options registerOption:'o'
                            long:@"outputdir"
                     description:@"Directory to save icons to"
+                          flags:(GBOptionFlags)GBValueOptional];
+        [options registerOption:'c'
+                           long:@"charlist"
+                    description:@"TSV file to load characters from"
                           flags:(GBOptionFlags)GBValueOptional];
         [options registerOption:'i'
                            long:@"iconlist"

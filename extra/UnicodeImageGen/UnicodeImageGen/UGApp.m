@@ -7,6 +7,7 @@
 //
 
 #import "NSDictionary+TSV.h"
+#import "NSString+TSV.h"
 #import "UGApp.h"
 #import "UGIconGenerator.h"
 #import "UGCharacterDictionary.h"
@@ -15,7 +16,8 @@
 
 //@synthesize iconSize, fontName, outputDirectory, charactersFile, limit, settings;
 @synthesize settings, fileManager;
-@synthesize characters = _characters;
+// Characters to generate icons for. Maps codepoints to Unicode strings
+@synthesize characters;
 
 
 // Return the filepath for the specified codePoint
@@ -31,6 +33,13 @@
     NSString *fileName = [NSString stringWithFormat: @"%@.png", codePoint];
     NSString *filePath = [dirPath stringByAppendingPathComponent: fileName];
     return filePath;
+}
+
+// Return codePoint as NSString
+- (NSString *)stringWithCodePoint: (uint32_t)codePoint
+{
+    NSString *string = [[NSString alloc] initWithBytes:&codePoint length:4 encoding:NSUTF32LittleEndianStringEncoding];
+    return string;
 }
 
 // Return absolute filepath for path
@@ -77,21 +86,42 @@
         exit(EXIT_SUCCESS);
     }
 
-    // Store hashes and filepaths
+    // Map sha1 hashes to filepaths
     NSMutableDictionary *hashFilePathMap = [NSMutableDictionary dictionary];
+    // Map codepoints to filepaths
     NSMutableDictionary *codePointFilePathMap = [NSMutableDictionary dictionary];
+    // These paths will be deleted
     NSMutableArray *duplicateIconPaths = [NSMutableArray array];
+    // Characters to generate icons for. Maps codepoints to Unicode strings
+    NSMutableDictionary *_characters = [NSMutableDictionary dictionary];
 
     fileManager = [NSFileManager defaultManager];
 
-    UGCharacterDictionary *myDict = [[UGCharacterDictionary alloc] init];
-    _characters = [myDict characters];
-    NSArray *characterNames = [_characters allKeys];
+    NSString *tsvString = [NSString stringWithContentsOfFile:[settings characterListPath]
+                                                    encoding:NSUTF8StringEncoding error:nil];
+    // Load TSV file into Array of Arrays
+    NSArray *tsvEntries = [tsvString arrayFromTSV];
+
+    for (NSArray *row in tsvEntries) {
+        NSString *codePoint = [row objectAtIndex:1];
+
+        uint32_t value;
+        [[NSScanner scannerWithString:codePoint] scanHexInt: &value];
+        NSString *string = [self stringWithCodePoint:value];
+
+//        NSLog(@"codePoint : %@, int : %u, string : %@", codePoint, value, string);
+        [_characters setValue:string forKey:codePoint];
+
+        if (([settings limit] > 0) && ([_characters count] >= [settings limit])) {
+            break;
+        }
+    }
+
+    characters = [NSDictionary dictionaryWithDictionary:_characters];
+
+    NSArray *characterNames = [characters allKeys];
 
     // Ensure outputDirectory is absolute path
-//    settings.outputDirectory = [[[[[NSFileManager alloc] init] currentDirectoryPath]
-//                                 stringByAppendingPathComponent:[settings outputDirectory]]
-//                                stringByStandardizingPath];
     settings.outputDirectory = [self resolvePath:[settings outputDirectory]];
 
 
@@ -100,16 +130,23 @@
     }
 
     // Truncate character list if --limit was specified
-    if ([settings limit] > 0) {
-        characterNames = [characterNames subarrayWithRange:NSMakeRange(0, MIN([settings limit], [characterNames count]))];
-        if ([settings verbose]) {
-            NSLog(@"Truncated characters to length %lu", [characterNames count]);
-        }
+//    if ([settings limit] > 0) {
+//        characterNames = [characterNames subarrayWithRange:NSMakeRange(0, MIN([settings limit], [characterNames count]))];
+//        if ([settings verbose]) {
+//            NSLog(@"Truncated characters to length %lu", [characterNames count]);
+//        }
+//    }
+
+    NSLog(@"%lu characters to generate icons for", [characterNames count]);
+
+    if ([characterNames count] == 0) {
+        NSLog(@"ERROR: No characters to generate icons for.");
+        exit(EXIT_FAILURE);
     }
 
     if ([settings verbose]) {
         for (NSString *codePoint in characterNames) {
-            NSString *string = [_characters valueForKey:codePoint];
+            NSString *string = [characters valueForKey:codePoint];
             NSLog(@"%@ : %@", codePoint, string);
         }
 
@@ -134,7 +171,7 @@
           total, [settings outputDirectory]);
 
     for (NSString *codePoint in characterNames) {
-        NSString *string = [_characters valueForKey:codePoint];
+        NSString *string = [characters valueForKey:codePoint];
         NSString *filePath = [self filePathForCodePoint:codePoint];
 
         // Ensure destination directory exists

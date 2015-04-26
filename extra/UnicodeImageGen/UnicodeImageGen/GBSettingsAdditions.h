@@ -13,6 +13,7 @@
 
 @property (nonatomic, assign) NSString* fontName;
 @property (nonatomic, assign) NSString* outputDirectory;
+@property (nonatomic, assign) NSString* characterListPath;
 @property (nonatomic, assign) NSString* iconListPath;
 @property (nonatomic, assign) NSInteger limit;
 @property (nonatomic, assign) BOOL verbose;
