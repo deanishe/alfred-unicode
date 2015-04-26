@@ -8,29 +8,39 @@
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
+#import "IGSettings.h"
+#import "IGIconGenerator.h"
 
 @interface IGApp : NSObject
 {
-    NSFileManager *fileManager;
-    NSUserDefaults *defaults;
     NSArray *codePoints;
+    NSFileManager *fileManager;
+    IGIconGenerator *iconGenerator;
+    NSString *outputDirectory;
+    GBSettings *settings;
 }
 
-@property NSFileManager *fileManager;
-@property NSUserDefaults *defaults;
+// NSString hexadecimal values of Unicode codepoints
 @property NSArray *codePoints;
+@property NSFileManager *fileManager;
+@property IGIconGenerator *iconGenerator;
+// Absolute path to outputDirectory
+@property NSString *outputDirectory;
+@property GBSettings *settings;
 
-- (int)run;
+- (int)runWithSettings:(GBSettings *)_settings;
 
-- (void)applyFactoryDefaults;
+// Return codePoint as 32-bit integer
+- (uint32_t)integerWithCodePoint:(NSString *)codePoint;
 
-- (void)parseCommandLineArguments;
+// Return Unicode string corresponding to codePoint
+- (NSString *)stringWithCodePoint:(NSString *)codePoint;
 
-- (NSString *)stringWithCodePoint:(uint32_t)codePoint;
+- (NSString *)validateCodePoint:(NSString *)codePoint;
 
 - (NSString *)resolvePath:(NSString *)path;
 
-- (void)printHelp;
+- (NSString *)filePathWithCodePoint:(NSString *)codePoint;
 
 - (void)printFontList;
 

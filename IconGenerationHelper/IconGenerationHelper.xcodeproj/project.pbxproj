@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		274549D91AEC951900FBD283 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549C41AEC8A3000FBD283 /* main.m */; };
 		274549DA1AEC951900FBD283 /* IGApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549D51AEC92AD00FBD283 /* IGApp.m */; };
+		274549E31AECB70300FBD283 /* IGSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549E21AECB70300FBD283 /* IGSettings.m */; };
+		274549E61AECCFFF00FBD283 /* IGIconGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549E51AECCFFF00FBD283 /* IGIconGenerator.m */; };
+		2CBAF15880BA0A7BA826595E /* libPods-IconGenerationHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B9C8A3EC18B50CF4755FC0 /* libPods-IconGenerationHelper.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +31,13 @@
 		274549D41AEC92AD00FBD283 /* IGApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGApp.h; sourceTree = "<group>"; };
 		274549D51AEC92AD00FBD283 /* IGApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGApp.m; sourceTree = "<group>"; };
 		274549E01AEC951900FBD283 /* IconGen */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = IconGen; sourceTree = BUILT_PRODUCTS_DIR; };
+		274549E11AECB70300FBD283 /* IGSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGSettings.h; sourceTree = "<group>"; };
+		274549E21AECB70300FBD283 /* IGSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGSettings.m; sourceTree = "<group>"; };
+		274549E41AECCFFF00FBD283 /* IGIconGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGIconGenerator.h; sourceTree = "<group>"; };
+		274549E51AECCFFF00FBD283 /* IGIconGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGIconGenerator.m; sourceTree = "<group>"; };
+		2EB492F420091763B74B7C5E /* Pods-IconGenerationHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IconGenerationHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-IconGenerationHelper/Pods-IconGenerationHelper.release.xcconfig"; sourceTree = "<group>"; };
+		B0B9C8A3EC18B50CF4755FC0 /* libPods-IconGenerationHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IconGenerationHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C763398141E5782AB370A7D1 /* Pods-IconGenerationHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IconGenerationHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IconGenerationHelper/Pods-IconGenerationHelper.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,17 +45,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CBAF15880BA0A7BA826595E /* libPods-IconGenerationHelper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1689A2555CE09220F1E4995C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B0B9C8A3EC18B50CF4755FC0 /* libPods-IconGenerationHelper.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		274549B81AEC8A3000FBD283 = {
 			isa = PBXGroup;
 			children = (
 				274549C31AEC8A3000FBD283 /* IconGenerationHelper */,
 				274549C21AEC8A3000FBD283 /* Products */,
+				DCDC3AA7721A67981AE5BB12 /* Pods */,
+				1689A2555CE09220F1E4995C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,8 +84,21 @@
 				274549D41AEC92AD00FBD283 /* IGApp.h */,
 				274549D51AEC92AD00FBD283 /* IGApp.m */,
 				274549C41AEC8A3000FBD283 /* main.m */,
+				274549E11AECB70300FBD283 /* IGSettings.h */,
+				274549E21AECB70300FBD283 /* IGSettings.m */,
+				274549E41AECCFFF00FBD283 /* IGIconGenerator.h */,
+				274549E51AECCFFF00FBD283 /* IGIconGenerator.m */,
 			);
 			path = IconGenerationHelper;
+			sourceTree = "<group>";
+		};
+		DCDC3AA7721A67981AE5BB12 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C763398141E5782AB370A7D1 /* Pods-IconGenerationHelper.debug.xcconfig */,
+				2EB492F420091763B74B7C5E /* Pods-IconGenerationHelper.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +108,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 274549DD1AEC951900FBD283 /* Build configuration list for PBXNativeTarget "IconGenerationHelper" */;
 			buildPhases = (
+				C8A67F051EBB8D136675CC68 /* Check Pods Manifest.lock */,
 				274549D81AEC951900FBD283 /* Sources */,
 				274549DB1AEC951900FBD283 /* Frameworks */,
 				274549DC1AEC951900FBD283 /* CopyFiles */,
+				F3B92509E825FDF74E19450C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -113,12 +149,47 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C8A67F051EBB8D136675CC68 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F3B92509E825FDF74E19450C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-IconGenerationHelper/Pods-IconGenerationHelper-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		274549D81AEC951900FBD283 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				274549E61AECCFFF00FBD283 /* IGIconGenerator.m in Sources */,
 				274549D91AEC951900FBD283 /* main.m in Sources */,
+				274549E31AECB70300FBD283 /* IGSettings.m in Sources */,
 				274549DA1AEC951900FBD283 /* IGApp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,16 +276,18 @@
 		};
 		274549DE1AEC951900FBD283 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C763398141E5782AB370A7D1 /* Pods-IconGenerationHelper.debug.xcconfig */;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = IconGen;
 			};
 			name = Debug;
 		};
 		274549DF1AEC951900FBD283 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EB492F420091763B74B7C5E /* Pods-IconGenerationHelper.release.xcconfig */;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = IconGen;
 			};
 			name = Release;
