@@ -1,3 +1,4 @@
+*.log
 *.ttf
 src/icons
 extra/fonts.txt
