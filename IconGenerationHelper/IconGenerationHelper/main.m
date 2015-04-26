@@ -24,7 +24,7 @@ int main(int argc, char * argv[]) {
         GBOptionsHelper *options = [[GBOptionsHelper alloc] init];
         options.applicationName = ^{ return [defaults appName]; };
         options.applicationVersion = ^{ return [defaults versionNumber]; };
-        options.applicationBuild = ^{ return @"100"; };
+        options.applicationBuild = ^{ return [defaults buildNumber]; };
         options.printHelpHeader = ^{
             return @"%APPNAME v%APPVERSION (build %APPBUILD)\n\n"
                    @"Generate icons for specified codepoints in output directory.\n"
