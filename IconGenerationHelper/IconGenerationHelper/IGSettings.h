@@ -18,6 +18,8 @@
 @property (nonatomic, assign) CGFloat iconSize;
 @property (nonatomic, assign) BOOL verbose;
 @property (nonatomic, assign) NSString* versionNumber;
+@property (nonatomic, assign) NSString* buildNumber;
+@property (nonatomic, assign) NSString* appName;
 @property (nonatomic, assign) BOOL overwrite;
 @property (nonatomic, assign) BOOL printHelp;
 @property (nonatomic, assign) BOOL printFontList;

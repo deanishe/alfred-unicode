@@ -33,7 +33,10 @@
 
 - (void)printVersion
 {
-    printf("IconGen v%s\n", [[settings versionNumber] UTF8String]);
+    printf("%s v%s (build %s)\n",
+           [[settings appName] UTF8String],
+           [[settings versionNumber] UTF8String],
+           [[settings buildNumber] UTF8String]);
 }
 
 
@@ -41,7 +44,6 @@
 - (NSString *)resolvePath:(NSString *)path
 {
     NSString *expandedPath = [path stringByStandardizingPath];
-//    NSLog(@"path : %@, expandedPath : %@", path, expandedPath);
 
     if ([expandedPath hasPrefix:@"/"]) {
         // expandedPath is absolute
@@ -52,8 +54,6 @@
                                 currentDirectoryPath]
                                stringByAppendingPathComponent:expandedPath]
                               stringByStandardizingPath];
-
-//    NSLog(@"absolutePath : %@", absolutePath);
 
     return absolutePath;
 }

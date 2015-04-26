@@ -312,9 +312,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C763398141E5782AB370A7D1 /* Pods-IconGenerationHelper.debug.xcconfig */;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = "";
 				INSTALL_PATH = /usr/local/bin;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = IconGen;
+				VERSIONING_SYSTEM = "";
 			};
 			name = Debug;
 		};
@@ -322,9 +324,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2EB492F420091763B74B7C5E /* Pods-IconGenerationHelper.release.xcconfig */;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = "";
 				INSTALL_PATH = /usr/local/bin;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = IconGen;
+				VERSIONING_SYSTEM = "";
 			};
 			name = Release;
 		};

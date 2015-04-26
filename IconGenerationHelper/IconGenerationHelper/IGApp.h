@@ -36,14 +36,19 @@
 // Return Unicode string corresponding to codePoint
 - (NSString *)stringWithCodePoint:(NSString *)codePoint;
 
+// Return valid codePoint or nil
 - (NSString *)validateCodePoint:(NSString *)codePoint;
 
+// Return absolute path for path. Also resolve symlinks
 - (NSString *)resolvePath:(NSString *)path;
 
+// Return appropriate filePath (under outputDirectory) for icon for codePoint
 - (NSString *)filePathWithCodePoint:(NSString *)codePoint;
 
+// Print a list of available fonts to STDOUT
 - (void)printFontList;
 
+// Print version number to STDOUT
 - (void)printVersion;
 
 @end

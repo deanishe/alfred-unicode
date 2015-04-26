@@ -22,11 +22,11 @@ int main(int argc, char * argv[]) {
         [defaults applyFactoryDefaults];
 
         GBOptionsHelper *options = [[GBOptionsHelper alloc] init];
-//        options.applicationName = ^{ return @"IconGen"; };
+        options.applicationName = ^{ return [defaults appName]; };
         options.applicationVersion = ^{ return [defaults versionNumber]; };
         options.applicationBuild = ^{ return @"100"; };
         options.printHelpHeader = ^{
-            return @"IconGen v%APPVERSION (build %APPBUILD)\n\n"
+            return @"%APPNAME v%APPVERSION (build %APPBUILD)\n\n"
                    @"Generate icons for specified codepoints in output directory.\n"
                    @"\n"
                    @"Usage:\n"
