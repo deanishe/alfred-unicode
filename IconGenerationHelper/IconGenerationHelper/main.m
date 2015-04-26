@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreFoundation/CoreFoundation.h>
 #import <GBCli/GBCli.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import "IGSettings.h"
 #import "IGApp.h"
 
@@ -31,10 +32,11 @@ int main(int argc, char * argv[]) {
                    @"\n"
                    @"Usage:\n"
                    @"\n"
-                   @"    IconGen [-v] [-F] [-O] [-s <size>] [-o <dirpath>] [-f <font>] [-l <limit>] [<codepoint> [<codepoint> ...]]\n"
+                   @"    IconGen [-v] [-F] [-O] [-s <size>] [-l logfile] [-o <dirpath>] [-f <font>] [-l <limit>] [<codepoint> [<codepoint> ...]]\n"
                    @"\n"
                    @"If no codepoints are specified, they will be read from STDIN, one per line.\n"
                    @"If no output directory (-o) is specified, the current working directory will be used.\n"
+                   @"If no logfile is specified, none will be written.\n"
                    @"\n"
                    @"Options:\n";
 
@@ -61,6 +63,10 @@ int main(int argc, char * argv[]) {
                            long:@"verbose"
                     description:@"Log debugging information."
                           flags:(GBOptionFlags)GBValueNone];
+        [options registerOption:'L'
+                           long:@"logfile"
+                    description:@"Log output to this file."
+                          flags:(GBOptionFlags)GBValueRequired];
 
         // Icon-generation options
         [options registerOption:'l'
@@ -92,11 +98,22 @@ int main(int argc, char * argv[]) {
 
         if (settings.verbose) {
             [options printValuesFromSettings:settings];
-            NSLog(@"codepoints : %@", [settings arguments]);
+            [DDLog addLogger:[DDASLLogger sharedInstance] withLevel:DDLogLevelDebug];
+            [DDLog addLogger:[DDTTYLogger sharedInstance] withLevel:DDLogLevelDebug];
+        } else {
+            [DDLog addLogger:[DDASLLogger sharedInstance] withLevel:DDLogLevelInfo];
+            [DDLog addLogger:[DDTTYLogger sharedInstance] withLevel:DDLogLevelInfo];
         }
+
+        DDLogDebug(@"codepoints on CLI : %@", [settings arguments]);
 
         if (settings.printHelp) {
             [options printHelp];
+            return EXIT_SUCCESS;
+        }
+
+        if (settings.printVersion) {
+            [options printVersion];
             return EXIT_SUCCESS;
         }
 

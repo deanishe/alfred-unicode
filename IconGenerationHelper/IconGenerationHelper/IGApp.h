@@ -10,6 +10,8 @@
 #import <AppKit/AppKit.h>
 #import "IGSettings.h"
 #import "IGIconGenerator.h"
+#import "IGLogFileManager.h"
+#import "IGLogFormatter.h"
 
 @interface IGApp : NSObject
 {
@@ -17,6 +19,7 @@
     NSFileManager *fileManager;
     IGIconGenerator *iconGenerator;
     NSString *outputDirectory;
+    NSString *logFile;
     GBSettings *settings;
 }
 
@@ -26,6 +29,7 @@
 @property IGIconGenerator *iconGenerator;
 // Absolute path to outputDirectory
 @property NSString *outputDirectory;
+@property NSString *logFile;
 @property GBSettings *settings;
 
 - (int)runWithSettings:(GBSettings *)_settings;
@@ -48,7 +52,5 @@
 // Print a list of available fonts to STDOUT
 - (void)printFontList;
 
-// Print version number to STDOUT
-- (void)printVersion;
 
 @end

@@ -19,44 +19,22 @@ from __future__ import print_function, unicode_literals, absolute_import
 
 
 import os
+import shutil
 import sqlite3
 import struct
 import subprocess
 import sys
-from time import time
+import time
 from urllib import quote
 
 from workflow import Workflow, ICON_WARNING
+from workflow import background
+
+import config
+from icons import generate_icons
+
 
 log = None
-DB_FILE = 'characters.sqlite'
-DELIMITER = '⟩'
-KEYWORD = 'unicode'
-
-
-key_name_map = {
-    'char': 'Character',
-    'name': 'Name',
-    'hex': 'Hexadecimal',
-    'entity_named': 'HTML named entity',
-    'entity_hex': 'HTML hexadecimal entity',
-    'entity_dec': 'HTML decimal entity',
-    'entity_css': 'CSS entity',
-    'url_encoded': 'URL-encoded',
-    'python': 'Python literal string',
-}
-
-display_keys = (
-    'char',
-    # 'name',
-    'hex',
-    'entity_named',
-    'entity_hex',
-    'entity_dec',
-    'entity_css',
-    'url_encoded',
-    'python',
-)
 
 
 def run_alfred(query):
@@ -90,7 +68,7 @@ def make_rank_func(weights):
 
 
 def charinfo(name):
-    con = sqlite3.connect(DB_FILE)
+    con = sqlite3.connect(config.DB_FILE)
     cursor = con.cursor()
     cursor.execute("""SELECT name, hex, entity, icon FROM
                    chars WHERE name = ?""", (name,))
@@ -103,6 +81,7 @@ def charinfo(name):
     u = s.decode('unicode-escape')
     # log.debug('Unicode : {}'.format(u))
     info = {
+        'codepoint': h,
         'icon': icon,
         'char': u,
         'name': name,
@@ -116,7 +95,7 @@ def charinfo(name):
     }
     if entity:
         info['entity_named'] = '&{};'.format(entity)
-    log.debug('charinfo : {}'.format(info))
+    # log.debug('charinfo : {}'.format(info))
     return info
 
 
@@ -126,7 +105,7 @@ def search(query, cursor):
                     (SELECT rank(matchinfo(chars))
                     AS r, name, hex, entity, icon
                     FROM chars WHERE chars MATCH ?)
-                    ORDER BY r DESC LIMIT 100""", (query, ))
+                    ORDER BY r DESC LIMIT ?""", (query, config.MAX_RESULTS))
         results = cursor.fetchall()
     except sqlite3.OperationalError as err:
         if b'malformed MATCH' in err.message:
@@ -139,39 +118,78 @@ def search(query, cursor):
     return results
 
 
+def generate_all_icons():
+    """Callback for magic argument"""
+    if background.is_running('icongen'):
+        return 'Generation already in progress.'
+
+    background.run_in_background(
+        'icongen',
+        ['/usr/bin/python', wf.workflowfile('icons.py')]
+    )
+    return 'Starting icon generation. This may take up to 15 minutes.'
+
+
+def clear_all_icons():
+    """Callback for magic argument. Delete icon directory"""
+    if os.path.exists(config.ICON_DIR) and os.path.isdir(config.ICON_DIR):
+        shutil.rmtree(config.ICON_DIR)
+        return 'Deleted icons'
+    else:
+        return 'No icons to delete'
+
+
 def main(wf):
+    config.init_config(wf)
+    # Add custom magic arguments
+    wf.magic_arguments['genicons'] = generate_all_icons
+    wf.magic_arguments['delicons'] = clear_all_icons
+    # Icons that don't yet exist
+    icons_to_generate = set()
     query = None
     if len(wf.args):
         query = wf.args[0]
 
     # Back up
-    if query.endswith(DELIMITER):
+    if query.endswith(config.DELIMITER):
         query = wf.cached_data('last-query', max_age=0)
         if query:
-            query = '{} {}'.format(KEYWORD, query)
+            query = '{} {}'.format(config.KEYWORD, query)
         else:
-            query = '{} '.format(KEYWORD)
+            query = '{} '.format(config.KEYWORD)
         run_alfred(query)
         return
 
-    if DELIMITER in query:  # Show character details
-        name, query = [s.strip() for s in query.split(DELIMITER)]
+    if config.DELIMITER in query:  # Show character details
+
+        name, query = [s.strip() for s in query.split(config.DELIMITER)]
         log.info('Details for character `{}`'.format(name))
         info = charinfo(name)
+
         if not info:
             wf.add_item('Unknown character', name, icon=ICON_WARNING)
+
         else:
+
             output = []
-            for key in display_keys:
-                name = key_name_map[key]
+            icon = os.path.join(config.ICON_DIR, info['icon'])
+            if not os.path.exists(icon):
+                icons_to_generate.add(info['codepoint'])
+
+            # Compile codepoint data
+            for key in config.display_keys:
+                name = config.key_name_map[key]
                 value = info[key]
                 if not value:
                     continue
                 output.append((name, value))
+
             if query:
                 output = wf.filter(query, output, lambda t: t[0], min_score=40)
+
             if not output:
                 wf.add_item('No matching representations', icon=ICON_WARNING)
+
             for (name, value) in output:
                 wf.add_item(
                     value,
@@ -180,15 +198,20 @@ def main(wf):
                     copytext=value,
                     largetext=value,
                     arg=value,
-                    icon='icons/{}'.format(info['icon']),
+                    icon=icon,
                 )
+        # Generate icons if need be
+        generate_icons(icons_to_generate, config.ICON_DIR, logfile=wf.logfile)
         wf.send_feedback()
         return
-    else:  # Cache user-entered query
-        wf.cache_data('last-query', query)
 
-    start = time()
-    con = sqlite3.connect(DB_FILE)
+    # Plain query (no delimiter), so search Unicode codepoints
+
+    # Cache user-entered query, so we can jump back to it later
+    wf.cache_data('last-query', query)
+
+    start = time.time()
+    con = sqlite3.connect(config.DB_FILE)
     con.create_function('rank', 1, make_rank_func((1.0, 0, 1.5, 0)))
     cursor = con.cursor()
     results = search(query, cursor)
@@ -201,23 +224,31 @@ def main(wf):
         wf.add_item('No matches', 'Try a different query', icon=ICON_WARNING)
 
     log.info('{:d} results for `{}` in {:0.3f} seconds'.format(
-             len(results), query, time() - start))
+             len(results), query, time.time() - start))
 
     for (name, h, entity, icon) in results:
-        icon = os.path.join('icons', icon)
+        icon = os.path.join(config.ICON_DIR, icon)
         if not os.path.exists(icon):
-            icon = os.path.join('icons', 'unknown.png')
+            icons_to_generate.add(h)
+            # icon = os.path.join('icons', 'unknown.png')
         subtitle = 'U+{}'.format(h)
         wf.add_item(name,
                     subtitle,
-                    autocomplete='{} {} '.format(name, DELIMITER),
+                    autocomplete='{} {} '.format(name, config.DELIMITER),
                     copytext=subtitle,
+                    arg=icon,
+                    type='file',
                     icon=icon)
 
+    # Generate icons if need be
+    generate_icons(icons_to_generate, config.ICON_DIR, logfile=wf.logfile)
     wf.send_feedback()
 
 
 if __name__ == '__main__':
-    wf = Workflow()
+    wf = Workflow(default_settings=config.DEFAULT_SETTINGS,
+                  update_settings=config.UPDATE_SETTINGS,
+                  help_url=config.HELP_URL)
+    wf.magic_prefix = 'wf:'
     log = wf.logger
     sys.exit(wf.run(main))

@@ -2,7 +2,7 @@
 platform :osx, '10.8'
 
 target 'IconGenerationHelper' do
-     pod "GBCli"
-#    pod 'BRLOptionParser', '~> 0.3.0'
+     pod 'GBCli'
+     pod 'CocoaLumberjack'
 end
 

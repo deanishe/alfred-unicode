@@ -11,6 +11,8 @@
 		274549DA1AEC951900FBD283 /* IGApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549D51AEC92AD00FBD283 /* IGApp.m */; };
 		274549E31AECB70300FBD283 /* IGSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549E21AECB70300FBD283 /* IGSettings.m */; };
 		274549E61AECCFFF00FBD283 /* IGIconGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549E51AECCFFF00FBD283 /* IGIconGenerator.m */; };
+		274549FB1AED2BF500FBD283 /* IGLogFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549FA1AED2BF500FBD283 /* IGLogFileManager.m */; };
+		274549FE1AED3AA000FBD283 /* IGLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 274549FD1AED3AA000FBD283 /* IGLogFormatter.m */; };
 		2CBAF15880BA0A7BA826595E /* libPods-IconGenerationHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B9C8A3EC18B50CF4755FC0 /* libPods-IconGenerationHelper.a */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +38,10 @@
 		274549E41AECCFFF00FBD283 /* IGIconGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGIconGenerator.h; sourceTree = "<group>"; };
 		274549E51AECCFFF00FBD283 /* IGIconGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGIconGenerator.m; sourceTree = "<group>"; };
 		274549F71AECEDBF00FBD283 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		274549F91AED2BF500FBD283 /* IGLogFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGLogFileManager.h; sourceTree = "<group>"; };
+		274549FA1AED2BF500FBD283 /* IGLogFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGLogFileManager.m; sourceTree = "<group>"; };
+		274549FC1AED3AA000FBD283 /* IGLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGLogFormatter.h; sourceTree = "<group>"; };
+		274549FD1AED3AA000FBD283 /* IGLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGLogFormatter.m; sourceTree = "<group>"; };
 		2EB492F420091763B74B7C5E /* Pods-IconGenerationHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IconGenerationHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-IconGenerationHelper/Pods-IconGenerationHelper.release.xcconfig"; sourceTree = "<group>"; };
 		B0B9C8A3EC18B50CF4755FC0 /* libPods-IconGenerationHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IconGenerationHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C763398141E5782AB370A7D1 /* Pods-IconGenerationHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IconGenerationHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IconGenerationHelper/Pods-IconGenerationHelper.debug.xcconfig"; sourceTree = "<group>"; };
@@ -90,6 +96,10 @@
 				274549E21AECB70300FBD283 /* IGSettings.m */,
 				274549E41AECCFFF00FBD283 /* IGIconGenerator.h */,
 				274549E51AECCFFF00FBD283 /* IGIconGenerator.m */,
+				274549F91AED2BF500FBD283 /* IGLogFileManager.h */,
+				274549FA1AED2BF500FBD283 /* IGLogFileManager.m */,
+				274549FC1AED3AA000FBD283 /* IGLogFormatter.h */,
+				274549FD1AED3AA000FBD283 /* IGLogFormatter.m */,
 			);
 			path = IconGenerationHelper;
 			sourceTree = "<group>";
@@ -204,8 +214,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				274549FB1AED2BF500FBD283 /* IGLogFileManager.m in Sources */,
 				274549E61AECCFFF00FBD283 /* IGIconGenerator.m in Sources */,
 				274549D91AEC951900FBD283 /* main.m in Sources */,
+				274549FE1AED3AA000FBD283 /* IGLogFormatter.m in Sources */,
 				274549E31AECB70300FBD283 /* IGSettings.m in Sources */,
 				274549DA1AEC951900FBD283 /* IGApp.m in Sources */,
 			);

@@ -45,9 +45,7 @@
     // Create an attributed string with string and font information
     float factor = [self screenDPI] / 72;
     float fontSize = iconSize / factor;
-    if (verbose) {
-        NSLog(@"Adjusted fontsize : %f for font `%@`", fontSize, fontName);
-    }
+    DDLogDebug(@"Adjusted fontsize : %f for font `%@`", fontSize, fontName);
     CTFontRef font = CTFontCreateWithName((CFStringRef)fontName, fontSize, nil);
     NSDictionary* attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                 (__bridge id)font,
@@ -107,9 +105,9 @@
                                                      properties:properties];
 
     [imageBinaryData writeToFile:filePath atomically:YES];
-    if (verbose) {
-        NSLog(@"Wrote %@", filePath);
-    }
+
+    DDLogDebug(@"Wrote %@", filePath);
+
     
     // Clean up
     CGContextRelease(ctx);

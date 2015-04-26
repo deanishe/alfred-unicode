@@ -6,17 +6,22 @@
 //  Copyright (c) 2015 Dean Jackson. All rights reserved.
 //
 
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import "IGApp.h"
 
 @implementation IGApp
+
+#pragma mark: Properties
 
 @synthesize codePoints;
 @synthesize fileManager;
 @synthesize iconGenerator;
 @synthesize outputDirectory;
+@synthesize logFile;
 @synthesize settings;
 
 
+#pragma mark: Other Actions
 
 - (void)printFontList
 {
@@ -30,15 +35,7 @@
     }
 }
 
-
-- (void)printVersion
-{
-    printf("%s v%s (build %s)\n",
-           [[settings appName] UTF8String],
-           [[settings versionNumber] UTF8String],
-           [[settings buildNumber] UTF8String]);
-}
-
+#pragma mark: Paths and Codepoints
 
 // Return absolute filepath for path
 - (NSString *)resolvePath:(NSString *)path
@@ -102,6 +99,8 @@
     }
 }
 
+#pragma mark: Run
+
 - (int)runWithSettings:(GBSettings *)_settings
 {
     fileManager = [NSFileManager defaultManager];
@@ -109,6 +108,9 @@
     NSMutableArray *allCodePoints = [NSMutableArray array];
     NSMutableArray *validCodePoints = [NSMutableArray array];
     outputDirectory = [self resolvePath:[settings outputDirectory]];
+    if ([settings logFile]) {
+        logFile = [self resolvePath:[settings logFile]];
+    }
 
     // Alternative actions
     if ([settings printFontList]) {
@@ -116,16 +118,28 @@
         return EXIT_SUCCESS;
     }
 
-    if ([settings printVersion]) {
-        [self printVersion];
-        return EXIT_SUCCESS;
+    // Set up logfile if there is one
+    if (logFile) {
+        DDLogDebug(@"Also logging to `%@`", logFile);
+
+        IGLogFileManager *logFileManager = [[IGLogFileManager alloc] initWithLogFile:logFile];
+        logFileManager.maximumNumberOfLogFiles = 0;
+
+        DDFileLogger *fileLogger = [[DDFileLogger alloc] initWithLogFileManager:logFileManager];
+        fileLogger.logFormatter = [[IGLogFormatter alloc] init];
+
+        if ([settings verbose]) {
+            [DDLog addLogger:fileLogger withLevel:DDLogLevelDebug];
+        } else {
+            [DDLog addLogger:fileLogger withLevel:DDLogLevelInfo];
+        }
     }
 
     // Check output directory isn't a file
     BOOL isDir;
     if ([fileManager fileExistsAtPath:outputDirectory
                           isDirectory:&isDir] && !isDir) {
-        printf("ERROR: Is not a directory : %s", [outputDirectory UTF8String]);
+        DDLogError(@"ERROR: Is not a directory : %@", outputDirectory);
         return EXIT_FAILURE;
     }
 
@@ -137,7 +151,7 @@
         }
     } else {
         // Read from STDIN
-        NSLog(@"Reading codepoints from STDIN...");
+        DDLogInfo(@"Reading codepoints from STDIN...");
         NSFileHandle *fh = [NSFileHandle fileHandleWithStandardInput];
         NSData *inputData = [NSData dataWithData:[fh readDataToEndOfFile]];
         NSString *inputString = [[NSString alloc] initWithData:inputData encoding:NSUTF8StringEncoding];
@@ -154,37 +168,33 @@
     for (NSString *codePoint in allCodePoints) {
         NSString *sanitisedCodePoint = [self validateCodePoint:codePoint];
         if (sanitisedCodePoint == nil) {
-            printf("ERROR: Invalid code point : %s\n", [codePoint UTF8String]);
+            DDLogError(@"ERROR: Invalid code point : %@", codePoint);
         } else {
             [validCodePoints addObject:sanitisedCodePoint];
         }
     }
 
     if ([validCodePoints count] == 0) {
-        printf("ERROR: No codepoints to generate icons for. Try --help.\n");
+        DDLogError(@"ERROR: No codepoints to generate icons for. Try --help.");
         return EXIT_FAILURE;
     }
 
     // Truncate codepoints if limit is set
     if ([settings limit] > 0 && [validCodePoints count] > [settings limit]) {
-        if ([settings verbose]) {
-            NSLog(@"Truncating codepoints to length %lu", [settings limit]);
-        }
+        DDLogDebug(@"Truncating codepoints to length %lu", [settings limit]);
         codePoints = [validCodePoints subarrayWithRange:NSMakeRange(0, MIN([settings limit], [validCodePoints count]))];
     } else {
         codePoints = [NSArray arrayWithArray:validCodePoints];
     }
 
-    if ([settings verbose]) {
-        NSLog(@"%lu icon(s) to generate in `%@`...", [codePoints count], outputDirectory);
-    }
+    DDLogDebug(@"%lu icon(s) to generate in `%@`...", [codePoints count], outputDirectory);
 
-    NSLog(@"Settings:\n");
-    NSLog(@"           Font name : %@", [settings fontName]);
-    NSLog(@"           Icon size : %0.0f", [settings iconSize]);
-    NSLog(@"          Icon count : %lu", [codePoints count]);
-    NSLog(@"    Output directory : %@\n", outputDirectory);
-    NSLog(@"  Overwrite existing : %d\n", [settings overwrite]);
+    DDLogDebug(@"Settings:");
+    DDLogDebug(@"         Font name : %@", [settings fontName]);
+    DDLogDebug(@"         Icon size : %0.0f", [settings iconSize]);
+    DDLogDebug(@"        Icon count : %lu", [codePoints count]);
+    DDLogDebug(@"  Output directory : %@", outputDirectory);
+    DDLogDebug(@"Overwrite existing : %d", [settings overwrite]);
 
     iconGenerator = [[IGIconGenerator alloc] init];
     iconGenerator.fontName = [settings fontName];
@@ -202,24 +212,22 @@
         NSString *filePath = [self filePathWithCodePoint:codePoint];
 
         if ([fileManager fileExistsAtPath:filePath] && ! [settings overwrite]) {
-            if ([settings verbose]) {
-                NSLog(@"Skipping (already exists) : %@", codePoint);
-            }
+            DDLogDebug(@"Skipping (already exists) : %@", codePoint);
             i++;
             continue;
         }
 
-        if ([settings verbose]) {
-            NSLog(@"%@\t%@\t%@", codePoint, string, filePath);
-        }
+        DDLogDebug(@"%@\t%@\t%@", codePoint, string, filePath);
 
         // Ensure destination directory exists
         NSString *dirPath = [filePath stringByDeletingLastPathComponent];
+
         if (! [fileManager fileExistsAtPath:dirPath]) {
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@", dirPath]];
-            if ([settings verbose]) {
-                NSLog(@"Creating directory : %@", url);
-            }
+            NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"file://%@", dirPath]
+                                               stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+            DDLogDebug(@"Creating directory : %@", url);
+
             [fileManager createDirectoryAtURL:url
                   withIntermediateDirectories:YES
                                    attributes:nil
@@ -228,25 +236,25 @@
 
         BOOL worked = [iconGenerator saveIcon:filePath withString:string];
         if (! worked) {
-            NSLog(@"ERROR: Couldn't create icon for `%@` at `%@`", codePoint, filePath);
+            DDLogError(@"ERROR: Couldn't create icon for `%@` at `%@`", codePoint, filePath);
         }
 
         i++;
 
         // Log progress
-        int mod = i % 50;
+        int mod = i % 25;
         if (mod == 0) {
             pc = ((float)i / (float)total) * 100.0;
             CFTimeInterval elapsed = CFAbsoluteTimeGetCurrent() - startTime;
             float perSecond = (float)i / elapsed;
-            NSLog(@"[%5d/%5lu] (%6.2f%%) Wrote %5d icons in %6.2fs (%1.1f icons/sec)",
-                  i+1, total, pc, i, elapsed, perSecond);
+            DDLogInfo(@"[%5d/%5lu] (%6.2f%%) Wrote %5d icons in %6.2fs (%1.1f icons/sec)",
+                      i, total, pc, i, elapsed, perSecond);
         }
     }
     CFTimeInterval elapsed = CFAbsoluteTimeGetCurrent() - startTime;
     float perSecond = (float)total / elapsed;
-    NSLog(@"[%5lu/%5lu] (100.00%%) Wrote %5lu icons in %6.2fs (%1.1f icons/sec)",
-          total, total, total, elapsed, perSecond);
+    DDLogInfo(@"[%5lu/%5lu] (100.00%%) Wrote %5lu icons in %6.2fs (%1.1f icons/sec)",
+              total, total, total, elapsed, perSecond);
 
     return EXIT_SUCCESS;
 }

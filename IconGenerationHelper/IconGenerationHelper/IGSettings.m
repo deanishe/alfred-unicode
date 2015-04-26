@@ -18,6 +18,7 @@ GB_SYNTHESIZE_BOOL(verbose, setVerbose, @"verbose");
 GB_SYNTHESIZE_OBJECT(NSString*, versionNumber, setVersionNumber, @"versionNumber");
 GB_SYNTHESIZE_OBJECT(NSString*, buildNumber, setBuildNumber, @"buildNumber");
 GB_SYNTHESIZE_OBJECT(NSString*, appName, setAppName, @"appName");
+GB_SYNTHESIZE_OBJECT(NSString*, logFile, setLogFile, @"logfile");
 GB_SYNTHESIZE_BOOL(overwrite, setOverwrite, @"overwrite");
 GB_SYNTHESIZE_FLOAT(iconSize, setIconSize, @"iconsize");
 GB_SYNTHESIZE_BOOL(printHelp, setPrintHelp, @"help");

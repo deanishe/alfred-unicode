@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 @interface IGIconGenerator : NSObject
 
