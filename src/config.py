@@ -23,10 +23,24 @@ DB_FILE = 'characters.sqlite'
 DELIMITER = '⟩'
 KEYWORD = 'unicode'
 
+# The font face to generate icons from by default.
+# ArialUnicodeMS is currently the best choice I've found in terms of
+# coverage.
+DEFAULT_FONT = 'ArialUnicodeMS'
+# The size (in pixels) of the generated icons. 256 is a decent size:
+# it looks okay in QuickLook, and there should only be ~30 MB of icons.
+DEFAULT_SIZE = 256
 
-DEFAULT_SETTINGS = {}
+# settings.json will be populated from these
+DEFAULT_SETTINGS = {
+    'font': DEFAULT_FONT,
+    'size': DEFAULT_SIZE,
+}
+
+# For auto-updates
 UPDATE_SETTINGS = {
 }
+
 HELP_URL = None
 
 # Lower to make icon generation faster
@@ -73,7 +87,13 @@ def init_config(wf):
     DB_FILE = wf.workflowfile(DB_FILE)
     ICON_DIR = wf.datafile(ICON_DIR)
     ICONGEN = wf.workflowfile(ICONGEN)
+    ICONGEN = ('/Volumes/Users/daj/Library/Developer/Xcode/DerivedData/'
+               'IconGenerationHelper-bbowvswngqbbjugdvgdqtwpjvgdp/'
+               'Build/Products/Debug/IconGen')
 
+
+# ---------------------------------------------------------
+# The below doesn't do anything yet...
 
 def main(wf):
     """Configure settings"""

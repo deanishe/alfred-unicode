@@ -201,7 +201,11 @@ def main(wf):
                     icon=icon,
                 )
         # Generate icons if need be
-        generate_icons(icons_to_generate, config.ICON_DIR, logfile=wf.logfile)
+        generate_icons(icons_to_generate,
+                       config.ICON_DIR,
+                       logfile=wf.logfile,
+                       font=wf.settings.get('font'),
+                       size=wf.settings.get('size'))
         wf.send_feedback()
         return
 
@@ -241,7 +245,11 @@ def main(wf):
                     icon=icon)
 
     # Generate icons if need be
-    generate_icons(icons_to_generate, config.ICON_DIR, logfile=wf.logfile)
+    generate_icons(icons_to_generate,
+                   config.ICON_DIR,
+                   logfile=wf.logfile,
+                   font=wf.settings.get('font'),
+                   size=wf.settings.get('size'))
     wf.send_feedback()
 
 

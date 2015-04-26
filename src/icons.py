@@ -27,17 +27,20 @@ log.addHandler(logging.NullHandler())
 
 
 def generate_icons(codepoints, output_directory,
-                   overwrite=False, logfile=None):
+                   overwrite=False, logfile=None,
+                   font=None, size=None):
     """Save icons for `codepoints` to `output_directory` using `IconGen`"""
     if not len(codepoints):
         return
+    font = font or config.DEFAULT_FONT
+    size = size or config.DEFAULT_SIZE
     log.debug('Generating {0} icons...'.format(len(codepoints)))
     start_time = time.time()
     cmd = [
         config.ICONGEN,
         '--outputdir', output_directory,
-        '--font', 'ArialUnicodeMS',
-        '--size', '256',
+        '--font', '{}'.format(font),
+        '--size', '{}'.format(size),
         # '--verbose',
         ]
     if logfile:
@@ -74,14 +77,20 @@ def main(wf):
     cursor.execute("""SELECT hex, icon FROM chars ORDER BY hex DESC""")
     codepoints = [t[0] for t in cursor.fetchall() if not
                   os.path.exists(os.path.join(config.ICON_DIR, t[1]))]
-    generate_icons(codepoints, config.ICON_DIR, logfile=wf.logfile)
+
+    generate_icons(codepoints,
+                   config.ICON_DIR,
+                   logfile=wf.logfile,
+                   font=wf.settings.get('font'),
+                   size=wf.settings.get('size'))
+
     stop = time.time()
     log.debug('Finished icon generation at {}'.format(
               datetime.datetime.fromtimestamp(stop)
               .strftime('%Y-%m-%d %H:%M:%S')))
     log.info('{} icons generated in {}'.format(
              len(codepoints),
-             util.human_readable_time(stop - start)))
+             util.readable_time(stop - start)))
 
 
 if __name__ == '__main__':
