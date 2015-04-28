@@ -31,7 +31,7 @@ def readable_time(seconds):
         if num == 0:
             return ''
         suffix = unit + ('', 's')[num > 1]
-        return '{:d} {:s}'.format(num, suffix)
+        return '{:d} {:s}'.format(int(num), suffix)
 
     if seconds < 0.1:
         return '%0.3f secs' % seconds

@@ -28,7 +28,7 @@ KEYWORD = 'unicode'
 # coverage.
 DEFAULT_FONT = 'ArialUnicodeMS'
 # The size (in pixels) of the generated icons. 256 is a decent size:
-# it looks okay in QuickLook, and there should only be ~30 MB of icons.
+# it looks okay in Quick Look, and there should be max ~300 MB of icons.
 DEFAULT_SIZE = 256
 
 # settings.json will be populated from these
