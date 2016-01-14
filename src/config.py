@@ -87,10 +87,6 @@ def init_config(wf):
     DB_FILE = wf.workflowfile(DB_FILE)
     ICON_DIR = wf.datafile(ICON_DIR)
     ICONGEN = wf.workflowfile(ICONGEN)
-    ICONGEN = ('/Volumes/Users/daj/Library/Developer/Xcode/DerivedData/'
-               'IconGenerationHelper-bbowvswngqbbjugdvgdqtwpjvgdp/'
-               'Build/Products/Debug/IconGen')
-
 
 # ---------------------------------------------------------
 # The below doesn't do anything yet...
