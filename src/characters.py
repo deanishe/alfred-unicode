@@ -91,7 +91,7 @@ def charinfo(name):
         'entity_dec': '&#{};'.format(dec),
         'entity_css': '\\{:0>6}'.format(h),
         'url_encoded': '{}'.format(quote(u.encode('utf-8'))),
-        'python': '\\u{}'.format(h),
+        'python': '\\U{}'.format(h),
     }
     if entity:
         info['entity_named'] = '&{};'.format(entity)
