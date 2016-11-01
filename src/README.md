@@ -2,7 +2,7 @@
 Alfred Unicode
 ==============
 
-Search, view and export Unicode characters/codepoints from [Alfred 2][alfred2].
+Search, view and export Unicode characters/codepoints from [Alfred][alfred].
 
 **(Screenshot goes here!)**
 
@@ -69,7 +69,7 @@ This workflow is released under the [MIT Licence][licence].
 It uses the [Alfred-Workflow library][aw], also released under the MIT Licence.
 
 
-[alfred2]: http://www.alfredforum.com/
+[alfred]: http://www.alfredforum.com/
 [licence]: ./LICENCE.txt
 [aw]: http://www.deanishe.net/alfred-workflow/
 [aw-github]: https://github.com/deanishe/alfred-workflow/
