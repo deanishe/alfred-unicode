@@ -108,7 +108,6 @@
 
     DDLogDebug(@"Wrote %@", filePath);
 
-    
     // Clean up
     CGContextRelease(ctx);
     CGImageRelease(imageRef);

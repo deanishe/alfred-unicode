@@ -1,12 +1,8 @@
 *.log
 *.ttf
 src/icons
-extra/fonts.txt
-extra/generate_icons.php
-extra/preview.html
-extra/index.php
-ucd.nounihan.flat.*
-/IconGenerationHelper/Pods
+*.tsv
+*.dist-info
 
 # Created by https://www.gitignore.io/api/python,sublimetext
 
