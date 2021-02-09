@@ -1,58 +1,54 @@
 #!/usr/bin/python
 # encoding: utf-8
 #
-# Copyright © 2015 deanishe@deanishe.net
+# Copyright (c) 2015 deanishe@deanishe.net
 #
 # MIT Licence. See http://opensource.org/licenses/MIT
 #
 # Created on 2015-04-26
 #
 
-"""
-"""
+"""Workflow configuration."""
 
-from __future__ import print_function, unicode_literals, absolute_import
+from __future__ import print_function, absolute_import
 
 
-import sys
+import os
 
-from workflow import Workflow
-
-log = None
-DB_FILE = 'characters.sqlite'
-DELIMITER = '⟩'
-KEYWORD = 'unicode'
-
+DB_FILE = './characters.sqlite'
+DELIMITER = u'⟩'
+KEYWORD = os.getenv('keyword', 'unicode')
 # The font face to generate icons from by default.
 # ArialUnicodeMS is currently the best choice I've found in terms of
 # coverage.
-DEFAULT_FONT = 'ArialUnicodeMS'
+FONT = os.getenv('preview_font', 'ArialUnicodeMS')
 # The size (in pixels) of the generated icons. 256 is a decent size:
 # it looks okay in Quick Look, and there should be max ~300 MB of icons.
-DEFAULT_SIZE = 256
+ICON_SIZE = os.getenv('icon_size', '256')
 
 # settings.json will be populated from these
-DEFAULT_SETTINGS = {
-    'font': DEFAULT_FONT,
-    'size': DEFAULT_SIZE,
-}
+DEFAULT_SETTINGS = {}
 
 # For auto-updates
-UPDATE_SETTINGS = {
-}
+UPDATE_SETTINGS = {}
 
+# URL shown in debugger if workflow fails
 HELP_URL = None
 
 # Lower to make icon generation faster
-MAX_RESULTS = 50
+MAX_RESULTS = os.getenv('max_results', '50')
 
 # Both of these variables will be adjusted in main() to be under the
 # data and workflow directories respectively.
 
-# Name of icon cache directory
+# Name of icons directory
 ICON_DIR = 'icons'
-# Path to IconGen binary (should be in workflow root)
+
+# Name of IconGen binary (should be in workflow root)
 ICONGEN = 'IconGen'
+
+# Path to logfile
+LOGFILE = None
 
 # Map keys in dictionary returned by `charinfo()` to proper names
 key_name_map = {
@@ -64,7 +60,7 @@ key_name_map = {
     'entity_dec': 'HTML decimal entity',
     'entity_css': 'CSS entity',
     'url_encoded': 'URL-encoded',
-    'python': 'Python literal string',
+    'python': 'Python or Go literal string',
 }
 
 # Which keys (from `charinfo()` dict) to show in results
@@ -82,26 +78,13 @@ display_keys = (
 
 
 def init_config(wf):
-    """Make config values relative to appropriate Workflow dirs"""
-    global DB_FILE, ICON_DIR, ICONGEN
+    """Make config values relative to appropriate Workflow dirs."""
+    global DB_FILE, ICON_DIR, ICONGEN, ICON_SIZE, \
+        LOGFILE, KEYWORD, MAX_RESULTS
     DB_FILE = wf.workflowfile(DB_FILE)
     ICON_DIR = wf.datafile(ICON_DIR)
     ICONGEN = wf.workflowfile(ICONGEN)
-
-# ---------------------------------------------------------
-# The below doesn't do anything yet...
-
-def main(wf):
-    """Configure settings"""
-    init_config(wf)
-    query = None
-    if len(wf.args):
-        query = wf.args[0]
-
-
-if __name__ == '__main__':
-    wf = Workflow(default_settings=DEFAULT_SETTINGS,
-                  update_settings=UPDATE_SETTINGS,
-                  help_url=HELP_URL)
-    log = wf.logger
-    sys.exit(wf.run(main))
+    LOGFILE = wf.logfile
+    KEYWORD = wf.decode(KEYWORD)
+    ICON_SIZE = int(ICON_SIZE)
+    MAX_RESULTS = int(MAX_RESULTS)
