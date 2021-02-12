@@ -16,12 +16,12 @@ import (
 )
 
 // formats Codepoint
-type transformFunc func(Codepoint) string
+type formatFunc func(Codepoint) string
 
-var transformers = []struct {
+var formatters = []struct {
 	uid         string
 	description string
-	transform   transformFunc
+	format      formatFunc
 }{
 	{"character", "UTF-8 character", func(cp Codepoint) string { return string(cp.Dec) }},
 	{"name", "Codepoint name", func(cp Codepoint) string { return cp.Name }},
@@ -29,18 +29,18 @@ var transformers = []struct {
 	{"css", "CSS entity", func(cp Codepoint) string { return fmt.Sprintf(`\%06X`, cp.Dec) }},
 	{"html-hex", "HTML entity, hexadecimal", func(cp Codepoint) string { return fmt.Sprintf("&#x%X;", cp.Dec) }},
 	{"html-dec", "HTML entity, decimal", func(cp Codepoint) string { return fmt.Sprintf("&#%d;", cp.Dec) }},
-	{"html-named", "HTML entity, named", transformHTMLEntityNamed},
+	{"html-named", "HTML entity, named", formatHTMLEntityNamed},
 	{"url-encoded", "URL-encoded", func(cp Codepoint) string { return url.PathEscape(string(cp.Dec)) }},
-	{"python", "Python or Go escaped string", transformPython},
-	{"javascript", "JavaScript escaped string", transformJS},
+	{"python", "Python or Go escaped string", formatPython},
+	{"javascript", "JavaScript escaped string", formatJS},
 }
 
-var transformersMap map[string]int
+var formattersMap map[string]int
 
 func init() {
-	transformersMap = make(map[string]int, len(transformers))
-	for i, t := range transformers {
-		transformersMap[t.uid] = i
+	formattersMap = make(map[string]int, len(formatters))
+	for i, f := range formatters {
+		formattersMap[f.uid] = i
 	}
 }
 
@@ -51,21 +51,21 @@ var actions = map[string]string{
 	"shift": "html-hex",
 }
 
-func transformHTMLEntityNamed(cp Codepoint) string {
+func formatHTMLEntityNamed(cp Codepoint) string {
 	if cp.HTMLEntityName != "" {
 		return fmt.Sprintf("&%s;", cp.HTMLEntityName)
 	}
 	return ""
 }
 
-func transformPython(cp Codepoint) string {
+func formatPython(cp Codepoint) string {
 	if cp.Dec > 0xFFFF {
 		return fmt.Sprintf(`\U%08X`, cp.Dec)
 	}
 	return fmt.Sprintf(`\u%04X`, cp.Dec)
 }
 
-func transformJS(cp Codepoint) string {
+func formatJS(cp Codepoint) string {
 	if cp.Dec > 0xFFFF {
 		return fmt.Sprintf(`\u{%04X}`, cp.Dec) // ES6 only
 	}
@@ -124,8 +124,8 @@ func runDetails() {
 	}
 	cp := cps[0]
 
-	for _, t := range transformers {
-		v := t.transform(cp)
+	for _, t := range formatters {
+		v := t.format(cp)
 		if v == "" {
 			continue
 		}
@@ -163,20 +163,20 @@ func loadActions() error {
 
 func addActions(cp Codepoint, it *aw.Item) {
 	for key, uid := range actions {
-		i, ok := transformersMap[uid]
+		i, ok := formattersMap[uid]
 		if !ok {
 			log.Printf("error: unknown action: %s", uid)
 			continue
 		}
-		t := transformers[i]
+		f := formatters[i]
 
 		var keys []aw.ModKey
 		for _, s := range strings.Split(key, "+") {
 			keys = append(keys, aw.ModKey(s))
 		}
 
-		v := t.transform(cp)
-		sub := fmt.Sprintf("%s “%s” (%s)", opts.CopyAction, v, t.description)
+		v := f.format(cp)
+		sub := fmt.Sprintf("%s “%s” (%s)", opts.CopyAction, v, f.description)
 		it.NewModifier(keys...).
 			Subtitle(sub).
 			Arg(v).
