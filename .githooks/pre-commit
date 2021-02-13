@@ -1,0 +1,59 @@
+#!/bin/zsh
+
+# _error <arg>.. | Write red "error" and args to STDERR
+_error() {
+  echo $(print -P '%F{red}error%f') "$@" >&2
+}
+
+# _fail <arg>.. | Write red "error" and args to STDERR, then exit with status 1
+_fail() {
+  _error "$@"
+  exit 1
+}
+
+# _staged <path> | Is path staged?
+_staged() {
+  local p="$1"
+  git diff --name-only --cached | grep --silent "$p"
+  return $?
+}
+
+exec 1>&2 # Redirect output to stderr.
+
+# exit if info.plist isn't staged
+# _staged info.plist || exit 0
+
+root="$( git rev-parse --show-toplevel )"
+ip="${root}/info.plist"
+
+# Fail if info.plist can't be found
+test -f "$ip" || { _fail "info.plist not found"; }
+
+# _getvar <name> | Retrieve value for variable <name>
+_getvar() {
+  local n=$1
+  /usr/libexec/PlistBuddy -c "Print :variables:$n" "$ip"
+}
+
+# exit if a variable is set
+# secret="$( _getvar API_KEY )"
+# test -n "$secret" && _fail "[info.plist] API_KEY is not empty"
+
+# ------------------------------
+# Linting
+# ------------------------------
+if hash golint; then
+	golint -set_exit_status ./...
+	[[ $? = 0 ]] || { _fail "linting with golint failed"; }
+fi
+
+# if hash golangci-lint; then
+# 	golangci-lint run -c .golangci.toml
+# 	[[ $? = 0 ]] || { _fail "linting with golangci-lint failed"; }
+# fi
+set -e
+cd "$root"
+gofmt -w -s **/*.go
+go mod tidy -v
+cd -
+exit 0
