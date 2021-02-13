@@ -16,25 +16,20 @@ import (
 
 func runUpdate() {
 	wg := sync.WaitGroup{}
-	wg.Add(1)
-	// go func() {
-	// 	defer wg.Done()
-	// 	log.Printf("checking for update ...")
-	// 	if err := wf.CheckForUpdate(); err != nil {
-	// 		log.Printf("[error] update check failed: %v", err)
-	// 	}
-	// }()
-
-	fileDepth := func(base, path string) int {
-		p, err := filepath.Rel(base, path)
-		checkErr(err)
-		if p == "." || p == "/" {
-			return 0
-		}
-		n := len(strings.Split(p, "/"))
-		return n
+	// check for workflow update
+	if !wf.Config.GetBool("devmode") {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			log.Printf("checking for update ...")
+			if err := wf.CheckForUpdate(); err != nil {
+				log.Printf("[error] update check failed: %v", err)
+			}
+		}()
 	}
 
+	// delete preview images belonging to other themes
+	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		themeDir := filepath.Join(iconDir, opts.ThemeDir())
@@ -63,6 +58,9 @@ func runUpdate() {
 			}
 
 			log.Printf("[cache] deleting %q ...", util.PrettyPath(path))
+			if err := os.RemoveAll(path); err != nil {
+				return err
+			}
 			return filepath.SkipDir
 		})
 		if err != nil {
@@ -84,4 +82,14 @@ func isParent(parent, child string) bool {
 		}
 		p = filepath.Dir(p)
 	}
+}
+
+func fileDepth(base, path string) int {
+	p, err := filepath.Rel(base, path)
+	checkErr(err)
+	if p == "." || p == "/" {
+		return 0
+	}
+	n := len(strings.Split(p, "/"))
+	return n
 }

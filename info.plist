@@ -12,7 +12,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>B423EEED-BC4A-48C5-B7B1-499EE89E3848</string>
+				<string>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -95,6 +95,19 @@
 		</array>
 		<key>67801BE2-E5E0-425F-94C5-B29CC3BBD90A</key>
 		<array/>
+		<key>7314F689-0081-4208-B395-5063E2A71F69</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A3BF1DED-3BDD-49A2-B001-6CD015F96673</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>91C833C3-1CC0-4140-92A1-7A85413DD9CC</key>
 		<array>
 			<dict>
@@ -134,6 +147,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>A3BF1DED-3BDD-49A2-B001-6CD015F96673</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B564A9DA-3F70-471A-8DF3-8A537CBF2975</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>B23AEA1C-49B7-4BD4-B519-E59BC7445EA5</key>
 		<array>
 			<dict>
@@ -145,6 +171,19 @@
 				<string></string>
 				<key>vitoclose</key>
 				<false/>
+			</dict>
+		</array>
+		<key>B564A9DA-3F70-471A-8DF3-8A537CBF2975</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>305244D4-28CD-479F-A437-AB874B97A000</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<true/>
 			</dict>
 		</array>
 		<key>B56A2C8A-964E-4B12-98E0-F265F34E1F13</key>
@@ -171,6 +210,19 @@
 				<string></string>
 				<key>vitoclose</key>
 				<true/>
+			</dict>
+		</array>
+		<key>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B423EEED-BC4A-48C5-B7B1-499EE89E3848</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>F3FBD6A3-BEA9-4D64-8F7C-AC67C1E8B5EC</key>
@@ -203,7 +255,7 @@
 				<key>externaltriggerid</key>
 				<string>{var:trigger}</string>
 				<key>passinputasargument</key>
-				<false/>
+				<true/>
 				<key>passvariables</key>
 				<false/>
 				<key>workflowbundleid</key>
@@ -271,6 +323,23 @@
 			<string>D025E895-3B47-4A1D-A37A-7A57A0A532C7</string>
 			<key>version</key>
 			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string>{var:trigger_query}</string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -499,9 +568,9 @@ variables={allvars}
 						<key>matchmode</key>
 						<integer>0</integer>
 						<key>matchstring</key>
-						<string>setfont</string>
+						<string>setconfig</string>
 						<key>outputlabel</key>
-						<string>Set Font</string>
+						<string>Set Config</string>
 						<key>uid</key>
 						<string>8A60BEAF-0A81-4F5A-B667-0EF0B96EBCC9</string>
 					</dict>
@@ -622,14 +691,18 @@ variables={allvars}
 				<key>script</key>
 				<string>set -e
 
-font="$1"
+value="$1"
 bid="${alfred_workflow_bundleid}"
-/usr/libexec/PlistBuddy -c "Set :variables:FONT_NAME \"${font}\"" info.plist
 
-echo set font to \"${font}\" &gt;&amp;2
+# update info.plist
+/usr/libexec/PlistBuddy -c "Set :variables:${varname} \"${value}\"" info.plist
 
+echo set ${varname} to \"${value}\" &gt;&amp;2
+
+# tell Alfred to reload workflow
 /usr/bin/osascript -e "tell application id \"com.runningwithcrayons.Alfred\" to reload workflow \"${bid}\""
 
+# show configuration panel
 /usr/bin/osascript -e "tell application id \"com.runningwithcrayons.Alfred\" to run trigger \"config\" in workflow \"${bid}\""</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
@@ -644,6 +717,86 @@ echo set font to \"${font}\" &gt;&amp;2
 			<string>67801BE2-E5E0-425F-94C5-B29CC3BBD90A</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>triggerid</key>
+				<string>choose</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.external</string>
+			<key>uid</key>
+			<string>7314F689-0081-4208-B395-5063E2A71F69</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Loading…</string>
+				<key>script</key>
+				<string>./alfred-unicode -config -choose "$what" "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>Set Configuration Option</string>
+				<key>type</key>
+				<integer>5</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>B564A9DA-3F70-471A-8DF3-8A537CBF2975</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string></string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict>
+					<key>what</key>
+					<string>{query}</string>
+				</dict>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>A3BF1DED-3BDD-49A2-B001-6CD015F96673</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -708,6 +861,13 @@ Explore Unicode characters in Alfred</string>
 			<key>ypos</key>
 			<integer>525</integer>
 		</dict>
+		<key>7314F689-0081-4208-B395-5063E2A71F69</key>
+		<dict>
+			<key>xpos</key>
+			<integer>50</integer>
+			<key>ypos</key>
+			<integer>545</integer>
+		</dict>
 		<key>887411E2-8BF2-4218-8B04-2D5B0DC36898</key>
 		<dict>
 			<key>xpos</key>
@@ -724,6 +884,13 @@ Explore Unicode characters in Alfred</string>
 			<key>ypos</key>
 			<integer>290</integer>
 		</dict>
+		<key>A3BF1DED-3BDD-49A2-B001-6CD015F96673</key>
+		<dict>
+			<key>xpos</key>
+			<integer>200</integer>
+			<key>ypos</key>
+			<integer>575</integer>
+		</dict>
 		<key>B23AEA1C-49B7-4BD4-B519-E59BC7445EA5</key>
 		<dict>
 			<key>xpos</key>
@@ -738,6 +905,13 @@ Explore Unicode characters in Alfred</string>
 			<key>ypos</key>
 			<integer>30</integer>
 		</dict>
+		<key>B564A9DA-3F70-471A-8DF3-8A537CBF2975</key>
+		<dict>
+			<key>xpos</key>
+			<integer>270</integer>
+			<key>ypos</key>
+			<integer>545</integer>
+		</dict>
 		<key>B56A2C8A-964E-4B12-98E0-F265F34E1F13</key>
 		<dict>
 			<key>xpos</key>
@@ -751,6 +925,13 @@ Explore Unicode characters in Alfred</string>
 			<string>Script Filter</string>
 			<key>xpos</key>
 			<integer>270</integer>
+			<key>ypos</key>
+			<integer>60</integer>
+		</dict>
+		<key>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</key>
+		<dict>
+			<key>xpos</key>
+			<integer>875</integer>
 			<key>ypos</key>
 			<integer>60</integer>
 		</dict>
@@ -776,7 +957,7 @@ Explore Unicode characters in Alfred</string>
 		<key>DELIMITER</key>
 		<string></string>
 		<key>FONT_NAME</key>
-		<string>Arial Black</string>
+		<string></string>
 		<key>ICON_SIZE</key>
 		<string>128</string>
 		<key>MOD_CMD_OPT</key>
@@ -784,13 +965,18 @@ Explore Unicode characters in Alfred</string>
 		<key>RESIZE_FACTOR</key>
 		<string>1.0</string>
 		<key>TEXT_COLOUR</key>
-		<string>FF2FA9</string>
+		<string></string>
 		<key>TEXT_SIZE</key>
 		<string></string>
 	</dict>
 	<key>variablesdontexport</key>
 	<array>
+		<string>BACKGROUND_COLOUR</string>
 		<string>MOD_CMD_OPT</string>
+		<string>FONT_NAME</string>
+		<string>TEXT_SIZE</string>
+		<string>DELIMITER</string>
+		<string>TEXT_COLOUR</string>
 	</array>
 	<key>version</key>
 	<string>1.0.0</string>

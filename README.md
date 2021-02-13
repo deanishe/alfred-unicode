@@ -60,16 +60,18 @@ Configuration
 -------------
 
 
+
+
 <a id="modifiers"></a>
 ### Modifiers ###
 
 You can assign your own modifiers to the search results to copy/paste quickly in your preferred format.
 
-To assign a format to a modifier, add a new [workflow environment variable][config-sheet] with the name `mod_<key1>[_<key2>[_<key3>]]` and set its value to the [short name](#short-names) of the desired format.
+To assign a format to a modifier, add a new [workflow environment variable][config-sheet] with the name `MOD_<KEY1>[_<KEY2>[_<KEY3>]]` and set its value to the [short name](#short-names) of the desired format.
 
-For example, to override `⌘↩` to copy/paste JavaScript instead of Python, add a new variable named `mod_cmd` with the value `javascript`. To re-assign Python to `⌥⌘↩`, add a new variable named `mod_cmd_opt` (or `mod_opt_cmd` … doesn't matter) with the value `python`.
+For example, to override `⌘↩` to copy/paste JavaScript instead of Python, add a new variable named `MOD_CMD` with the value `javascript`. To re-assign Python to `⌥⌘↩`, add a new variable named `MOD_CMD_OPT` (or `MOD_OPT_CMD` … doesn't matter) with the value `python`.
 
-Valid modifiers are `cmd`, `opt`, `shift`, `ctrl`.
+Valid modifiers are `CMD`, `OPT`, `SHIFT`, `CTRL`.
 
 
 <a id="short-names"></a>

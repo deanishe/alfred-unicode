@@ -8,7 +8,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"image"
 	"image/color"
+	"image/draw"
+	"image/png"
 	"log"
 	"os"
 	"path/filepath"
@@ -24,8 +27,9 @@ import (
 var (
 	iconUpdateAvailable = &aw.Icon{Value: "icons/update-available.png"}
 	iconUpdateOK        = &aw.Icon{Value: "icons/update-ok.png"}
-	iconClearCache      = &aw.Icon{Value: "icons/clear-cache.png"}
+	iconColour          = &aw.Icon{Value: "icons/colour.png"}
 	iconConfig          = &aw.Icon{Value: "icons/config.png"}
+	iconTrash           = &aw.Icon{Value: "icons/trash.png"}
 	iconFont            = &aw.Icon{Value: "icons/font.png"}
 	iconFontSelected    = &aw.Icon{Value: "icons/font-selected.png"}
 	iconIssue           = &aw.Icon{Value: "icons/issue.png"}
@@ -43,6 +47,39 @@ var (
 func (cp Codepoint) IconPath() string {
 	// return cp.Hex[0:2] + "/" + cp.Hex[2:4] + "/" + cp.Name + ".png"
 	return fmt.Sprintf("%s/U+%04X - %s.png", cp.Hex[0:2], cp.Dec, cp.Name)
+}
+
+// colouredIcon returns a version of icon in the given colour. If no colour
+// is specified or something goes wrong, icon is simply returned.
+func colouredIcon(icon *aw.Icon, colour string) *aw.Icon {
+	c, err := ParseHexColour(colour)
+	if err != nil {
+		log.Printf("[icons] ERR: %s", err)
+		return icon
+	}
+
+	path := colouredIconCachePath(icon, c)
+	if util.PathExists(path) {
+		return &aw.Icon{Value: path}
+	}
+
+	if err = generateColouredIcon(icon.Value, path, c); err != nil {
+		log.Printf("[icons] ERR: generate icon: %v", err)
+		return icon
+	}
+
+	rel, _ := filepath.Rel(iconDir, path)
+	log.Printf("new icon: %s", rel)
+
+	return &aw.Icon{Value: path}
+}
+
+func colouredIconCachePath(i *aw.Icon, c color.RGBA) string {
+	name := fmt.Sprintf("%02X%02X%02X%02X.png", c.R, c.G, c.B, c.A)
+	// dir := filepath.Join(iconDir, hex[0:2], hex[2:4], hex[4:6])
+	dir := filepath.Join(iconDir, "colours", fmt.Sprintf("%02X/%02X/%02X", c.R, c.G, c.B))
+	util.MustExist(dir)
+	return filepath.Join(dir, name)
 }
 
 // spinnerIcon returns a spinner icon. It rotates by 15 deg on every
@@ -87,7 +124,7 @@ func NormaliseHexColour(s string) (string, error) {
 
 // ParseHexColour parses a CSS hex (e.g. #ffffff) to RGBA.
 //
-// Input must be with preceding # and have 3/6 (RGB) or 4/8 (RGBA) characters.
+// Input must have 3/6 (RGB) or 4/8 (RGBA) characters. Preceding # is optional.
 func ParseHexColour(s string) (color.RGBA, error) {
 	var (
 		// default to 100% opaque
@@ -95,17 +132,21 @@ func ParseHexColour(s string) (color.RGBA, error) {
 		err error
 	)
 
-	if s[0] == '#' {
-		s = s[1:]
+	if s, err = NormaliseHexColour(s); err != nil {
+		return c, err
 	}
 
-	if len(s) == 3 || len(s) == 4 {
-		var s2 string
-		for _, c := range s {
-			s2 += string(c) + string(c)
-		}
-		s = s2
-	}
+	// if s[0] == '#' {
+	// 	s = s[1:]
+	// }
+
+	// if len(s) == 3 || len(s) == 4 {
+	// 	var s2 string
+	// 	for _, c := range s {
+	// 		s2 += string(c) + string(c)
+	// 	}
+	// 	s = s2
+	// }
 
 	b, err := hex.DecodeString(s)
 	if err != nil {
@@ -238,6 +279,38 @@ func (gen *iconGenerator) iconPath(cp Codepoint) string {
 // queuePath returns path to queue file.
 func (gen *iconGenerator) queuePath() string {
 	return filepath.Join(gen.Dir, "queue.json")
+}
+
+func generateColouredIcon(src, dest string, c color.RGBA) error {
+	// defer util.Timed(time.Now(), "generate icon")
+
+	var (
+		f    *os.File
+		mask image.Image
+		err  error
+	)
+
+	if f, err = os.Open(src); err != nil {
+		return errors.Wrap(err, "open file")
+	}
+	defer f.Close()
+
+	if mask, _, err = image.Decode(f); err != nil {
+		return errors.Wrap(err, "decode image")
+	}
+
+	img := image.NewRGBA(mask.Bounds())
+	draw.DrawMask(img, img.Bounds(), &image.Uniform{c}, image.Point{}, mask, image.Point{}, draw.Src)
+
+	if f, err = os.Create(dest); err != nil {
+		return errors.Wrap(err, "create file")
+	}
+	defer f.Close()
+
+	if err = png.Encode(f, img); err != nil {
+		return errors.Wrap(err, "write PNG data")
+	}
+	return nil
 }
 
 // return "transparent" if alpha is 0, 6-char hex if alpha is 1,

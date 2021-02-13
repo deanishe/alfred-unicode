@@ -35,22 +35,35 @@ _getvar() {
   /usr/libexec/PlistBuddy -c "Print :variables:$n" "$ip"
 }
 
+# _setvar <name> <value> | Set value for variable <name>
+# _setvar() {
+#   local n=$1
+#   local v=$2
+#   /usr/libexec/PlistBuddy -c "Set :variables:$n \"$v\"" "$ip"
+# }
+
 # exit if a variable is set
-# secret="$( _getvar API_KEY )"
-# test -n "$secret" && _fail "[info.plist] API_KEY is not empty"
+names=(FONT_NAME TEXT_SIZE TEXT_COLOUR BACKGROUND_COLOUR DELIMITER)
+for name in $names; do
+  test -n "$( _getvar $name )" && _fail "info.plist: $name is not empty"
+done
 
 # ------------------------------
 # Linting
 # ------------------------------
 if hash golint; then
 	golint -set_exit_status ./...
-	[[ $? = 0 ]] || { _fail "linting with golint failed"; }
+	[[ $? = 0 ]] || { _fail "lint: golint failed"; }
 fi
 
-# if hash golangci-lint; then
-# 	golangci-lint run -c .golangci.toml
-# 	[[ $? = 0 ]] || { _fail "linting with golangci-lint failed"; }
-# fi
+if hash golangci-lint; then
+	golangci-lint run -c .golangci.toml
+	[[ $? = 0 ]] || { _fail "lint: golangci-lint failed"; }
+fi
+
+# delete errant images
+find "$root" -type f -name slice1.png -delete
+
 set -e
 cd "$root"
 gofmt -w -s **/*.go

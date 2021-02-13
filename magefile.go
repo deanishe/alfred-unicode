@@ -95,6 +95,7 @@ func BuildAssets() error {
 		src, dst string
 	}{
 		{"icons/config.png", "12890D35-22B2-47AB-A54A-3BF0C1F8841D.png"},
+		{"icons/config.png", "B564A9DA-3F70-471A-8DF3-8A537CBF2975.png"},
 		{"icons/font.png", "F3FBD6A3-BEA9-4D64-8F7C-AC67C1E8B5EC.png"},
 		{"../.build/debug/icongen", "icongen"},
 	}

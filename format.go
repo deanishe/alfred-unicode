@@ -104,6 +104,10 @@ func specialQuery(s string) (string, bool) {
 
 // Script Filter to show character details
 func runDetails() {
+	if opts.Query == "" {
+		wf.Configure(aw.SuppressUIDs(true))
+	}
+
 	wf.Var("hide_alfred", "true").
 		Var("trigger", "").
 		Var("action", "copy")

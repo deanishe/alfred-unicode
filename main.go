@@ -59,8 +59,9 @@ type options struct {
 	SpinnerCounter int    `env:"spinner_counter"`
 	CopyAction     string `env:"-"`
 
-	Character string `env:"-"`
-	Query     string `env:"-"`
+	Character    string `env:"-"`
+	ConfigChoice string `env:"-"`
+	Query        string `env:"-"`
 }
 
 // CLI
@@ -73,6 +74,7 @@ var (
 
 	// Script Filters
 	flagConfig = fs.Bool("config", false, "show workflow configuration")
+	flagChoose = fs.String("choose", "", "show configuration option")
 	flagFonts  = fs.Bool("fonts", false, "show available fonts")
 
 	// Other actions
@@ -151,6 +153,7 @@ func (opts *options) prepare() (err error) {
 		opts.CopyAction = "Copy"
 	}
 
+	opts.ConfigChoice = *flagChoose
 	opts.Query = fs.Arg(0)
 	return
 }
@@ -322,66 +325,6 @@ func runSearch() {
 
 	checkErr(wf.Cache.Store("previousQuery", []byte(opts.Query)))
 	wf.WarnEmpty("No Matching Unicode Codepoints", "Try a different query?")
-	wf.SendFeedback()
-}
-
-// workflow configuration Script Filter.
-func runConfig() {
-	var (
-		title = "Workflow Is Up To Date"
-		sub   = "↩ to check for update now"
-		icon  = iconUpdateOK
-	)
-	if wf.UpdateAvailable() {
-		title = "Update Available!"
-		sub = "↩ to download and install"
-		icon = iconUpdateAvailable
-	}
-
-	wf.NewItem(title).
-		Subtitle(sub).
-		Autocomplete("workflow:update").
-		Icon(icon).
-		Valid(false)
-
-	wf.NewItem("Font: "+opts.FontName).
-		Subtitle("Change the font used for search result icons").
-		Arg("fonts").
-		Valid(true).
-		Icon(iconFont).
-		Var("action", "").
-		Var("hide_alfred", "").
-		Var("trigger", "fonts")
-
-	wf.NewItem("Documentation").
-		Subtitle("Open workflow website in your browser").
-		Arg(website).
-		Valid(true).
-		Icon(iconWebsite).
-		Var("action", "open").
-		Var("hide_alfred", "true")
-
-	wf.NewItem("Report Bug").
-		Subtitle("Open workflow issue tracker in your browser").
-		Arg(helpURL).
-		Valid(true).
-		Icon(iconIssue).
-		Var("action", "open").
-		Var("hide_alfred", "true")
-
-	wf.NewItem("Delete Cached Data").
-		Subtitle("Force update of Unicode database and preview images").
-		Autocomplete("workflow:delcache").
-		Valid(false).
-		Icon(iconClearCache)
-
-	if opts.Query != "" {
-		wf.Filter(opts.Query)
-	}
-
-	addNavigationItems("config")
-
-	wf.WarnEmpty("No Matching Items", "Try a different query?")
 	wf.SendFeedback()
 }
 
