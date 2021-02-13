@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Alfred Unicode Search</title>
+	<style>
+	
+/*** Start Vanilla CSS 1.0.2 */
+body{font:1em/1.5em sans-serif;}pre,code,tt{font:1em/1.5em ‘Andale Mono’,’Lucida Console’,monospace;}h1,h2,h3,h4,h5,h6,b,strong{font-weight:bold;}em,i,dfn{font-style:italic;}dfn{font-weight:bold;}p,code,pre,kbd{margin:0 0 1.5em 0;}blockquote{margin:0 1.5em 1.5em 1.5em;}cite{font-style:italic;}li ul,li ol{margin:0 1.5em;}ul,ol{margin:0 1.5em 1.5em 1.5em;}ul{list-style-type:disc;}ol{list-style-type:decimal;}ol ol{list-style:upper-alpha;}ol ol ol{list-style:lower-roman;}ol ol ol ol{list-style:lower-alpha;}dl{margin:0 0 1.5em 0;}dl dt{font-weight:bold;}dd{margin-left:1.5em;}table{margin-bottom:1.4em;width:100%;}th{font-weight:bold;}th,td,caption{padding:4px 10px 4px 5px;}tfoot{font-style:italic;}sup,sub{line-height:0;}abbr,acronym{border-bottom:1px dotted;}address{margin:0 0 1.5em;font-style:italic;}del{text-decoration:line-through;}pre{margin:1.5em 0;white-space:pre;}img.centered,.aligncenter,div.aligncenter{display:block;margin-left:auto;margin-right:auto;}img.alignright{display:inline;}img.alignleft{display:inline;}.alignright{float:right;margin-left:10px;}.alignleft{float:left;margin-right:10px;}img { max-width: 100%; }* html .clearfix{height:1%;}*+html .clearfix{display:inline-block;}.clearfix:after{content:”.”;display:block;height:0;clear:both;visibility:hidden;}* html .group{height:1%;}*+html .group{display:inline-block;}.group:after{content:”.”;display:block;height:0;clear:both;visibility:hidden;}
+
+#wrapper {
+	margin: 2em auto;
+	max-width: 900px;
+}
+code {
+	background-color: #f0f0f8;
+	border-radius: 0.05em;
+	padding: 0.15em 0.3em;
+}
+ul {
+	padding-left: 0;
+}
+
+	</style>
+</head>
+<body>
+	<div id="wrapper">
+<div align="center">
+    <img width="128" height="128" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/icons/icon-large.png" alt="workflow icon" title="workflow icon">
+</div>
+
+<h1>Alfred Unicode</h1>
+
+<p>Search Unicode and copy/paste codepoints as HTML entities, Go or Python string literals, hexadecimal numbers etc.</p>
+
+<div align="center">
+    <img width="570" height="505" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/demo.png" alt="workflow demo" title="workflow demo">
+</div>
+
+<!-- MarkdownTOC autolink="true" bracket="round" levels="2,3,4,5" autoanchor="true" -->
+
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#input">Input</a></li>
+</ul></li>
+<li><a href="#configuration">Configuration</a>
+
+<ul>
+<li><a href="#modifiers">Modifiers</a></li>
+</ul></li>
+<li><a href="#formats">Formats</a></li>
+<li><a href="#licensing--thanks">Licensing &amp; thanks</a></li>
+</ul>
+
+<!-- /MarkdownTOC -->
+
+<p><a id="installation"></a></p>
+
+<h2>Installation</h2>
+
+<p>Download the latest version of the workflow from the <a href="https://github.com/deanishe/alfred-unicode/releases/latest">releases page</a>, then double-click the <code>Alfred Unicode-X.X.X.alfredworkflow</code> file to install.</p>
+
+<p><a id="usage"></a></p>
+
+<h2>Usage</h2>
+
+<ul>
+<li><code>unicode &lt;query&gt;</code> — Search Unicode codepoints (see <a href="#input">input</a> below).
+
+<ul>
+<li><code>⇧</code> or <code>⌘Y</code> — Quick Look image of selected codepoint.</li>
+<li><code>↩</code> or <code>⇥</code> — View selected codepoint in various formats (CSS, HTML, Python etc.).
+
+<ul>
+<li><code>↩</code> or <code>⌘C</code> — Copy selected format to clipboard.</li>
+<li><code>⌘↩</code> — Paste selected format to frontmost application.</li>
+</ul></li>
+<li><code>⌘↩</code> (<a href="#modifiers">configurable</a>) — Copy/paste Unicode character.</li>
+<li><code>⌥↩</code> (<a href="#modifiers">configurable</a>) — Copy/paste Python Unicode escape.</li>
+<li><code>^↩</code> (<a href="#modifiers">configurable</a>) — Copy/paste Unicode ID (U+00AB).</li>
+<li><code>⇧↩</code> (<a href="#modifiers">configurable</a>) — Copy/paste HTML hexadecimal entity.</li>
+<li><code>...</code> — Add your own hotkeys (see <a href="#modifiers">Modifiers</a>).</li>
+</ul></li>
+<li><code>unicode prefs</code> — View workflow configuration
+
+<ul>
+<li><code>search</code> — Enter keyword <code>search</code> to return to Unicode search.</li>
+<li><strong>Workflow Is Up To Date</strong> / <strong>Update Available!</strong> — Whether a new version of the workflow is available. Action this item to force an update check.</li>
+<li><strong>Font: Arial Unicode MS (default)</strong> — Font used to generate preview images.
+
+<ul>
+<li><code>↩</code> — Choose a different font</li>
+<li><code>⌘↩</code> — Reset to default</li>
+</ul></li>
+<li><strong>Text Colour: #FF2FA9 (default)</strong> — Colour of text in preview images.
+
+<ul>
+<li><code>↩</code> — Choose a different colour</li>
+<li><code>⌘↩</code> — Reset to default</li>
+</ul></li>
+<li><strong>Background Colour: transparent (default)</strong> — Colour of background of preview images.
+
+<ul>
+<li><code>↩</code> — Choose a different colour</li>
+<li><code>⌘↩</code> — Reset to default</li>
+</ul></li>
+<li><strong>Documentation</strong> — Open this page in your browser.</li>
+<li><strong>Report Bug</strong> — Open <a href="https://github.com/deanishe/alfred-unicode/issues">workflow issue tracker</a> in your browser.</li>
+<li><strong>Delete Cached Data</strong> — Delete Unicode database and cached preview icons, forcing the workflow to re-create them.</li>
+</ul></li>
+</ul>
+
+<p><a id="input"></a></p>
+
+<h3>Input</h3>
+
+<p><a id="configuration"></a></p>
+
+<h2>Configuration</h2>
+
+<p>The workflow can be configured via several <a href="https://www.alfredapp.com/help/workflows/advanced/variables/#environment">workflow environment variables</a>. The most important ones can be set in the workflow by entering the query &ldquo;prefs&rdquo; in the Unicode search.</p>
+
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>BACKGROUND_COLOUR</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Background colour of generated preview images (search result icons). Uses transparent if unset.</td>
+</tr>
+
+<tr>
+<td><code>FONT_NAME</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Font used to generate preview images. Uses &ldquo;Arial Unicode MS&rdquo; if unset.</td>
+</tr>
+
+<tr>
+<td><code>ICON_SIZE</code></td>
+<td><code>128</code></td>
+<td>Width/height of preview images.</td>
+</tr>
+
+<tr>
+<td><code>RESIZE_FACTOR</code></td>
+<td><code>1.0</code></td>
+<td>Use larger/smaller font size in preview images.</td>
+</tr>
+
+<tr>
+<td><code>TEXT_COLOUR</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Text colour for preview images. Uses <code>#FF2FA9</code> if unset.</td>
+</tr>
+
+<tr>
+<td><code>TEXT_SIZE</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Font size for preview images. Calculated automatically if unset.</td>
+</tr>
+</tbody>
+</table>
+<p>By default, the font size is calculated automatically based on the size of the image and the text. If the text is consistently too small or large with a particular font, you can increase/decrease <code>RESIZE_FACTOR</code> to increase/decrease the size of the text.</p>
+
+<p>Alternatively, you can force a specific font size for all images by setting <code>TEXT_SIZE</code>.</p>
+
+<p><a id="modifiers"></a></p>
+
+<h3>Modifiers</h3>
+
+<p>You can assign your own modifiers to the search results to copy/paste quickly in your preferred format.</p>
+
+<p>To assign a format to a modifier, add a new <a href="https://www.alfredapp.com/help/workflows/advanced/variables/#environment">workflow environment variable</a> with the name <code>MOD_&lt;KEY1&gt;[_&lt;KEY2&gt;[_&lt;KEY3&gt;]]</code> and set its value to the <a href="#formats">short name</a> of the desired format.</p>
+
+<p>For example, to override <code>⌘↩</code> to copy/paste JavaScript instead of the UTF-8 character, add a new variable named <code>MOD_CMD</code> with the value <code>javascript</code>. To re-assign UTF-8 character to <code>⌥⌘↩</code>, add a new variable named <code>MOD_CMD_OPT</code> (or <code>MOD_OPT_CMD</code> … doesn&rsquo;t matter) with the value <code>character</code>.</p>
+
+<p>Valid modifiers are <code>CMD</code>, <code>OPT</code>, <code>SHIFT</code>, <code>CTRL</code>.</p>
+
+<p><a id="formats"></a></p>
+
+<h2>Formats</h2>
+
+<p>You can copy (and paste) each codepoint in some or all of the following formats:</p>
+
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Short name</th>
+<th>Example</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>UTF-8 character</td>
+<td><code>character</code></td>
+<td><code>🍻</code></td>
+</tr>
+
+<tr>
+<td>Codepoint name</td>
+<td><code>name</code></td>
+<td><code>CLINKING BEER MUGS</code></td>
+</tr>
+
+<tr>
+<td>Unicode ID</td>
+<td><code>unicode</code></td>
+<td><code>U+1F37B</code></td>
+</tr>
+
+<tr>
+<td>Hex literal (e.g. <code>0x00FF</code>)</td>
+<td><code>hexadecimal</code></td>
+<td><code>0x1F37B</code></td>
+</tr>
+
+<tr>
+<td>Python or Go escaped string</td>
+<td><code>python</code></td>
+<td><code>\U0001F37B</code></td>
+</tr>
+
+<tr>
+<td>URL-encoded</td>
+<td><code>url-encoded</code></td>
+<td><code>%F0%9F%8D%BB</code></td>
+</tr>
+
+<tr>
+<td>JavaScript escaped string</td>
+<td><code>javascript</code></td>
+<td><code>\u{1F37B}</code></td>
+</tr>
+
+<tr>
+<td>CSS entity</td>
+<td><code>css</code></td>
+<td><code>\01F37B</code></td>
+</tr>
+
+<tr>
+<td>HTML entity, hexadecimal</td>
+<td><code>html-hex</code></td>
+<td><code>&amp;#x1F37B;</code></td>
+</tr>
+
+<tr>
+<td>HTML entity, decimal</td>
+<td><code>html-dec</code></td>
+<td><code>&amp;#127867;</code></td>
+</tr>
+
+<tr>
+<td>HTML entity, named</td>
+<td><code>html-named</code></td>
+<td><code>&amp;szlig;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>TIP</strong>: You can get the short name for a format by using <code>⌘C</code> on its item in the detail view.</p>
+
+<p><strong>NOTE:</strong> The JavaScript formatter outputs <code>\uABCD</code>-style escapes for codepoints up to 0xFFFF, and ES6 <code>\u{1ABCD}</code>-style escapes for codepoints above that.</p>
+
+<p><a id="licensing--thanks"></a></p>
+
+<h2>Licensing &amp; thanks</h2>
+
+<ul>
+<li>The workflow is released under the <a href="LICENCE.txt">MIT licence</a>.</li>
+<li>It is heavily based on the <a href="https://github.com/deanishe/awgo">AwGo</a> library, also MIT licensed.</li>
+<li>The workflow icons are based on <a href="https://github.com/FortAwesome/Font-Awesome">Font Awesome</a>, released under the <a href="https://creativecommons.org/licenses/by/4.0/legalcode">Creative Commons Attribution 4.0 licence</a>.</li>
+</ul>
+
+	</div>
+</body>
+</html>

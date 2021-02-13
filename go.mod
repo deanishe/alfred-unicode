@@ -9,6 +9,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/magefile/mage v1.11.0
 	github.com/mattn/go-sqlite3 v1.14.6
+	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/text v0.3.5
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect

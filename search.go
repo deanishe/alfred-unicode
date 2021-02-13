@@ -6,6 +6,7 @@ package main
 
 import (
 	"log"
+	"regexp"
 	"strings"
 
 	"github.com/friendsofgo/errors"
@@ -247,9 +248,12 @@ func (repo *Repo) prepareQuery(s string) string {
 		return s
 	}
 
-	if s2, ok := specialQuery(s); ok {
+	if s2, stop := specialQuery(s); s2 != s {
 		log.Printf("query transform: %q  -->  %q", s, s2)
-		return s2
+		if stop {
+			return s2
+		}
+		s = s2
 	}
 
 	// add wildcard to end of query to get more matches
@@ -259,17 +263,19 @@ func (repo *Repo) prepareQuery(s string) string {
 	return s + "*"
 }
 
+var rxQuery = regexp.MustCompile(`(?i)^0x([A-F0-9]{4,8}) /(.*)$`)
+
+// parse "details" queries of format U+00AB / [<query>].
 func parseQuery(s string) (charName, query string, backup bool) {
-	i := strings.Index(s, opts.Delimiter)
-	if i < 1 {
-		query = s
+	if m := rxQuery.FindStringSubmatch(s); m != nil {
+		charName = m[1]
+		query = m[2]
+		if query == "" {
+			backup = true
+		}
+		query = strings.TrimLeft(query, " ")
 		return
 	}
-	if strings.HasSuffix(s, opts.Delimiter) {
-		backup = true
-		return
-	}
-	charName = strings.TrimSpace(s[:i])
-	query = strings.TrimLeft(strings.TrimPrefix(s[i:], opts.Delimiter), " ")
+	query = s
 	return
 }

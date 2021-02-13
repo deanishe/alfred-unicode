@@ -33,6 +33,7 @@ var (
 	iconFont            = &aw.Icon{Value: "icons/font.png"}
 	iconFontSelected    = &aw.Icon{Value: "icons/font-selected.png"}
 	iconIssue           = &aw.Icon{Value: "icons/issue.png"}
+	iconDocs            = &aw.Icon{Value: "icons/docs.png"}
 	iconWebsite         = &aw.Icon{Value: "icons/website.png"}
 	iconError           = &aw.Icon{Value: "icons/error.png"}
 	iconWarning         = &aw.Icon{Value: "icons/warning.png"}

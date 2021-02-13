@@ -43,7 +43,7 @@ _getvar() {
 # }
 
 # exit if a variable is set
-names=(FONT_NAME TEXT_SIZE TEXT_COLOUR BACKGROUND_COLOUR DELIMITER)
+names=(FONT_NAME TEXT_SIZE TEXT_COLOUR BACKGROUND_COLOUR)
 for name in $names; do
   test -n "$( _getvar $name )" && _fail "info.plist: $name is not empty"
 done

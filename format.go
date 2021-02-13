@@ -26,13 +26,14 @@ var formatters = []struct {
 	{"character", "UTF-8 character", func(cp Codepoint) string { return string(cp.Dec) }},
 	{"name", "Codepoint name", func(cp Codepoint) string { return cp.Name }},
 	{"unicode", "Unicode ID", func(cp Codepoint) string { return fmt.Sprintf("U+%04X", cp.Dec) }},
+	{"hexadecimal", "Hexadecimal literal", func(cp Codepoint) string { return fmt.Sprintf("0x%X", cp.Dec) }},
 	{"python", "Python or Go escaped string", formatPython},
-	{"url-encoded", "URL-encoded", func(cp Codepoint) string { return url.PathEscape(string(cp.Dec)) }},
+	{"urlencoded", "URL-encoded", func(cp Codepoint) string { return url.PathEscape(string(cp.Dec)) }},
 	{"javascript", "JavaScript escaped string", formatJS},
 	{"css", "CSS entity", func(cp Codepoint) string { return fmt.Sprintf(`\%06X`, cp.Dec) }},
-	{"html-hex", "HTML entity, hexadecimal", func(cp Codepoint) string { return fmt.Sprintf("&#x%X;", cp.Dec) }},
-	{"html-dec", "HTML entity, decimal", func(cp Codepoint) string { return fmt.Sprintf("&#%d;", cp.Dec) }},
-	{"html-named", "HTML entity, named", formatHTMLEntityNamed},
+	{"htmlhex", "HTML entity, hexadecimal", func(cp Codepoint) string { return fmt.Sprintf("&#x%X;", cp.Dec) }},
+	{"htmldec", "HTML entity, decimal", func(cp Codepoint) string { return fmt.Sprintf("&#%d;", cp.Dec) }},
+	{"htmlnamed", "HTML entity, named", formatHTMLEntityNamed},
 }
 
 var formattersMap map[string]int
@@ -46,9 +47,9 @@ func init() {
 
 var modifiers = map[string]string{
 	"cmd":   "character",
-	"alt":   "python",
-	"ctrl":  "unicode",
-	"shift": "html-hex",
+	"opt":   "python",
+	"ctrl":  "hexadecimal",
+	"shift": "unicode",
 }
 
 func formatHTMLEntityNamed(cp Codepoint) string {
@@ -74,12 +75,13 @@ func formatJS(cp Codepoint) string {
 
 // match input copied from source code
 var (
-	rxUnicode = regexp.MustCompile(`^(?i)U\+([A-F0-9]{4,8})$`)
-	rxPython4 = regexp.MustCompile(`^\\u([a-fA-F0-9]{4,4})$`)
-	rxPython8 = regexp.MustCompile(`^\\U([a-fA-F0-9]{8,8})$`)
-	rxHTMLHex = regexp.MustCompile(`^(?i)&#x([A-F0-9]+);?$`)
-	rxHTMLDec = regexp.MustCompile(`^(?i)&#([0-9]+);?$`)
-	rxCSS     = regexp.MustCompile(`^(?i)\\([A-F0-9]{4,6})$`)
+	rxUnicode    = regexp.MustCompile(`^(?i)U\+([A-F0-9]{4,8})$`)
+	rxPython4    = regexp.MustCompile(`^\\u([a-fA-F0-9]{4,4})$`)
+	rxPython8    = regexp.MustCompile(`^\\U([a-fA-F0-9]{8,8})$`)
+	rxHTMLHex    = regexp.MustCompile(`^(?i)&#x([A-F0-9]+);?$`)
+	rxHTMLDec    = regexp.MustCompile(`^(?i)&#([0-9]+);?$`)
+	rxCSS        = regexp.MustCompile(`^(?i)\\([A-F0-9]{4,6})$`)
+	rxHexLiteral = regexp.MustCompile(`^(?i)0x([A-F0-9]{2,8})$`)
 )
 
 func specialQuery(s string) (string, bool) {
@@ -90,6 +92,7 @@ func specialQuery(s string) (string, bool) {
 		rxHTMLHex,
 		rxHTMLDec,
 		rxCSS,
+		rxHexLiteral,
 	}
 	s = strings.TrimSpace(s)
 	for _, rx := range rxs {
@@ -98,6 +101,10 @@ func specialQuery(s string) (string, bool) {
 				return fmt.Sprintf("%04X", n), true
 			}
 		}
+	}
+	// if s is valid hex, add it as a normalised OR query
+	if n, err := parseHex(s); err == nil {
+		s = fmt.Sprintf("%04X OR %s", n, s)
 	}
 	return s, false
 }

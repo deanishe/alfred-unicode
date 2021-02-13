@@ -19,7 +19,6 @@ const (
 	defaultTextColour = "FF2FA9"
 	defaultFontName   = "Arial Unicode MS"
 	defaultIconSize   = 128
-	defaultDelimiter  = "\u3009"
 )
 
 // user configuration & input
@@ -30,7 +29,6 @@ type options struct {
 	IconSize         int
 	TextColour       string
 	BackgroundColour string
-	Delimiter        string
 
 	ActiveApp      string `env:"active_app"`
 	SpinnerCounter int    `env:"spinner_counter"`
@@ -58,9 +56,6 @@ func (opts *options) prepare() (err error) {
 	}
 	if opts.IconSize == 0 {
 		opts.IconSize = defaultIconSize
-	}
-	if opts.Delimiter == "" {
-		opts.Delimiter = defaultDelimiter
 	}
 
 	if opts.TextColour, err = NormaliseHexColour(opts.TextColour); err != nil {
@@ -199,11 +194,11 @@ func runConfig() {
 
 	// link to docs
 	wf.NewItem("Documentation").
-		Subtitle("Open workflow website in your browser").
-		Arg(website).
+		Subtitle("Open workflow help file in your browser").
+		Arg(helpFile).
 		UID("documentation").
 		Valid(true).
-		Icon(iconWebsite).
+		Icon(iconDocs).
 		Var("action", "open").
 		Var("hide_alfred", "true")
 
@@ -214,6 +209,16 @@ func runConfig() {
 		UID("issue").
 		Valid(true).
 		Icon(iconIssue).
+		Var("action", "open").
+		Var("hide_alfred", "true")
+
+		// link to website
+	wf.NewItem("Website").
+		Subtitle("Open workflow website in your browser").
+		Arg(website).
+		UID("website").
+		Valid(true).
+		Icon(iconWebsite).
 		Var("action", "open").
 		Var("hide_alfred", "true")
 
@@ -251,6 +256,8 @@ func runColour() {
 		wf.SendFeedback()
 		return
 	}
+
+	addNavigationItems()
 
 	colour, err := NormaliseHexColour(opts.Query)
 	if err != nil {

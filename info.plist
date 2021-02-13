@@ -476,11 +476,11 @@ variables={allvars}
 				<key>focusedappvariablename</key>
 				<string>active_app</string>
 				<key>hotkey</key>
-				<integer>0</integer>
+				<integer>32</integer>
 				<key>hotmod</key>
-				<integer>0</integer>
+				<integer>1835008</integer>
 				<key>hotstring</key>
-				<string></string>
+				<string>U</string>
 				<key>leftcursor</key>
 				<false/>
 				<key>modsmode</key>
@@ -660,21 +660,25 @@ variables={allvars}
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>browser</key>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>/usr/bin/open "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
 				<string></string>
-				<key>spaces</key>
-				<string></string>
-				<key>url</key>
-				<string></string>
-				<key>utf8</key>
-				<true/>
+				<key>type</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>3458DD9D-B744-4AB4-A24A-0A50F68064C0</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -778,7 +782,7 @@ Explore Unicode characters in Alfred</string>
 			<key>xpos</key>
 			<integer>1000</integer>
 			<key>ypos</key>
-			<integer>385</integer>
+			<integer>390</integer>
 		</dict>
 		<key>4A906369-B077-4300-9FB0-93C69DD9C985</key>
 		<dict>
@@ -865,6 +869,8 @@ Explore Unicode characters in Alfred</string>
 		</dict>
 		<key>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</key>
 		<dict>
+			<key>note</key>
+			<string>Set {query} from trigger_query</string>
 			<key>xpos</key>
 			<integer>875</integer>
 			<key>ypos</key>
@@ -873,7 +879,7 @@ Explore Unicode characters in Alfred</string>
 		<key>F52BC7E2-4307-4A55-9A30-367D05308B5F</key>
 		<dict>
 			<key>xpos</key>
-			<integer>795</integer>
+			<integer>875</integer>
 			<key>ypos</key>
 			<integer>175</integer>
 		</dict>
@@ -881,8 +887,6 @@ Explore Unicode characters in Alfred</string>
 	<key>variables</key>
 	<dict>
 		<key>BACKGROUND_COLOUR</key>
-		<string></string>
-		<key>DELIMITER</key>
 		<string></string>
 		<key>FONT_NAME</key>
 		<string></string>
@@ -899,11 +903,10 @@ Explore Unicode characters in Alfred</string>
 	</dict>
 	<key>variablesdontexport</key>
 	<array>
-		<string>BACKGROUND_COLOUR</string>
 		<string>MOD_CMD_OPT</string>
+		<string>BACKGROUND_COLOUR</string>
 		<string>FONT_NAME</string>
 		<string>TEXT_SIZE</string>
-		<string>DELIMITER</string>
 		<string>TEXT_COLOUR</string>
 	</array>
 	<key>version</key>

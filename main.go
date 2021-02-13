@@ -38,6 +38,7 @@ var (
 	dbPath       = "codepoints.sqlite3"
 	iconDir      = "icons"
 	queuePath    = "icon-queue.json"
+	helpFile     = "README.html"
 )
 
 // CLI
@@ -85,6 +86,7 @@ func init() {
 	dbPath = filepath.Join(wf.Cache.Dir, dbPath)
 	queuePath = filepath.Join(wf.Cache.Dir, queuePath)
 	iconDir = filepath.Join(wf.Cache.Dir, iconDir)
+	helpFile = filepath.Join(wf.Dir(), helpFile)
 }
 
 // main entry point
@@ -203,11 +205,12 @@ func runSearch() {
 
 	for _, cp := range cps {
 		icon := gen.Get(cp)
-		arg := fmt.Sprintf("U+%s %s ", cp.Hex, opts.Delimiter)
+		arg := fmt.Sprintf("0x%s / ", cp.Hex)
 		it := wf.NewItem(cp.Name).
 			Subtitle(fmt.Sprintf("U+%04X  |  %s", cp.Dec, cp.CategoryName())).
 			Autocomplete(arg).
 			Arg(arg).
+			UID(cp.Hex).
 			Valid(false).
 			Icon(icon).
 			Quicklook(icon.Value).
@@ -273,6 +276,17 @@ func addNavigationItems(ignore ...string) {
 				Icon(ni.icon).
 				Var("trigger", ni.trigger)
 		}
+	}
+	if strings.HasPrefix("help", query) {
+		wf.NewItem("Workflow Documentation").
+			Subtitle("Open workflow documentation in your browser").
+			UID("help").
+			Arg(helpFile).
+			Valid(true).
+			Icon(iconDocs).
+			Var("action", "open").
+			Var("hide_alfred", "true").
+			Var("trigger", "")
 	}
 }
 

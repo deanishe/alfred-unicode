@@ -7,6 +7,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -14,6 +15,7 @@ import (
 	"github.com/deanishe/awgo/util/build"
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
+	blackfriday "github.com/russross/blackfriday/v2"
 )
 
 // Default target to run when none is specified
@@ -58,13 +60,13 @@ var Aliases = map[string]interface{}{
 	"l": Link,
 }
 
-// BuildHelper build swift icon generator
-func BuildHelper() error {
+// Helper build swift icon generator
+func Helper() error {
 	return sh.Run("/usr/bin/swift", "build")
 }
 
-// BuildExecutable build alfred-unicode in ./build
-func BuildExecutable() error {
+// Executable build alfred-unicode in ./build
+func Executable() error {
 	fmt.Println("building workflow executable ...")
 	return sh.RunWith(env,
 		"go", "build",
@@ -75,8 +77,39 @@ func BuildExecutable() error {
 	)
 }
 
-// BuildAssets link assets to ./build
-func BuildAssets() error {
+// Docs generate README.html
+func Docs() error {
+	fmt.Println("generating README.html from README.md ...")
+	md, err := ioutil.ReadFile("README.md")
+	if err != nil {
+		return err
+	}
+	// r := blackfriday.NewHTMLRenderer(blackfriday.HTMLRendererParameters{
+	// 	Flags: blackfriday.CommonHTMLFlags | blackfriday.CompletePage,
+	// })
+	html := blackfriday.Run(md,
+		blackfriday.WithExtensions(
+			blackfriday.CommonExtensions,
+		),
+		// blackfriday.WithRenderer(r),
+	)
+	header := fmt.Sprintf(htmlHeader, css)
+	html = append([]byte(header), html...)
+	html = append(html, []byte(htmlFooter)...)
+	// []byte(htmlFooter)
+	file, err := os.Create("README.html")
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	if _, err := file.Write(html); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Assets link assets to ./build
+func Assets() error {
 	fmt.Println("building assets ...")
 	globs := build.Globs(
 		"*.png",
@@ -112,7 +145,7 @@ func BuildAssets() error {
 // Build build workflow in ./build
 func Build() error {
 	mg.Deps(cleanBuild)
-	mg.Deps(BuildExecutable, BuildAssets)
+	mg.Deps(Executable, Assets)
 	return nil
 }
 
@@ -126,8 +159,8 @@ func Run() error {
 // Dist build an .alfredworkflow file in ./dist
 func Dist() error {
 	mg.SerialDeps(Clean)
-	mg.Deps(BuildExecutable, BuildHelper)
-	mg.Deps(BuildAssets)
+	mg.Deps(Executable, Helper)
+	mg.Deps(Assets)
 	p, err := build.Export(buildDir, distDir)
 	if err != nil {
 		return err
@@ -225,3 +258,39 @@ func cleanMage() error {
 func CleanIcons() error {
 	return cleanDir(iconsDir)
 }
+
+const (
+	htmlHeader = `<!DOCTYPE html>
+<html>
+<head>
+	<title>Alfred Unicode Search</title>
+	<style>
+	%s
+	</style>
+</head>
+<body>
+	<div id="wrapper">
+`
+	htmlFooter = `
+	</div>
+</body>
+</html>
+`
+	css = `
+/*** Start Vanilla CSS 1.0.2 */
+body{font:1em/1.5em sans-serif;}pre,code,tt{font:1em/1.5em ‘Andale Mono’,’Lucida Console’,monospace;}h1,h2,h3,h4,h5,h6,b,strong{font-weight:bold;}em,i,dfn{font-style:italic;}dfn{font-weight:bold;}p,code,pre,kbd{margin:0 0 1.5em 0;}blockquote{margin:0 1.5em 1.5em 1.5em;}cite{font-style:italic;}li ul,li ol{margin:0 1.5em;}ul,ol{margin:0 1.5em 1.5em 1.5em;}ul{list-style-type:disc;}ol{list-style-type:decimal;}ol ol{list-style:upper-alpha;}ol ol ol{list-style:lower-roman;}ol ol ol ol{list-style:lower-alpha;}dl{margin:0 0 1.5em 0;}dl dt{font-weight:bold;}dd{margin-left:1.5em;}table{margin-bottom:1.4em;width:100%;}th{font-weight:bold;}th,td,caption{padding:4px 10px 4px 5px;}tfoot{font-style:italic;}sup,sub{line-height:0;}abbr,acronym{border-bottom:1px dotted;}address{margin:0 0 1.5em;font-style:italic;}del{text-decoration:line-through;}pre{margin:1.5em 0;white-space:pre;}img.centered,.aligncenter,div.aligncenter{display:block;margin-left:auto;margin-right:auto;}img.alignright{display:inline;}img.alignleft{display:inline;}.alignright{float:right;margin-left:10px;}.alignleft{float:left;margin-right:10px;}img { max-width: 100%; }* html .clearfix{height:1%;}*+html .clearfix{display:inline-block;}.clearfix:after{content:”.”;display:block;height:0;clear:both;visibility:hidden;}* html .group{height:1%;}*+html .group{display:inline-block;}.group:after{content:”.”;display:block;height:0;clear:both;visibility:hidden;}
+
+#wrapper {
+	margin: 2em auto;
+	max-width: 900px;
+}
+code {
+	background-color: #f0f0f8;
+	border-radius: 0.05em;
+	padding: 0.15em 0.3em;
+}
+ul {
+	padding-left: 0;
+}
+`
+)

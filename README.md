@@ -6,7 +6,11 @@
 Alfred Unicode
 ==============
 
-Explore Unicode characters in Alfred.
+Search Unicode and copy/paste codepoints as HTML entities, Go or Python string literals, hexadecimal numbers etc.
+
+<div align="center">
+    <img width="570" height="505" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/demo.png" alt="workflow demo" title="workflow demo">
+</div>
 
 <!-- MarkdownTOC autolink="true" bracket="round" levels="2,3,4,5" autoanchor="true" -->
 
@@ -15,7 +19,6 @@ Explore Unicode characters in Alfred.
     - [Input](#input)
 - [Configuration](#configuration)
     - [Modifiers](#modifiers)
-        - [Short names](#short-names)
 - [Formats](#formats)
 - [Licensing & thanks](#licensing--thanks)
 
@@ -45,6 +48,15 @@ Usage
 - `unicode prefs` — View workflow configuration
     - `search` — Enter keyword `search` to return to Unicode search.
     - **Workflow Is Up To Date** / **Update Available!** — Whether a new version of the workflow is available. Action this item to force an update check.
+    - **Font: Arial Unicode MS (default)** — Font used to generate preview images.
+        - `↩` — Choose a different font
+        - `⌘↩` — Reset to default
+    - **Text Colour: #FF2FA9 (default)** — Colour of text in preview images.
+        - `↩` — Choose a different colour
+        - `⌘↩` — Reset to default
+    - **Background Colour: transparent (default)** — Colour of background of preview images.
+        - `↩` — Choose a different colour
+        - `⌘↩` — Reset to default
     - **Documentation** — Open this page in your browser.
     - **Report Bug** — Open [workflow issue tracker][issues] in your browser.
     - **Delete Cached Data** — Delete Unicode database and cached preview icons, forcing the workflow to re-create them.
@@ -59,7 +71,20 @@ Usage
 Configuration
 -------------
 
+The workflow can be configured via several [workflow environment variables][config-sheet]. The most important ones can be set in the workflow by entering the query "prefs" in the Unicode search.
 
+|       Variable      |  Default  |                                           Description                                           |
+|---------------------|-----------|-------------------------------------------------------------------------------------------------|
+| `BACKGROUND_COLOUR` | `<empty>` | Background colour of generated preview images (search result icons). Uses transparent if unset. |
+| `FONT_NAME`         | `<empty>` | Font used to generate preview images. Uses "Arial Unicode MS" if unset.                         |
+| `ICON_SIZE`         | `128`     | Width/height of preview images.                                                                 |
+| `RESIZE_FACTOR`     | `1.0`     | Use larger/smaller font size in preview images.                                                 |
+| `TEXT_COLOUR`       | `<empty>` | Text colour for preview images. Uses `#FF2FA9` if unset.                                        |
+| `TEXT_SIZE`         | `<empty>` | Font size for preview images. Calculated automatically if unset.                                |
+
+By default, the font size is calculated automatically based on the size of the image and the text. If the text is consistently too small or large with a particular font, you can increase/decrease `RESIZE_FACTOR` to increase/decrease the size of the text.
+
+Alternatively, you can force a specific font size for all images by setting `TEXT_SIZE`.
 
 
 <a id="modifiers"></a>
@@ -67,30 +92,11 @@ Configuration
 
 You can assign your own modifiers to the search results to copy/paste quickly in your preferred format.
 
-To assign a format to a modifier, add a new [workflow environment variable][config-sheet] with the name `MOD_<KEY1>[_<KEY2>[_<KEY3>]]` and set its value to the [short name](#short-names) of the desired format.
+To assign a format to a modifier, add a new [workflow environment variable][config-sheet] with the name `MOD_<KEY1>[_<KEY2>[_<KEY3>]]` and set its value to the [short name](#formats) of the desired format.
 
-For example, to override `⌘↩` to copy/paste JavaScript instead of Python, add a new variable named `MOD_CMD` with the value `javascript`. To re-assign Python to `⌥⌘↩`, add a new variable named `MOD_CMD_OPT` (or `MOD_OPT_CMD` … doesn't matter) with the value `python`.
+For example, to override `⌘↩` to copy/paste JavaScript instead of the UTF-8 character, add a new variable named `MOD_CMD` with the value `javascript`. To re-assign UTF-8 character to `⌥⌘↩`, add a new variable named `MOD_CMD_OPT` (or `MOD_OPT_CMD` … doesn't matter) with the value `character`.
 
 Valid modifiers are `CMD`, `OPT`, `SHIFT`, `CTRL`.
-
-
-<a id="short-names"></a>
-#### Short names ####
-
-You can get the short name for a format by using `⌘C` on its item in the detail view.
-
-|   Short name  |         Description         |
-|---------------|-----------------------------|
-| `character`   | UTF-8 character             |
-| `name`        | Codepoint name              |
-| `unicode`     | Unicode ID                  |
-| `python`      | Python or Go escaped string |
-| `url-encoded` | URL-encoded                 |
-| `javascript`  | JavaScript escaped string   |
-| `css`         | CSS entity                  |
-| `html-hex`    | HTML entity, hexadecimal    |
-| `html-dec`    | HTML entity, decimal        |
-| `html-named`  | HTML entity, named          |
 
 
 <a id="formats"></a>
@@ -99,16 +105,21 @@ Formats
 
 You can copy (and paste) each codepoint in some or all of the following formats:
 
-- UTF-8 character (e.g. `🍻`)
-- Codepoint name (e.g. `CLINKING BEER MUGS`)
-- Unicode ID (e.g. `U+1F37B`)
-- Python or Go escaped string (e.g. `\U0001F37B`)
-- URL-encoded (e.g. `%F0%9F%8D%BB`)
-- JavaScript escaped string (e.g. `\u{1F37B}`)
-- CSS entity (e.g. `\01F37B`)
-- HTML entity, hexadecimal (e.g. `&#x1F37B;`)
-- HTML entity, decimal (e.g. `&#127867;`)
-- HTML entity, named (e.g. `&szlig;`)
+|         Description         |   Short name  |       Example        |
+|-----------------------------|---------------|----------------------|
+| UTF-8 character             | `character`   | `🍻`                  |
+| Codepoint name              | `name`        | `CLINKING BEER MUGS` |
+| Unicode ID                  | `unicode`     | `U+1F37B`            |
+| Hex literal (e.g. `0x00FF`) | `hexadecimal` | `0x1F37B`            |
+| Python or Go escaped string | `python`      | `\U0001F37B`         |
+| URL-encoded                 | `url-encoded` | `%F0%9F%8D%BB`       |
+| JavaScript escaped string   | `javascript`  | `\u{1F37B}`          |
+| CSS entity                  | `css`         | `\01F37B`            |
+| HTML entity, hexadecimal    | `html-hex`    | `&#x1F37B;`          |
+| HTML entity, decimal        | `html-dec`    | `&#127867;`          |
+| HTML entity, named          | `html-named`  | `&szlig;`            |
+
+**TIP**: You can get the short name for a format by using `⌘C` on its item in the detail view.
 
 **NOTE:** The JavaScript formatter outputs `\uABCD`-style escapes for codepoints up to 0xFFFF, and ES6 `\u{1ABCD}`-style escapes for codepoints above that.
 
