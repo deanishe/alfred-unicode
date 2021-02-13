@@ -217,7 +217,9 @@ func setupDatabase(db *sqlx.DB) error {
 		if err != nil {
 			return errors.Wrap(err, "migrate to version 1")
 		}
-		// fallthrough
+		fallthrough
+	case 1: //  future migration
+		break
 	}
 
 	if err = tx.Commit(); err != nil {
