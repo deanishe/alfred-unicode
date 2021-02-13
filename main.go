@@ -27,11 +27,6 @@ const (
 	repo    = "deanishe/alfred-unicode"
 	website = "https://github.com/deanishe/alfred-unicode/"
 	helpURL = "https://github.com/deanishe/alfred-unicode/issues"
-
-	defaultTextColour = "FF2FA9"
-	defaultFontName   = "Arial Unicode MS"
-	defaultIconSize   = 128
-	defaultDelimiter  = "\u3009"
 )
 
 // cache paths
@@ -45,25 +40,6 @@ var (
 	queuePath    = "icon-queue.json"
 )
 
-// user configuration & input
-type options struct {
-	FontName         string
-	TextSize         float64
-	ResizeFactor     float64
-	IconSize         int
-	TextColour       string
-	BackgroundColour string
-	Delimiter        string
-
-	ActiveApp      string `env:"active_app"`
-	SpinnerCounter int    `env:"spinner_counter"`
-	CopyAction     string `env:"-"`
-
-	Character    string `env:"-"`
-	ConfigChoice string `env:"-"`
-	Query        string `env:"-"`
-}
-
 // CLI
 var (
 	wf   *aw.Workflow
@@ -75,7 +51,6 @@ var (
 	// Script Filters
 	flagConfig = fs.Bool("config", false, "show workflow configuration")
 	flagChoose = fs.String("choose", "", "show configuration option")
-	flagFonts  = fs.Bool("fonts", false, "show available fonts")
 
 	// Other actions
 	flagGenerate = fs.Bool("generate", false, "generate queued icons")
@@ -110,70 +85,6 @@ func init() {
 	dbPath = filepath.Join(wf.Cache.Dir, dbPath)
 	queuePath = filepath.Join(wf.Cache.Dir, queuePath)
 	iconDir = filepath.Join(wf.Cache.Dir, iconDir)
-}
-
-func (opts *options) prepare() (err error) {
-	if err = fs.Parse(wf.Args()); err != nil {
-		return
-	}
-
-	if err = wf.Config.To(opts); err != nil {
-		return
-	}
-
-	if opts.TextColour == "" {
-		opts.TextColour = defaultTextColour
-	}
-	if opts.FontName == "" {
-		opts.FontName = defaultFontName
-	}
-	if opts.IconSize == 0 {
-		opts.IconSize = defaultIconSize
-	}
-	if opts.Delimiter == "" {
-		opts.Delimiter = defaultDelimiter
-	}
-
-	if opts.TextColour, err = NormaliseHexColour(opts.TextColour); err != nil {
-		return
-	}
-
-	if opts.BackgroundColour != "" {
-		if opts.BackgroundColour, err = NormaliseHexColour(opts.BackgroundColour); err != nil {
-			return
-		}
-	}
-
-	// Tell Copy to Clipboard element to automatically paste.
-	// If active_app is set, workflow was called from its Snippet Trigger.
-	if opts.ActiveApp != "" {
-		opts.CopyAction = "Paste"
-		wf.Var("autopaste", "true")
-	} else {
-		opts.CopyAction = "Copy"
-	}
-
-	opts.ConfigChoice = *flagChoose
-	opts.Query = fs.Arg(0)
-	return
-}
-
-// ThemeDir returns the relative path of the font/colour/size directory,
-// i.e. "font-name/fgcolour-on-bgcolour/text-size".
-func (opts *options) ThemeDir() string {
-	var (
-		font   = slugify(opts.FontName)
-		colour = fmt.Sprintf("%s-on-%s", colourName(opts.TextColour), colourName(opts.BackgroundColour))
-		size   = fmt.Sprintf("%0.1f", opts.TextSize)
-	)
-	if opts.TextSize == 0 {
-		size = "default"
-	}
-
-	// if opts.FontName == defaultFontName {
-	// 	font = "default"
-	// }
-	return filepath.Join(font, colour, size)
 }
 
 // main entry point
@@ -229,11 +140,6 @@ func run() {
 			Autocomplete("workflow:update").
 			Valid(false).
 			Icon(iconUpdateAvailable)
-	}
-
-	if *flagFonts {
-		runFonts()
-		return
 	}
 
 	var settingUp bool

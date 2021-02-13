@@ -43,6 +43,24 @@ var (
 	}
 )
 
+// ThemeDir returns the relative path of the font/colour/size directory,
+// i.e. "font-name/fgcolour-on-bgcolour/text-size".
+func (opts *options) ThemeDir() string {
+	var (
+		font   = slugify(opts.FontName)
+		colour = fmt.Sprintf("%s-on-%s", colourName(opts.TextColour), colourName(opts.BackgroundColour))
+		size   = fmt.Sprintf("%0.1f", opts.TextSize)
+	)
+	if opts.TextSize == 0 {
+		size = "default"
+	}
+
+	// if opts.FontName == defaultFontName {
+	// 	font = "default"
+	// }
+	return filepath.Join(font, colour, size)
+}
+
 // IconPath returns the relative path for the icon.
 func (cp Codepoint) IconPath() string {
 	// return cp.Hex[0:2] + "/" + cp.Hex[2:4] + "/" + cp.Name + ".png"

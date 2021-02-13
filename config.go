@@ -15,6 +15,78 @@ import (
 	"github.com/friendsofgo/errors"
 )
 
+const (
+	defaultTextColour = "FF2FA9"
+	defaultFontName   = "Arial Unicode MS"
+	defaultIconSize   = 128
+	defaultDelimiter  = "\u3009"
+)
+
+// user configuration & input
+type options struct {
+	FontName         string
+	TextSize         float64
+	ResizeFactor     float64
+	IconSize         int
+	TextColour       string
+	BackgroundColour string
+	Delimiter        string
+
+	ActiveApp      string `env:"active_app"`
+	SpinnerCounter int    `env:"spinner_counter"`
+	CopyAction     string `env:"-"`
+
+	Character    string `env:"-"`
+	ConfigChoice string `env:"-"`
+	Query        string `env:"-"`
+}
+
+func (opts *options) prepare() (err error) {
+	if err = fs.Parse(wf.Args()); err != nil {
+		return
+	}
+
+	if err = wf.Config.To(opts); err != nil {
+		return
+	}
+
+	if opts.TextColour == "" {
+		opts.TextColour = defaultTextColour
+	}
+	if opts.FontName == "" {
+		opts.FontName = defaultFontName
+	}
+	if opts.IconSize == 0 {
+		opts.IconSize = defaultIconSize
+	}
+	if opts.Delimiter == "" {
+		opts.Delimiter = defaultDelimiter
+	}
+
+	if opts.TextColour, err = NormaliseHexColour(opts.TextColour); err != nil {
+		return
+	}
+
+	if opts.BackgroundColour != "" {
+		if opts.BackgroundColour, err = NormaliseHexColour(opts.BackgroundColour); err != nil {
+			return
+		}
+	}
+
+	// Tell Copy to Clipboard element to automatically paste.
+	// If active_app is set, workflow was called from its Snippet Trigger.
+	if opts.ActiveApp != "" {
+		opts.CopyAction = "Paste"
+		wf.Var("autopaste", "true")
+	} else {
+		opts.CopyAction = "Copy"
+	}
+
+	opts.ConfigChoice = *flagChoose
+	opts.Query = fs.Arg(0)
+	return
+}
+
 // workflow configuration Script Filter.
 func runConfig() {
 	if opts.Query == "" {
@@ -76,7 +148,7 @@ func runConfig() {
 	}
 
 	// text colour
-	title = "Text Colour: " + opts.TextColour
+	title = "Text Colour: #" + opts.TextColour
 	if opts.TextColourIsDefault() {
 		title += " (default)"
 	}
@@ -101,7 +173,7 @@ func runConfig() {
 	}
 
 	// background colour
-	title = "Background Colour: " + opts.TextColour
+	title = "Background Colour: #" + opts.BackgroundColour
 	if opts.BackgroundColourIsDefault() {
 		title = "Background Colour: transparent (default)"
 	}
@@ -163,21 +235,6 @@ func runConfig() {
 	wf.SendFeedback()
 }
 
-// Font is a font face supported by macOS.
-type Font struct {
-	Family string `json:"family"`
-	Face   string `json:"face"`
-}
-
-// String returns full font name.
-func (f Font) String() string {
-	s := f.Family
-	if f.Face != "" && f.Face != "Regular" {
-		s += " " + f.Face
-	}
-	return s
-}
-
 func runColour() {
 	var (
 		name    = "Foreground"
@@ -215,6 +272,21 @@ func runColour() {
 	wf.SendFeedback()
 }
 
+// Font is a font face supported by macOS.
+type Font struct {
+	Family string `json:"family"`
+	Face   string `json:"face"`
+}
+
+// String returns full font name.
+func (f Font) String() string {
+	s := f.Family
+	if f.Face != "" && f.Face != "Regular" {
+		s += " " + f.Face
+	}
+	return s
+}
+
 func runFonts() {
 	fonts, err := loadFontsCached()
 	checkErr(err)
@@ -243,7 +315,7 @@ func runFonts() {
 			Var("action", action).
 			Var("varname", "FONT_NAME").
 			Var("trigger", "").
-			Var("hide_alfred", "false")
+			Var("hide_alfred", "")
 	}
 
 	if opts.Query != "" {
