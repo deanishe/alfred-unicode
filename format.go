@@ -26,13 +26,13 @@ var formatters = []struct {
 	{"character", "UTF-8 character", func(cp Codepoint) string { return string(cp.Dec) }},
 	{"name", "Codepoint name", func(cp Codepoint) string { return cp.Name }},
 	{"unicode", "Unicode ID", func(cp Codepoint) string { return fmt.Sprintf("U+%04X", cp.Dec) }},
+	{"python", "Python or Go escaped string", formatPython},
+	{"url-encoded", "URL-encoded", func(cp Codepoint) string { return url.PathEscape(string(cp.Dec)) }},
+	{"javascript", "JavaScript escaped string", formatJS},
 	{"css", "CSS entity", func(cp Codepoint) string { return fmt.Sprintf(`\%06X`, cp.Dec) }},
 	{"html-hex", "HTML entity, hexadecimal", func(cp Codepoint) string { return fmt.Sprintf("&#x%X;", cp.Dec) }},
 	{"html-dec", "HTML entity, decimal", func(cp Codepoint) string { return fmt.Sprintf("&#%d;", cp.Dec) }},
 	{"html-named", "HTML entity, named", formatHTMLEntityNamed},
-	{"url-encoded", "URL-encoded", func(cp Codepoint) string { return url.PathEscape(string(cp.Dec)) }},
-	{"python", "Python or Go escaped string", formatPython},
-	{"javascript", "JavaScript escaped string", formatJS},
 }
 
 var formattersMap map[string]int
@@ -44,7 +44,7 @@ func init() {
 	}
 }
 
-var actions = map[string]string{
+var modifiers = map[string]string{
 	"cmd":   "character",
 	"alt":   "python",
 	"ctrl":  "unicode",
@@ -147,22 +147,22 @@ func runDetails() {
 	wf.SendFeedback()
 }
 
-func loadActions() error {
+func loadModifiers() error {
 	for _, s := range os.Environ() {
 		i := strings.Index(s, "=")
 		k, v := strings.ToLower(s[:i]), s[i+1:]
-		if !strings.HasPrefix(k, "action_") || v == "" {
+		if !strings.HasPrefix(k, "mod_") || v == "" {
 			continue
 		}
-		k = strings.Replace(k[7:], "_", "+", -1)
+		k = strings.Replace(k[4:], "_", "+", -1)
 		log.Printf("user-defined action: %s -> %s", k, v)
-		actions[k] = v
+		modifiers[k] = v
 	}
 	return nil
 }
 
-func addActions(cp Codepoint, it *aw.Item) {
-	for key, uid := range actions {
+func addModifiers(cp Codepoint, it *aw.Item) {
+	for key, uid := range modifiers {
 		i, ok := formattersMap[uid]
 		if !ok {
 			log.Printf("error: unknown action: %s", uid)

@@ -95,7 +95,7 @@ func BuildAssets() error {
 		src, dst string
 	}{
 		{"icons/config.png", "12890D35-22B2-47AB-A54A-3BF0C1F8841D.png"},
-		// {"../IconGenerator/bin/IconGenerator", "IconGenerator"},
+		{"icons/font.png", "F3FBD6A3-BEA9-4D64-8F7C-AC67C1E8B5EC.png"},
 		{"../.build/debug/icongen", "icongen"},
 	}
 
@@ -134,6 +134,11 @@ func Dist() error {
 
 	fmt.Printf("built workflow file %q\n", p)
 	return nil
+}
+
+//Format run gofmt -s on source files.
+func Format() error {
+	return sh.Run("gofmt", "-s", "-w", ".")
 }
 
 // Config display configuration

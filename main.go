@@ -25,12 +25,13 @@ import (
 const (
 	// workflow's GitHub repo (for updates)
 	repo    = "deanishe/alfred-unicode"
+	website = "https://github.com/deanishe/alfred-unicode/"
 	helpURL = "https://github.com/deanishe/alfred-unicode/issues"
 
 	defaultTextColour = "FF2FA9"
 	defaultFontName   = "Arial Unicode MS"
 	defaultIconSize   = 128
-	defaultDelimiter  = "〉"
+	defaultDelimiter  = "\u3009"
 )
 
 // cache paths
@@ -67,9 +68,14 @@ var (
 	wf   *aw.Workflow
 	opts = &options{}
 
-	fs           = flag.NewFlagSet("alfred-unicode", flag.ExitOnError)
-	flagHelp     = fs.Bool("h", false, "show this message and exit")
-	flagConfig   = fs.Bool("config", false, "show workflow configuration")
+	fs       = flag.NewFlagSet("alfred-unicode", flag.ContinueOnError)
+	flagHelp = fs.Bool("h", false, "show this message and exit")
+
+	// Script Filters
+	flagConfig = fs.Bool("config", false, "show workflow configuration")
+	flagFonts  = fs.Bool("fonts", false, "show available fonts")
+
+	// Other actions
 	flagGenerate = fs.Bool("generate", false, "generate queued icons")
 	flagUpdate   = fs.Bool("update", false, "check for newer version of the workflow")
 	flagSetup    = fs.Bool("setup", false, "download and process Unicode data")
@@ -183,8 +189,7 @@ func run() {
 
 	if *flagUpdate {
 		wf.Configure(aw.TextErrors(true))
-		log.Printf("checking for update ...")
-		checkErr(wf.CheckForUpdate())
+		runUpdate()
 		return
 	}
 
@@ -203,6 +208,17 @@ func run() {
 	log.Printf("opts=%#v", opts)
 
 	// common functions for interactive commands
+	if wf.UpdateCheckDue() {
+		if !wf.IsRunning("update") {
+			checkErr(wf.RunInBackground("update", exec.Command(os.Args[0], "-update")))
+		}
+	}
+
+	if *flagConfig {
+		runConfig()
+		return
+	}
+
 	if opts.Query == "" && wf.UpdateAvailable() {
 		wf.Configure(aw.SuppressUIDs(true))
 		wf.NewItem("Update Available").
@@ -212,10 +228,9 @@ func run() {
 			Icon(iconUpdateAvailable)
 	}
 
-	if wf.UpdateCheckDue() {
-		if !wf.IsRunning("update") {
-			checkErr(wf.RunInBackground("update", exec.Command(os.Args[0], "-update")))
-		}
+	if *flagFonts {
+		runFonts()
+		return
 	}
 
 	var settingUp bool
@@ -233,12 +248,6 @@ func run() {
 			Valid(false).
 			Icon(spinnerIcon())
 		wf.SendFeedback()
-		return
-	}
-
-	if *flagConfig {
-		wf.Configure(aw.TextErrors(true))
-		runConfig()
 		return
 	}
 
@@ -274,7 +283,7 @@ func runSearch() {
 	)
 
 	// user-configured actions
-	checkErr(loadActions())
+	checkErr(loadModifiers())
 
 	repo, err = Open(dbPath)
 	checkErr(err)
@@ -295,7 +304,7 @@ func runSearch() {
 			Quicklook(icon.Value).
 			Copytext(string(cp.Dec))
 
-		addActions(cp, it)
+		addModifiers(cp, it)
 	}
 
 	addNavigationItems("search")
@@ -318,6 +327,54 @@ func runSearch() {
 
 // workflow configuration Script Filter.
 func runConfig() {
+	var (
+		title = "Workflow Is Up To Date"
+		sub   = "↩ to check for update now"
+		icon  = iconUpdateOK
+	)
+	if wf.UpdateAvailable() {
+		title = "Update Available!"
+		sub = "↩ to download and install"
+		icon = iconUpdateAvailable
+	}
+
+	wf.NewItem(title).
+		Subtitle(sub).
+		Autocomplete("workflow:update").
+		Icon(icon).
+		Valid(false)
+
+	wf.NewItem("Font: "+opts.FontName).
+		Subtitle("Change the font used for search result icons").
+		Arg("fonts").
+		Valid(true).
+		Icon(iconFont).
+		Var("action", "").
+		Var("hide_alfred", "").
+		Var("trigger", "fonts")
+
+	wf.NewItem("Documentation").
+		Subtitle("Open workflow website in your browser").
+		Arg(website).
+		Valid(true).
+		Icon(iconWebsite).
+		Var("action", "open").
+		Var("hide_alfred", "true")
+
+	wf.NewItem("Report Bug").
+		Subtitle("Open workflow issue tracker in your browser").
+		Arg(helpURL).
+		Valid(true).
+		Icon(iconIssue).
+		Var("action", "open").
+		Var("hide_alfred", "true")
+
+	wf.NewItem("Delete Cached Data").
+		Subtitle("Force update of Unicode database and preview images").
+		Autocomplete("workflow:delcache").
+		Valid(false).
+		Icon(iconClearCache)
+
 	if opts.Query != "" {
 		wf.Filter(opts.Query)
 	}
@@ -337,7 +394,8 @@ var navigationItems = []struct {
 	uid      string
 	icon     *aw.Icon
 }{
-	{"config", "config", "Configuration", "View/Edit workflow configuration", "configuration", iconConfig},
+	// {"config", "config", "Configuration", "View/Edit workflow configuration", "configuration", iconConfig},
+	{"prefs", "config", "Preferences", "View/Edit workflow configuration", "configuration", iconConfig},
 	{"search", "search", "Search Unicode", "Search for Unicode codepoints", "search", aw.IconWorkflow},
 }
 

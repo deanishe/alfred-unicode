@@ -41,38 +41,26 @@ func (cp Codepoint) String() string {
 // IsZero returns true if Codepoint is zero.
 func (cp Codepoint) IsZero() bool { return cp.Hex == "" }
 
-func setupRequired() bool {
-	if !util.PathExists(xmlCachePath) || !util.PathExists(dbPath) {
-		return true
-	}
-	return false
-}
+func setupRequired() bool { return !util.PathExists(dbPath) }
 
 // ensure Unicode data and database exist.
 func runSetup(force bool) error {
 	var (
-		extractZip = !util.PathExists(xmlCachePath)
-		buildDB    = !util.PathExists(dbPath)
-		db         *Repo
-		err        error
+		db  *Repo
+		err error
 	)
 	if !util.PathExists(zipCachePath) || force {
 		log.Printf("[setup] downloading Unicode data ...")
 		if err = download(xmlURL, zipCachePath); err != nil {
 			return errors.Wrap(err, "setup")
 		}
-		extractZip = true
 	}
 
-	if extractZip || newerThan(zipCachePath, xmlCachePath) {
+	if newerThan(zipCachePath, dbPath) {
 		log.Printf("[setup] extracting Unicode data ...")
 		if err = unzip(xmlCacheName, xmlCachePath, zipCachePath); err != nil {
 			return errors.Wrap(err, "setup")
 		}
-		buildDB = true
-	}
-
-	if buildDB || newerThan(xmlCachePath, dbPath) {
 		log.Printf("[setup] building database ...")
 		if db, err = Open(dbPath); err != nil {
 			return errors.Wrap(err, "setup")
@@ -86,6 +74,7 @@ func runSetup(force bool) error {
 		if err = db.Import(cps); err != nil {
 			return errors.Wrap(err, "import codepoints")
 		}
+		return os.Remove(xmlCachePath)
 	}
 	return nil
 }

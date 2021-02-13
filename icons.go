@@ -23,7 +23,13 @@ import (
 // icons
 var (
 	iconUpdateAvailable = &aw.Icon{Value: "icons/update-available.png"}
+	iconUpdateOK        = &aw.Icon{Value: "icons/update-ok.png"}
+	iconClearCache      = &aw.Icon{Value: "icons/clear-cache.png"}
 	iconConfig          = &aw.Icon{Value: "icons/config.png"}
+	iconFont            = &aw.Icon{Value: "icons/font.png"}
+	iconFontSelected    = &aw.Icon{Value: "icons/font-selected.png"}
+	iconIssue           = &aw.Icon{Value: "icons/issue.png"}
+	iconWebsite         = &aw.Icon{Value: "icons/website.png"}
 	iconError           = &aw.Icon{Value: "icons/error.png"}
 	iconWarning         = &aw.Icon{Value: "icons/warning.png"}
 	spinnerIcons        = []*aw.Icon{

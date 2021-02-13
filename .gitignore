@@ -3,6 +3,9 @@
 /build
 /dist
 
+# errant icon files
+slice1.png
+
 # macOS turds
 .DS_Store
 
