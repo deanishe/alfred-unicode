@@ -284,7 +284,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>unicode</string>
+				<string>.u</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -368,7 +368,7 @@
 				<key>focusedappvariablename</key>
 				<string>active_app</string>
 				<key>keyword</key>
-				<string>xxcp</string>
+				<string>xxu</string>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.trigger.snippet</string>
