@@ -111,7 +111,7 @@ func run() {
 
 	if *flagSetup {
 		wf.Configure(aw.TextErrors(true))
-		checkErr(runSetup(*flagForce))
+		runSetup(*flagForce)
 		return
 	}
 

@@ -740,9 +740,30 @@ echo setting ${varname} to \"${value}\" ... &gt;&amp;2
 	</array>
 	<key>readme</key>
 	<string>Alfred Unicode
-=========================
+==============
 
-Explore Unicode characters in Alfred</string>
+Search Unicode and copy/paste codepoints as HTML entities, Go or Python string literals, hexadecimal numbers etc.
+
+
+Usage
+=====
+
+.u &lt;query&gt; — Search Unicode codepoints
+	↩ or ⇥ — View selected codepoint details
+	⌘↩ — Copy UTF-8 character to clipboard
+	⌥↩ — Copy Python/Go string escape
+	...
+	...
+
+You can create your own hotkey–format mappings (see included help).
+
+Use search query "prefs" (i.e. enter ".u prefs" into Alfred) to access workflow settings. Use search query "help" (".u help") to open included help file.
+
+
+Configuration
+=============
+
+See included help file (enter ".u help" into Alfred).</string>
 	<key>uidata</key>
 	<dict>
 		<key>0BC0613A-8BD4-462B-8B98-2566278F953C</key>

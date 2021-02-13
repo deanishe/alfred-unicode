@@ -16,7 +16,6 @@ import (
 	"strings"
 
 	"github.com/deanishe/awgo/util"
-	"github.com/friendsofgo/errors"
 )
 
 // list of all Unicode codepoints
@@ -44,39 +43,38 @@ func (cp Codepoint) IsZero() bool { return cp.Hex == "" }
 func setupRequired() bool { return !util.PathExists(dbPath) }
 
 // ensure Unicode data and database exist.
-func runSetup(force bool) error {
+func runSetup(force bool) {
 	var (
 		db  *Repo
 		err error
 	)
 	if !util.PathExists(zipCachePath) || force {
 		log.Printf("[setup] downloading Unicode data ...")
-		if err = download(xmlURL, zipCachePath); err != nil {
-			return errors.Wrap(err, "setup")
-		}
+		checkErr(download(xmlURL, zipCachePath))
 	}
 
 	if newerThan(zipCachePath, dbPath) {
 		log.Printf("[setup] extracting Unicode data ...")
-		if err = unzip(xmlCacheName, xmlCachePath, zipCachePath); err != nil {
-			return errors.Wrap(err, "setup")
+		if err := unzip(xmlCacheName, xmlCachePath, zipCachePath); err != nil {
+			log.Printf("unzip failed: %v", err)
+			if strings.Contains(err.Error(), "not a valid zip file") {
+				_ = os.Remove(zipCachePath)
+				_ = os.Remove(xmlCachePath)
+			}
+			panic(err)
 		}
+
 		log.Printf("[setup] building database ...")
-		if db, err = Open(dbPath); err != nil {
-			return errors.Wrap(err, "setup")
-		}
+		db, err = Open(dbPath)
+		checkErr(err)
 		defer db.Close()
 
 		var cps []Codepoint
-		if cps, err = parseXML(xmlCachePath); err != nil {
-			return errors.Wrap(err, "parse XML")
-		}
-		if err = db.Import(cps); err != nil {
-			return errors.Wrap(err, "import codepoints")
-		}
-		return os.Remove(xmlCachePath)
+		cps, err = parseXML(xmlCachePath)
+		checkErr(err)
+		checkErr(db.Import(cps))
+		checkErr(os.Remove(xmlCachePath))
 	}
-	return nil
 }
 
 type xmlPayload struct {
@@ -101,7 +99,7 @@ func parseXML(path string) ([]Codepoint, error) {
 	log.Printf("[setup] loading %q ...", util.PrettyPath(path))
 	f, err := os.Open(path)
 	if err != nil {
-		return nil, errors.Wrap(err, "open XML file")
+		return nil, fmt.Errorf("open XML file: %w", err)
 	}
 	defer f.Close()
 
@@ -111,7 +109,7 @@ func parseXML(path string) ([]Codepoint, error) {
 		cps = []Codepoint{}
 	)
 	if err := dec.Decode(&pl); err != nil {
-		return nil, errors.Wrap(err, "parse XML")
+		return nil, fmt.Errorf("parse XML: %w", err)
 	}
 
 	for i, v := range pl.Repetoire.Chars {
@@ -156,7 +154,7 @@ func parseXML(path string) ([]Codepoint, error) {
 func unzip(name, dest, zipfile string) error {
 	r, err := zip.OpenReader(zipfile)
 	if err != nil {
-		return errors.Wrap(err, "unzip")
+		return fmt.Errorf("unzip: %w", err)
 	}
 	defer r.Close()
 
@@ -168,15 +166,15 @@ func unzip(name, dest, zipfile string) error {
 				rc  io.ReadCloser
 			)
 			if out, err = os.Create(dest); err != nil {
-				return errors.Wrap(err, "unzip: extract file")
+				return fmt.Errorf("unzip: extract file: %w", err)
 			}
 			defer out.Close()
 			if rc, err = f.Open(); err != nil {
-				return errors.Wrap(err, "unzip: extract file")
+				return fmt.Errorf("unzip: extract file: %w", err)
 			}
 			defer rc.Close()
 			if _, err = io.Copy(out, rc); err != nil {
-				return errors.Wrap(err, "unzip: write data")
+				return fmt.Errorf("unzip: write data: %w", err)
 			}
 			return nil
 		}
@@ -203,17 +201,17 @@ func newerThan(name1, name2 string) bool {
 func download(url, path string) error {
 	r, err := http.Get(url)
 	if err != nil {
-		return errors.Wrapf(err, "retrieve URL %q", url)
+		return fmt.Errorf("retrieve URL %q: %w", url, err)
 	}
 	log.Printf("[http] [%d] %s", r.StatusCode, url)
 	defer r.Body.Close()
 	f, err := os.Create(path)
 	if err != nil {
-		return errors.Wrap(err, "create XML cache file")
+		return fmt.Errorf("create XML cache file: %w", err)
 	}
 	defer f.Close()
 	if _, err := io.Copy(f, r.Body); err != nil {
-		return errors.Wrap(err, "write XML cache file")
+		return fmt.Errorf("write XML cache file: %w", err)
 	}
 	log.Printf("[http] saved %q", util.PrettyPath(path))
 	return nil

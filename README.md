@@ -1,15 +1,15 @@
 
-<div align="center">
+<div align="center" class="centred">
     <img width="128" height="128" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/icons/icon-large.png" alt="workflow icon" title="workflow icon">
 </div>
 
 Alfred Unicode
 ==============
 
-Search Unicode and copy/paste codepoints as HTML entities, Go or Python string literals, hexadecimal numbers etc.
+Search Unicode and copy/paste codepoints as HTML entities, Go or Python string literals, hexadecimal numbers etc. in Alfred 4+.
 
-<div align="center">
-    <img width="570" height="505" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/demo.png" alt="workflow demo" title="workflow demo">
+<div align="center" class="centred">
+    <img width="570" height="505" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/demo.gif" alt="animated workflow demo" title="animated workflow demo">
 </div>
 
 <!-- MarkdownTOC autolink="true" bracket="round" levels="2,3,4,5" autoanchor="true" -->
@@ -35,7 +35,7 @@ Download the latest version of the workflow from the [releases page][releases], 
 Usage
 -----
 
-- `unicode <query>` — Search Unicode codepoints (see [input](#input) below).
+- `.u <query>` — Search Unicode codepoints (see [input](#input) below).
     - `⇧` or `⌘Y` — Quick Look image of selected codepoint.
     - `↩` or `⇥` — View selected codepoint in various formats (CSS, HTML, Python etc.).
         - `↩` or `⌘C` — Copy selected format to clipboard.
@@ -45,7 +45,8 @@ Usage
     - `^↩` ([configurable](#modifiers)) — Copy/paste Unicode ID (U+00AB).
     - `⇧↩` ([configurable](#modifiers)) — Copy/paste HTML hexadecimal entity.
     - `...` — Add your own hotkeys (see [Modifiers](#modifiers)).
-- `unicode prefs` — View workflow configuration
+- `.u help` — Open workflow help file
+- `.u prefs` — View workflow configuration
     - `search` — Enter keyword `search` to return to Unicode search.
     - **Workflow Is Up To Date** / **Update Available!** — Whether a new version of the workflow is available. Action this item to force an update check.
     - **Font: Arial Unicode MS (default)** — Font used to generate preview images.
@@ -61,10 +62,17 @@ Usage
     - **Report Bug** — Open [workflow issue tracker][issues] in your browser.
     - **Delete Cached Data** — Delete Unicode database and cached preview icons, forcing the workflow to re-create them.
 
+Configure the included Hotkey to allow you to search directly from other applications (select a character or Unicode escape and hit the Hotkey).
+
 
 <a id="input"></a>
-### Input
+### Input ###
 
+Apart from the names of codepoints, you can search by hexadecimal or decimal values (e.g. `fe`, `00fe`, `32` etc.). The workflow will also accept any format it generates, such as Go string escapes (`\U0001F37B`).
+
+As the workflow uses a full-text search database, you can also use `AND` or `OR` in your queries, e.g. `arrow AND left OR right` (note `AND` and `OR` **must** be uppercase).
+
+Use the special search queries `search`, `prefs` and `help` to navigate to the workflow's search, preferences and help file respectively.
 
 
 <a id="configuration"></a>
@@ -110,14 +118,15 @@ You can copy (and paste) each codepoint in some or all of the following formats:
 | UTF-8 character             | `character`   | `🍻`                  |
 | Codepoint name              | `name`        | `CLINKING BEER MUGS` |
 | Unicode ID                  | `unicode`     | `U+1F37B`            |
-| Hex literal (e.g. `0x00FF`) | `hexadecimal` | `0x1F37B`            |
+| Hex literal                 | `hexadecimal` | `0x1F37B`            |
+| Decimal literal             | `decimal`     | `127867`             |
 | Python or Go escaped string | `python`      | `\U0001F37B`         |
-| URL-encoded                 | `url-encoded` | `%F0%9F%8D%BB`       |
+| URL-encoded                 | `urlencoded`  | `%F0%9F%8D%BB`       |
 | JavaScript escaped string   | `javascript`  | `\u{1F37B}`          |
 | CSS entity                  | `css`         | `\01F37B`            |
-| HTML entity, hexadecimal    | `html-hex`    | `&#x1F37B;`          |
-| HTML entity, decimal        | `html-dec`    | `&#127867;`          |
-| HTML entity, named          | `html-named`  | `&szlig;`            |
+| HTML entity, hexadecimal    | `htmlhex`     | `&#x1F37B;`          |
+| HTML entity, decimal        | `htmldec`     | `&#127867;`          |
+| HTML entity, named          | `htmlnamed`   | `&szlig;`            |
 
 **TIP**: You can get the short name for a format by using `⌘C` on its item in the detail view.
 

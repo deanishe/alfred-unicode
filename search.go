@@ -191,26 +191,27 @@ func setupDatabase(db *sqlx.DB) error {
 				aliases,
 				html_entity,
 				hex,
+				dec,
 				content = 'codepoints',
 				tokenize = "unicode61 remove_diacritics 1 separators '-'"
 			);
 
 			CREATE TRIGGER IF NOT EXISTS codepoints_ai AFTER INSERT ON codepoints
 			BEGIN
-				INSERT INTO search (rowid, name, aliases, html_entity, hex)
-					VALUES (new.rowid, new.name, new.aliases, new.html_entity, new.hex);
+				INSERT INTO search (rowid, name, aliases, html_entity, hex, dec)
+					VALUES (new.rowid, new.name, new.aliases, new.html_entity, new.hex, new.dec);
 			END;
 			CREATE TRIGGER IF NOT EXISTS codepoints_ad AFTER DELETE ON codepoints
 			BEGIN
-				INSERT INTO search (search, rowid, name, aliases, html_entity, hex)
-					VALUES ('delete', old.rowid, old.name, old.aliases, old.html_entity, old.hex);
+				INSERT INTO search (search, rowid, name, aliases, html_entity, hex, dec)
+					VALUES ('delete', old.rowid, old.name, old.aliases, old.html_entity, old.hex, old.dec);
 			END;
 			CREATE TRIGGER IF NOT EXISTS codepoints_au AFTER UPDATE ON codepoints
 			BEGIN
-				INSERT INTO search (search, rowid, name, aliases, html_entity, hex)
-					VALUES ('delete', old.rowid, old.name, old.aliases, old.html_entity, old.hex);
-				INSERT INTO search (rowid, name, aliases, html_entity, hex)
-					VALUES (new.rowid, new.name, new.aliases, new.html_entity, new.hex);
+				INSERT INTO search (search, rowid, name, aliases, html_entity, hex, dec)
+					VALUES ('delete', old.rowid, old.name, old.aliases, old.html_entity, old.hex, old.dec);
+				INSERT INTO search (rowid, name, aliases, html_entity, hex, dec)
+					VALUES (new.rowid, new.name, new.aliases, new.html_entity, new.hex, new.dec);
 			END;
 
 			PRAGMA user_version = 1;

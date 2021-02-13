@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 
 	aw "github.com/deanishe/awgo"
@@ -27,6 +28,7 @@ var formatters = []struct {
 	{"name", "Codepoint name", func(cp Codepoint) string { return cp.Name }},
 	{"unicode", "Unicode ID", func(cp Codepoint) string { return fmt.Sprintf("U+%04X", cp.Dec) }},
 	{"hexadecimal", "Hexadecimal literal", func(cp Codepoint) string { return fmt.Sprintf("0x%X", cp.Dec) }},
+	{"decimal", "Decimal literal", func(cp Codepoint) string { return fmt.Sprintf("%d", cp.Dec) }},
 	{"python", "Python or Go escaped string", formatPython},
 	{"urlencoded", "URL-encoded", func(cp Codepoint) string { return url.PathEscape(string(cp.Dec)) }},
 	{"javascript", "JavaScript escaped string", formatJS},
@@ -102,11 +104,16 @@ func specialQuery(s string) (string, bool) {
 			}
 		}
 	}
+	var prefix string
 	// if s is valid hex, add it as a normalised OR query
 	if n, err := parseHex(s); err == nil {
-		s = fmt.Sprintf("%04X OR %s", n, s)
+		prefix += fmt.Sprintf("hex:%04X OR ", n)
 	}
-	return s, false
+	// if s is valid decimal, add it as a normalised OR query
+	if n, err := strconv.ParseUint(s, 10, 32); err == nil {
+		prefix += fmt.Sprintf("hex:%04X OR ", n)
+	}
+	return prefix + s, false
 }
 
 // Script Filter to show character details
