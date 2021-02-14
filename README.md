@@ -49,6 +49,8 @@ Usage
 - `.u prefs` — View workflow configuration
     - `search` — Enter keyword `search` to return to Unicode search.
     - **Workflow Is Up To Date** / **Update Available!** — Whether a new version of the workflow is available. Action this item to force an update check.
+    - **Formatters** — Disable formatters you don't want.
+        - `↩` — To view formatter list and to toggle formatters on/off.
     - **Font: Arial Unicode MS (default)** — Font used to generate preview images.
         - `↩` — Choose a different font
         - `⌘↩` — Reset to default

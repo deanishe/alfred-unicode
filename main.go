@@ -17,8 +17,6 @@ import (
 
 	aw "github.com/deanishe/awgo"
 	"github.com/deanishe/awgo/update"
-
-	// "github.com/friendsofgo/errors"
 	"github.com/mattn/go-sqlite3"
 )
 
@@ -27,18 +25,6 @@ const (
 	repo    = "deanishe/alfred-unicode"
 	website = "https://github.com/deanishe/alfred-unicode/"
 	helpURL = "https://github.com/deanishe/alfred-unicode/issues"
-)
-
-// cache paths
-var (
-	xmlCacheName = "ucd.nounihan.flat.xml"
-	// made absolute in init
-	xmlCachePath = xmlCacheName
-	zipCachePath = "ucd.nounihan.flat.zip"
-	dbPath       = "codepoints.sqlite3"
-	iconDir      = "icons"
-	queuePath    = "icon-queue.json"
-	helpFile     = "README.html"
 )
 
 // CLI

@@ -5,11 +5,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"strings"
 
-	"github.com/friendsofgo/errors"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"golang.org/x/text/unicode/norm"
@@ -27,15 +27,15 @@ func Open(path string) (*Repo, error) {
 		err error
 	)
 	if db, err = sqlx.Connect("sqlite3", path); err != nil {
-		return nil, errors.Wrap(err, "open database")
+		return nil, fmt.Errorf("open database: %w", err)
 	}
 
 	// actually create a database connection
 	if err = db.Ping(); err != nil {
-		return nil, errors.Wrap(err, "ping database")
+		return nil, fmt.Errorf("ping database: %w", err)
 	}
 	if err = setupDatabase(db); err != nil {
-		return nil, errors.Wrap(err, "set up database")
+		return nil, fmt.Errorf("set up database: %w", err)
 	}
 	return &Repo{db: db}, nil
 }
@@ -81,7 +81,7 @@ func (repo *Repo) Search(query string) ([]Codepoint, error) {
 	}
 
 	if err != nil {
-		return nil, errors.Wrap(err, "SQL query failed")
+		return nil, fmt.Errorf("SQL query failed: %w", err)
 	}
 
 	log.Printf("[repo] %d result(s) for %q", len(cps), query)
@@ -124,22 +124,22 @@ func (repo *Repo) importCodepoints(cps []Codepoint) error {
 		err  error
 	)
 	if tx, err = repo.db.Beginx(); err != nil {
-		return errors.Wrap(err, "begin transaction")
+		return fmt.Errorf("begin transaction: %w", err)
 	}
 	defer tx.Rollback()
 
 	if stmt, err = tx.PrepareNamed(q); err != nil {
-		return errors.Wrapf(err, "prepare SQL %q", q)
+		return fmt.Errorf("prepare SQL %q: %w", q, err)
 	}
 
 	for _, cp := range cps {
 		if _, err := stmt.Exec(cp); err != nil {
-			return errors.Wrapf(err, "insert codepoint: %#v", cp)
+			return fmt.Errorf("insert codepoint: %#v: %w", cp, err)
 		}
 		// log.Printf("[repo] inserted %#v", cp)
 	}
 	if err = tx.Commit(); err != nil {
-		return errors.Wrap(err, "commit transaction")
+		return fmt.Errorf("commit transaction: %w", err)
 	}
 
 	return nil
@@ -155,18 +155,18 @@ func setupDatabase(db *sqlx.DB) error {
 		PRAGMA encoding='UTF-8';
 	`)
 	if err != nil {
-		return errors.Wrap(err, "execute PRAGMAs")
+		return fmt.Errorf("execute PRAGMAs: %w", err)
 	}
 
 	tx, err := db.Beginx()
 	if err != nil {
-		return errors.Wrap(err, "begin Tx")
+		return fmt.Errorf("begin Tx: %w", err)
 	}
 	defer tx.Rollback()
 
 	var version int
 	if err = tx.Get(&version, `PRAGMA user_version;`); err != nil {
-		return errors.Wrap(err, "PRAGMA user_version")
+		return fmt.Errorf("PRAGMA user_version: %w", err)
 	}
 	log.Printf("[repo] current schema: %d", version)
 
@@ -217,7 +217,7 @@ func setupDatabase(db *sqlx.DB) error {
 			PRAGMA user_version = 1;
 		`)
 		if err != nil {
-			return errors.Wrap(err, "migrate to version 1")
+			return fmt.Errorf("migrate to version 1: %w", err)
 		}
 		fallthrough
 	case 1: //  future migration
@@ -225,16 +225,16 @@ func setupDatabase(db *sqlx.DB) error {
 	}
 
 	if err = tx.Commit(); err != nil {
-		return errors.Wrap(err, "commit schema updates")
+		return fmt.Errorf("commit schema updates: %w", err)
 	}
 	var n int
 	if err = db.Get(&n, `PRAGMA user_version;`); err != nil {
-		return errors.Wrap(err, "PRAGMA user_version")
+		return fmt.Errorf("PRAGMA user_version: %w", err)
 	}
 
 	if n > version {
 		if _, err := db.Exec(`VACUUM;`); err != nil {
-			return errors.Wrap(err, "VACUUM database")
+			return fmt.Errorf("VACUUM database: %w", err)
 		}
 	}
 	return nil

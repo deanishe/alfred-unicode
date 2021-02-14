@@ -96,7 +96,7 @@ struct Configuration: Decodable {
         }
 
         self.font = font
-        log("fontName=\(fontName), fontSize=\(fontSize), descender=\(font.descender)")
+        // log("fontName=\(fontName), fontSize=\(fontSize), descender=\(font.descender)")
 
         // colours
         if let hex = raw.text_colour {

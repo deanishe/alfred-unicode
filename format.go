@@ -19,33 +19,53 @@ import (
 // formats Codepoint
 type formatFunc func(Codepoint) string
 
-var formatters = []struct {
+type formatter struct {
 	uid         string
 	description string
 	format      formatFunc
-}{
-	{"character", "UTF-8 character", func(cp Codepoint) string { return string(cp.Dec) }},
-	{"name", "Codepoint name", func(cp Codepoint) string { return cp.Name }},
-	{"unicode", "Unicode ID", func(cp Codepoint) string { return fmt.Sprintf("U+%04X", cp.Dec) }},
-	{"hexadecimal", "Hexadecimal literal", func(cp Codepoint) string { return fmt.Sprintf("0x%X", cp.Dec) }},
-	{"decimal", "Decimal literal", func(cp Codepoint) string { return fmt.Sprintf("%d", cp.Dec) }},
-	{"python", "Python or Go escaped string", formatPython},
-	{"urlencoded", "URL-encoded", func(cp Codepoint) string { return url.PathEscape(string(cp.Dec)) }},
-	{"javascript", "JavaScript escaped string", formatJS},
-	{"css", "CSS entity", func(cp Codepoint) string { return fmt.Sprintf(`\%06X`, cp.Dec) }},
-	{"htmlhex", "HTML entity, hexadecimal", func(cp Codepoint) string { return fmt.Sprintf("&#x%X;", cp.Dec) }},
-	{"htmldec", "HTML entity, decimal", func(cp Codepoint) string { return fmt.Sprintf("&#%d;", cp.Dec) }},
-	{"htmlnamed", "HTML entity, named", formatHTMLEntityNamed},
+	enabled     bool
+}
+
+var formatters = []formatter{
+	{"character", "UTF-8 character", func(cp Codepoint) string { return string(cp.Dec) }, true},
+	{"name", "Codepoint name", func(cp Codepoint) string { return cp.Name }, true},
+	{"unicode", "Unicode ID", func(cp Codepoint) string { return fmt.Sprintf("U+%04X", cp.Dec) }, true},
+	{"hexadecimal", "Hexadecimal literal", func(cp Codepoint) string { return fmt.Sprintf("0x%X", cp.Dec) }, true},
+	{"decimal", "Decimal literal", func(cp Codepoint) string { return fmt.Sprintf("%d", cp.Dec) }, true},
+	{"python", "Python or Go escaped string", formatPython, true},
+	{"urlencoded", "URL-encoded", func(cp Codepoint) string { return url.PathEscape(string(cp.Dec)) }, true},
+	{"javascript", "JavaScript escaped string", formatJS, true},
+	{"css", "CSS entity", func(cp Codepoint) string { return fmt.Sprintf(`\%06X`, cp.Dec) }, true},
+	{"htmlhex", "HTML entity, hexadecimal", func(cp Codepoint) string { return fmt.Sprintf("&#x%X;", cp.Dec) }, true},
+	{"htmldec", "HTML entity, decimal", func(cp Codepoint) string { return fmt.Sprintf("&#%d;", cp.Dec) }, true},
+	{"htmlnamed", "HTML entity, named", formatHTMLEntityNamed, true},
 }
 
 var formattersMap map[string]int
 
 func init() {
+	disabled := map[string]bool{}
+	for _, s := range strings.Split(os.Getenv("DISABLED"), ",") {
+		disabled[s] = true
+	}
 	formattersMap = make(map[string]int, len(formatters))
 	for i, f := range formatters {
 		formattersMap[f.uid] = i
+		formatters[i].enabled = !disabled[f.uid]
 	}
 }
+
+/*
+func loadFormatters() {
+	disabled := map[string]bool{}
+	for _, s := range strings.Split(opts.Disabled, ",") {
+		disabled[s] = true
+	}
+	for i, fm := range formatters {
+		formatters[i].enabled = disabled[fm.uid]
+	}
+}
+*/
 
 var modifiers = map[string]string{
 	"cmd":   "character",
@@ -142,19 +162,23 @@ func runDetails() {
 	}
 	cp := cps[0]
 
-	for _, t := range formatters {
-		v := t.format(cp)
+	for _, f := range formatters {
+		if !f.enabled {
+			continue
+		}
+
+		v := f.format(cp)
 		if v == "" {
 			continue
 		}
 
 		wf.NewItem(v).
-			Subtitle(t.description).
-			Match(t.description).
-			UID(t.uid).
+			Subtitle(f.description).
+			Match(f.description).
+			UID(f.uid).
 			Arg(v).
 			Valid(true).
-			Copytext(t.uid)
+			Copytext(f.uid)
 	}
 
 	if opts.Query != "" {

@@ -7,6 +7,7 @@ package main
 import (
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"image"
 	"image/color"
@@ -19,7 +20,6 @@ import (
 
 	aw "github.com/deanishe/awgo"
 	"github.com/deanishe/awgo/util"
-	"github.com/friendsofgo/errors"
 	"golang.org/x/text/unicode/norm"
 )
 
@@ -34,6 +34,8 @@ var (
 	iconFontSelected    = &aw.Icon{Value: "icons/font-selected.png"}
 	iconIssue           = &aw.Icon{Value: "icons/issue.png"}
 	iconDocs            = &aw.Icon{Value: "icons/docs.png"}
+	iconToggleOn        = &aw.Icon{Value: "icons/toggle-on.png"}
+	iconToggleOff       = &aw.Icon{Value: "icons/toggle-off.png"}
 	iconWebsite         = &aw.Icon{Value: "icons/website.png"}
 	iconError           = &aw.Icon{Value: "icons/error.png"}
 	iconWarning         = &aw.Icon{Value: "icons/warning.png"}
@@ -231,12 +233,12 @@ func (gen *iconGenerator) Generate() error {
 
 	out, err := util.Run("icongen", path)
 	if err != nil {
-		return errors.Wrap(err, "generate icons")
+		return fmt.Errorf("generate icons: %w", err)
 	}
 
 	log.Print("icongen output:\n" + string(out))
 	if err := os.Remove(path); err != nil {
-		return errors.Wrap(err, "remove queue")
+		return fmt.Errorf("remove queue: %w", err)
 	}
 	return nil
 }
@@ -274,15 +276,15 @@ func (gen *iconGenerator) Save() error {
 
 	data, err := json.MarshalIndent(payload, "", "  ")
 	if err != nil {
-		return errors.Wrap(err, "marshal queue to JSON")
+		return fmt.Errorf("marshal queue to JSON: %w", err)
 	}
 
 	if err := os.MkdirAll(gen.Dir, 0700); err != nil {
-		return errors.Wrap(err, "create icons directory")
+		return fmt.Errorf("create icons directory: %w", err)
 	}
 
 	if err := util.WriteFile(gen.queuePath(), data, 0600); err != nil {
-		return errors.Wrap(err, "save queue")
+		return fmt.Errorf("save queue: %w", err)
 	}
 
 	log.Printf("[icons] queued %d icon(s) for generation", len(gen.queue))
@@ -310,24 +312,24 @@ func generateColouredIcon(src, dest string, c color.RGBA) error {
 	)
 
 	if f, err = os.Open(src); err != nil {
-		return errors.Wrap(err, "open file")
+		return fmt.Errorf("open file: %w", err)
 	}
 	defer f.Close()
 
 	if mask, _, err = image.Decode(f); err != nil {
-		return errors.Wrap(err, "decode image")
+		return fmt.Errorf("decode image: %w", err)
 	}
 
 	img := image.NewRGBA(mask.Bounds())
 	draw.DrawMask(img, img.Bounds(), &image.Uniform{c}, image.Point{}, mask, image.Point{}, draw.Src)
 
 	if f, err = os.Create(dest); err != nil {
-		return errors.Wrap(err, "create file")
+		return fmt.Errorf("create file: %w", err)
 	}
 	defer f.Close()
 
 	if err = png.Encode(f, img); err != nil {
-		return errors.Wrap(err, "write PNG data")
+		return fmt.Errorf("write PNG data: %w", err)
 	}
 	return nil
 }

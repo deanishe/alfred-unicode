@@ -4,7 +4,7 @@
 /dist
 
 # errant icon files
-slice1.png
+slice*.png
 
 # macOS turds
 .DS_Store

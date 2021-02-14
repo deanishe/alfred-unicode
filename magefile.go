@@ -129,9 +129,8 @@ func Assets() error {
 	other := []struct {
 		src, dst string
 	}{
-		{"icons/config.png", "12890D35-22B2-47AB-A54A-3BF0C1F8841D.png"},
-		{"icons/config.png", "B564A9DA-3F70-471A-8DF3-8A537CBF2975.png"},
-		{"icons/font.png", "F3FBD6A3-BEA9-4D64-8F7C-AC67C1E8B5EC.png"},
+		{"icons/config.png", "12890D35-22B2-47AB-A54A-3BF0C1F8841D.png"}, // config
+		{"icons/config.png", "B564A9DA-3F70-471A-8DF3-8A537CBF2975.png"}, // set config
 		{"../.build/debug/icongen", "icongen"},
 	}
 
@@ -280,24 +279,7 @@ const (
 </body>
 </html>
 `
-	/*
-	   	css = `
-	   body{font:1em/1.5em sans-serif;}pre,code,tt{font:1em/1.5em ‘Andale Mono’,’Lucida Console’,monospace;}h1,h2,h3,h4,h5,h6,b,strong{font-weight:bold;}em,i,dfn{font-style:italic;}dfn{font-weight:bold;}p,code,pre,kbd{margin:0 0 1.5em 0;}blockquote{margin:0 1.5em 1.5em 1.5em;}cite{font-style:italic;}li ul,li ol{margin:0 1.5em;}ul,ol{margin:0 1.5em 1.5em 1.5em;}ul{list-style-type:disc;}ol{list-style-type:decimal;}ol ol{list-style:upper-alpha;}ol ol ol{list-style:lower-roman;}ol ol ol ol{list-style:lower-alpha;}dl{margin:0 0 1.5em 0;}dl dt{font-weight:bold;}dd{margin-left:1.5em;}table{margin-bottom:1.4em;width:100%;}th{font-weight:bold;}th,td,caption{padding:4px 10px 4px 5px;}tfoot{font-style:italic;}sup,sub{line-height:0;}abbr,acronym{border-bottom:1px dotted;}address{margin:0 0 1.5em;font-style:italic;}del{text-decoration:line-through;}pre{margin:1.5em 0;white-space:pre;}img.centered,.aligncenter,div.aligncenter{display:block;margin-left:auto;margin-right:auto;}img.alignright{display:inline;}img.alignleft{display:inline;}.alignright{float:right;margin-left:10px;}.alignleft{float:left;margin-right:10px;}img { max-width: 100%; }* html .clearfix{height:1%;}*+html .clearfix{display:inline-block;}.clearfix:after{content:”.”;display:block;height:0;clear:both;visibility:hidden;}* html .group{height:1%;}*+html .group{display:inline-block;}.group:after{content:”.”;display:block;height:0;clear:both;visibility:hidden;}
 
-	   #wrapper {
-	   	margin: 2em auto;
-	   	max-width: 900px;
-	   }
-	   code {
-	   	background-color: #f0f0f8;
-	   	border-radius: 0.05em;
-	   	padding: 0.15em 0.3em;
-	   }
-	   ul {
-	   	padding-left: 0;
-	   }
-	   `
-	*/
 	css = `/* Basic adjustments for text and link colors, etc. */
 .markdown-body {
 	color: #373a3c;

@@ -9,16 +9,28 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	aw "github.com/deanishe/awgo"
 	"github.com/deanishe/awgo/util"
-	"github.com/friendsofgo/errors"
 )
 
 const (
 	defaultTextColour = "FF2FA9"
 	defaultFontName   = "Arial Unicode MS"
 	defaultIconSize   = 128
+)
+
+// filepaths
+var (
+	xmlCacheName = "ucd.nounihan.flat.xml"
+	// made absolute in init (main.go)
+	xmlCachePath = xmlCacheName
+	zipCachePath = "ucd.nounihan.flat.zip"
+	dbPath       = "codepoints.sqlite3"
+	iconDir      = "icons"
+	queuePath    = "icon-queue.json"
+	helpFile     = "README.html"
 )
 
 // user configuration & input
@@ -29,6 +41,7 @@ type options struct {
 	IconSize         int
 	TextColour       string
 	BackgroundColour string
+	Disabled         string `env:"disabled"`
 
 	ActiveApp      string `env:"active_app"`
 	SpinnerCounter int    `env:"spinner_counter"`
@@ -96,6 +109,9 @@ func runConfig() {
 	case "text-colour", "background-colour":
 		runColour()
 		return
+	case "formatters":
+		runFormatters()
+		return
 	}
 
 	// update status
@@ -116,6 +132,18 @@ func runConfig() {
 		UID("update").
 		Icon(icon).
 		Valid(false)
+
+	// formatters
+	wf.NewItem("Formatters").
+		Subtitle("Edit active formatters").
+		Arg("formatters").
+		UID("formatters").
+		Valid(true).
+		Icon(aw.IconWorkflow).
+		Var("action", "").
+		Var("hide_alfred", "").
+		Var("trigger", "choose").
+		Var("trigger_query", "formatters")
 
 	// font
 	title = "Font: " + opts.FontName
@@ -139,7 +167,9 @@ func runConfig() {
 			Icon(iconTrash).
 			Arg("").
 			Var("action", "setconfig").
-			Var("varname", "FONT_NAME")
+			Var("varname", "FONT_NAME").
+			Var("trigger", "config").
+			Var("trigger_query", "")
 	}
 
 	// text colour
@@ -164,7 +194,9 @@ func runConfig() {
 			Icon(iconTrash).
 			Arg("").
 			Var("action", "setconfig").
-			Var("varname", "TEXT_COLOUR")
+			Var("varname", "TEXT_COLOUR").
+			Var("trigger", "config").
+			Var("trigger_query", "")
 	}
 
 	// background colour
@@ -189,7 +221,9 @@ func runConfig() {
 			Icon(iconTrash).
 			Arg("").
 			Var("action", "setconfig").
-			Var("varname", "BACKGROUND_COLOUR")
+			Var("varname", "BACKGROUND_COLOUR").
+			Var("trigger", "config").
+			Var("trigger_query", "")
 	}
 
 	// link to docs
@@ -240,6 +274,7 @@ func runConfig() {
 	wf.SendFeedback()
 }
 
+// Script Filter to choose text/background colour.
 func runColour() {
 	var (
 		name    = "Foreground"
@@ -276,6 +311,68 @@ func runColour() {
 		Var("hide_alfred", "")
 
 	// wf.WarnEmpty("No Matching Items", "Try a different query?")
+	wf.SendFeedback()
+}
+
+// Script Filter to turn formats on/off.
+func runFormatters() {
+	disabled := map[string]struct{}{}
+	for _, f := range formatters {
+		if !f.enabled {
+			disabled[f.uid] = struct{}{}
+		}
+	}
+
+	withoutUID := func(s string) string {
+		var out []string
+		for name := range disabled {
+			if name != s {
+				out = append(out, name)
+			}
+		}
+		return strings.Join(out, ",")
+	}
+
+	withUID := func(s string) string {
+		var out []string
+		for name := range disabled {
+			if name != s {
+				out = append(out, name)
+			}
+		}
+		out = append(out, s)
+		return strings.Join(out, ",")
+	}
+
+	for _, f := range formatters {
+		var (
+			icon = iconToggleOff
+			sub  = "↩ to turn on"
+			arg  = withoutUID(f.uid)
+		)
+		if f.enabled {
+			icon = iconToggleOn
+			sub = "↩ to turn off"
+			arg = withUID(f.uid)
+		}
+		wf.NewItem(f.description).
+			Subtitle(sub).
+			Arg(arg).
+			Valid(true).
+			Icon(icon).
+			Var("action", "setconfig").
+			Var("varname", "DISABLED").
+			Var("trigger", "choose").
+			Var("trigger_query", "formatters").
+			Var("hide_alfred", "")
+	}
+
+	if opts.Query != "" {
+		wf.Filter(opts.Query)
+	}
+
+	addNavigationItems()
+	wf.WarnEmpty("No Matching Formatters", "Try a different query?")
 	wf.SendFeedback()
 }
 
@@ -339,11 +436,11 @@ func loadFonts() ([]Font, error) {
 	var fonts []Font
 	out, err := util.Run("icongen", "--fonts")
 	if err != nil {
-		return nil, errors.Wrap(err, "load fonts")
+		return nil, fmt.Errorf("load fonts: %w", err)
 	}
 
 	if err := json.Unmarshal(out, &fonts); err != nil {
-		return nil, errors.Wrap(err, "load fonts")
+		return nil, fmt.Errorf("load fonts: %w", err)
 	}
 
 	return fonts, nil
@@ -355,7 +452,7 @@ func loadFontsCached() ([]Font, error) {
 		fonts  []Font
 	)
 	if err := wf.Session.LoadOrStoreJSON("fonts.json", reload, &fonts); err != nil {
-		return nil, errors.Wrap(err, "cached fonts")
+		return nil, fmt.Errorf("cached fonts: %w", err)
 	}
 	return fonts, nil
 }

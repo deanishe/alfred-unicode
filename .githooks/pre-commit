@@ -43,7 +43,7 @@ _getvar() {
 # }
 
 # exit if a variable is set
-names=(FONT_NAME TEXT_SIZE TEXT_COLOUR BACKGROUND_COLOUR)
+names=(FONT_NAME TEXT_SIZE TEXT_COLOUR BACKGROUND_COLOUR DISABLED)
 for name in $names; do
   test -n "$( _getvar $name )" && _fail "info.plist: $name is not empty"
 done
@@ -62,7 +62,7 @@ if hash golangci-lint; then
 fi
 
 # delete errant images
-find "$root" -type f -name slice1.png -delete
+find "$root" -type f \( -name slice1.png -or -name slice2.png \) -delete
 
 set -e
 cd "$root"

@@ -3,24 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>net.deanishe.alfred.alfred-unicode2</string>
+	<string>net.deanishe.alfred.alfred-unicode</string>
 	<key>category</key>
 	<string>Reference</string>
 	<key>connections</key>
 	<dict>
-		<key>0BC0613A-8BD4-462B-8B98-2566278F953C</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
 		<key>12890D35-22B2-47AB-A54A-3BF0C1F8841D</key>
 		<array>
 			<dict>
@@ -51,7 +38,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>0BC0613A-8BD4-462B-8B98-2566278F953C</string>
+				<string>91C833C3-1CC0-4140-92A1-7A85413DD9CC</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -62,16 +49,6 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>26D6782B-964D-4B7F-A280-CBCEB7B008A6</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
-				<string>91C833C3-1CC0-4140-92A1-7A85413DD9CC</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -146,6 +123,18 @@
 				<key>vitoclose</key>
 				<false/>
 			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>C1CC6C51-731B-4972-942F-5A407208B50B</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>05670C8B-6D8B-4F4E-9817-FD654D335CB3</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
 		</array>
 		<key>A3BF1DED-3BDD-49A2-B001-6CD015F96673</key>
 		<array>
@@ -199,6 +188,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>C1CC6C51-731B-4972-942F-5A407208B50B</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5D7B7F22-0E9D-4FEC-886B-7B37DAF6A71A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>D025E895-3B47-4A1D-A37A-7A57A0A532C7</key>
 		<array>
 			<dict>
@@ -210,19 +212,6 @@
 				<string></string>
 				<key>vitoclose</key>
 				<true/>
-			</dict>
-		</array>
-		<key>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>B423EEED-BC4A-48C5-B7B1-499EE89E3848</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
 			</dict>
 		</array>
 	</dict>
@@ -239,19 +228,116 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>externaltriggerid</key>
-				<string>{var:trigger}</string>
-				<key>passinputasargument</key>
-				<true/>
-				<key>passvariables</key>
+				<key>autopaste</key>
 				<false/>
-				<key>workflowbundleid</key>
-				<string>self</string>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.callexternaltrigger</string>
+			<string>alfred.workflow.output.clipboard</string>
 			<key>uid</key>
-			<string>B423EEED-BC4A-48C5-B7B1-499EE89E3848</string>
+			<string>887411E2-8BF2-4218-8B04-2D5B0DC36898</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:action}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>copy</string>
+						<key>outputlabel</key>
+						<string>Copy to Clipboard</string>
+						<key>uid</key>
+						<string>4D3FBC95-CA0B-4795-8583-FD3A4611736E</string>
+					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:action}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>open</string>
+						<key>outputlabel</key>
+						<string>Open URL/File</string>
+						<key>uid</key>
+						<string>A636AC98-75A2-40A9-A511-7A089BE9CB6D</string>
+					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:action}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>setconfig</string>
+						<key>outputlabel</key>
+						<string>Set Config</string>
+						<key>uid</key>
+						<string>8A60BEAF-0A81-4F5A-B667-0EF0B96EBCC9</string>
+					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:trigger}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>1</integer>
+						<key>matchstring</key>
+						<string></string>
+						<key>outputlabel</key>
+						<string>Run Trigger</string>
+						<key>uid</key>
+						<string>05670C8B-6D8B-4F4E-9817-FD654D335CB3</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string></string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>91C833C3-1CC0-4140-92A1-7A85413DD9CC</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>json</key>
+				<string>{
+  "alfredworkflow" : {
+    "arg" : "{query}",
+    "config" : {
+      "ignoredynamicplaceholders" : false,
+      "transient" : false,
+      "clipboardtext" : "(query)",
+      "autopaste" : "{var:autopaste}"
+    },
+    "variables" : {
+    }
+  }
+}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.json</string>
+			<key>uid</key>
+			<string>B56A2C8A-964E-4B12-98E0-F265F34E1F13</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -314,42 +400,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argument</key>
-				<string>{var:trigger_query}</string>
-				<key>passthroughargument</key>
-				<false/>
-				<key>variables</key>
-				<dict/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.argument</string>
-			<key>uid</key>
-			<string>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>inputstring</key>
-				<string>{var:trigger}</string>
-				<key>matchcasesensitive</key>
-				<true/>
-				<key>matchmode</key>
-				<integer>1</integer>
-				<key>matchstring</key>
-				<string></string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.filter</string>
-			<key>uid</key>
-			<string>0BC0613A-8BD4-462B-8B98-2566278F953C</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>focusedappvariable</key>
 				<true/>
 				<key>focusedappvariablename</key>
@@ -365,31 +415,27 @@
 			<integer>1</integer>
 		</dict>
 		<dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.hidealfred</string>
-			<key>uid</key>
-			<string>F52BC7E2-4307-4A55-9A30-367D05308B5F</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
 			<key>config</key>
 			<dict>
-				<key>inputstring</key>
-				<string>{var:hide_alfred}</string>
-				<key>matchcasesensitive</key>
-				<true/>
-				<key>matchmode</key>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>/usr/bin/open "$1"</string>
+				<key>scriptargtype</key>
 				<integer>1</integer>
-				<key>matchstring</key>
+				<key>scriptfile</key>
 				<string></string>
+				<key>type</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.utility.filter</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>26D6782B-964D-4B7F-A280-CBCEB7B008A6</string>
+			<string>3458DD9D-B744-4AB4-A24A-0A50F68064C0</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -496,106 +542,72 @@ variables={allvars}
 			<integer>2</integer>
 		</dict>
 		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<false/>
-			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
+			<string>alfred.workflow.utility.hidealfred</string>
 			<key>uid</key>
-			<string>887411E2-8BF2-4218-8B04-2D5B0DC36898</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>conditions</key>
-				<array>
-					<dict>
-						<key>inputstring</key>
-						<string>{var:action}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>copy</string>
-						<key>outputlabel</key>
-						<string>Copy to Clipboard</string>
-						<key>uid</key>
-						<string>4D3FBC95-CA0B-4795-8583-FD3A4611736E</string>
-					</dict>
-					<dict>
-						<key>inputstring</key>
-						<string>{var:action}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>open</string>
-						<key>outputlabel</key>
-						<string>Open URL/File</string>
-						<key>uid</key>
-						<string>A636AC98-75A2-40A9-A511-7A089BE9CB6D</string>
-					</dict>
-					<dict>
-						<key>inputstring</key>
-						<string>{var:action}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>setconfig</string>
-						<key>outputlabel</key>
-						<string>Set Config</string>
-						<key>uid</key>
-						<string>8A60BEAF-0A81-4F5A-B667-0EF0B96EBCC9</string>
-					</dict>
-				</array>
-				<key>elselabel</key>
-				<string>Do Nothing</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.conditional</string>
-			<key>uid</key>
-			<string>91C833C3-1CC0-4140-92A1-7A85413DD9CC</string>
+			<string>F52BC7E2-4307-4A55-9A30-367D05308B5F</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>json</key>
-				<string>{
-  "alfredworkflow" : {
-    "arg" : "{query}",
-    "config" : {
-      "ignoredynamicplaceholders" : false,
-      "transient" : false,
-      "clipboardtext" : "(query)",
-      "autopaste" : "{var:autopaste}"
-    },
-    "variables" : {
-    }
-  }
+				<key>inputstring</key>
+				<string>{var:hide_alfred}</string>
+				<key>matchcasesensitive</key>
+				<true/>
+				<key>matchmode</key>
+				<integer>1</integer>
+				<key>matchstring</key>
+				<string></string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.filter</string>
+			<key>uid</key>
+			<string>26D6782B-964D-4B7F-A280-CBCEB7B008A6</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>set -e
+
+value="$1"
+bid="${alfred_workflow_bundleid}"
+trigger="${trigger:-config}"
+
+
+# update info.plist
+/usr/libexec/PlistBuddy -c "Set :variables:${varname} \"${value}\"" info.plist
+
+# tell Alfred to reload workflow
+/usr/bin/osascript -e "tell application id \"com.runningwithcrayons.Alfred\" to reload workflow \"${bid}\""
+
+# run trigger
+test -z "$trigger_query" &amp;&amp; {
+	/usr/bin/osascript -e "tell application id \"com.runningwithcrayons.Alfred\" to run trigger \"${trigger}\" in workflow \"${bid}\""
+} || {
+	/usr/bin/osascript -e "tell application id \"com.runningwithcrayons.Alfred\" to run trigger \"${trigger}\" in workflow \"${bid}\" with argument\"${trigger_query}\""
 }</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>5</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.utility.json</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>B56A2C8A-964E-4B12-98E0-F265F34E1F13</string>
+			<string>67801BE2-E5E0-425F-94C5-B29CC3BBD90A</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -660,29 +672,6 @@ variables={allvars}
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>/usr/bin/open "$1"</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>3458DD9D-B744-4AB4-A24A-0A50F68064C0</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>argument</key>
 				<string></string>
 				<key>passthroughargument</key>
@@ -703,39 +692,38 @@ variables={allvars}
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
+				<key>externaltriggerid</key>
+				<string>{var:trigger}</string>
+				<key>passinputasargument</key>
+				<true/>
+				<key>passvariables</key>
 				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>set -e
-
-value="$1"
-bid="${alfred_workflow_bundleid}"
-
-echo setting ${varname} to \"${value}\" ... &gt;&amp;2
-
-# update info.plist
-/usr/libexec/PlistBuddy -c "Set :variables:${varname} \"${value}\"" info.plist
-
-# tell Alfred to reload workflow
-/usr/bin/osascript -e "tell application id \"com.runningwithcrayons.Alfred\" to reload workflow \"${bid}\""
-
-# show configuration panel
-/usr/bin/osascript -e "tell application id \"com.runningwithcrayons.Alfred\" to run trigger \"config\" in workflow \"${bid}\""</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>5</integer>
+				<key>workflowbundleid</key>
+				<string>self</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.output.callexternaltrigger</string>
 			<key>uid</key>
-			<string>67801BE2-E5E0-425F-94C5-B29CC3BBD90A</string>
+			<string>5D7B7F22-0E9D-4FEC-886B-7B37DAF6A71A</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string>{var:trigger_query}</string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>C1CC6C51-731B-4972-942F-5A407208B50B</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -766,44 +754,39 @@ Configuration
 See included help file (enter ".u help" into Alfred).</string>
 	<key>uidata</key>
 	<dict>
-		<key>0BC0613A-8BD4-462B-8B98-2566278F953C</key>
-		<dict>
-			<key>note</key>
-			<string>Is trigger set?</string>
-			<key>xpos</key>
-			<integer>690</integer>
-			<key>ypos</key>
-			<integer>60</integer>
-		</dict>
 		<key>12890D35-22B2-47AB-A54A-3BF0C1F8841D</key>
 		<dict>
+			<key>note</key>
+			<string>Workflow settings</string>
 			<key>xpos</key>
 			<integer>270</integer>
 			<key>ypos</key>
-			<integer>240</integer>
+			<integer>220</integer>
 		</dict>
 		<key>26D6782B-964D-4B7F-A280-CBCEB7B008A6</key>
 		<dict>
 			<key>note</key>
-			<string>Is hide_alfred set?</string>
+			<string>hide_alfred=true</string>
 			<key>xpos</key>
-			<integer>690</integer>
+			<integer>665</integer>
 			<key>ypos</key>
-			<integer>175</integer>
+			<integer>260</integer>
 		</dict>
 		<key>305244D4-28CD-479F-A437-AB874B97A000</key>
 		<dict>
 			<key>xpos</key>
 			<integer>530</integer>
 			<key>ypos</key>
-			<integer>175</integer>
+			<integer>190</integer>
 		</dict>
 		<key>3458DD9D-B744-4AB4-A24A-0A50F68064C0</key>
 		<dict>
+			<key>note</key>
+			<string>Pass input to /usr/bin/open</string>
 			<key>xpos</key>
-			<integer>1000</integer>
+			<integer>1020</integer>
 			<key>ypos</key>
-			<integer>390</integer>
+			<integer>170</integer>
 		</dict>
 		<key>4A906369-B077-4300-9FB0-93C69DD9C985</key>
 		<dict>
@@ -812,14 +795,21 @@ See included help file (enter ".u help" into Alfred).</string>
 			<key>ypos</key>
 			<integer>60</integer>
 		</dict>
+		<key>5D7B7F22-0E9D-4FEC-886B-7B37DAF6A71A</key>
+		<dict>
+			<key>xpos</key>
+			<integer>1020</integer>
+			<key>ypos</key>
+			<integer>530</integer>
+		</dict>
 		<key>67801BE2-E5E0-425F-94C5-B29CC3BBD90A</key>
 		<dict>
 			<key>note</key>
-			<string>Change font and reload workflow</string>
+			<string>Change config, reload workflow, and run trigger</string>
 			<key>xpos</key>
-			<integer>1000</integer>
+			<integer>1020</integer>
 			<key>ypos</key>
-			<integer>525</integer>
+			<integer>345</integer>
 		</dict>
 		<key>7314F689-0081-4208-B395-5063E2A71F69</key>
 		<dict>
@@ -831,18 +821,18 @@ See included help file (enter ".u help" into Alfred).</string>
 		<key>887411E2-8BF2-4218-8B04-2D5B0DC36898</key>
 		<dict>
 			<key>xpos</key>
-			<integer>1000</integer>
+			<integer>1020</integer>
 			<key>ypos</key>
-			<integer>260</integer>
+			<integer>25</integer>
 		</dict>
 		<key>91C833C3-1CC0-4140-92A1-7A85413DD9CC</key>
 		<dict>
 			<key>note</key>
 			<string>Workflow actions</string>
 			<key>xpos</key>
-			<integer>650</integer>
+			<integer>645</integer>
 			<key>ypos</key>
-			<integer>290</integer>
+			<integer>55</integer>
 		</dict>
 		<key>A3BF1DED-3BDD-49A2-B001-6CD015F96673</key>
 		<dict>
@@ -858,15 +848,10 @@ See included help file (enter ".u help" into Alfred).</string>
 			<key>ypos</key>
 			<integer>240</integer>
 		</dict>
-		<key>B423EEED-BC4A-48C5-B7B1-499EE89E3848</key>
-		<dict>
-			<key>xpos</key>
-			<integer>1000</integer>
-			<key>ypos</key>
-			<integer>30</integer>
-		</dict>
 		<key>B564A9DA-3F70-471A-8DF3-8A537CBF2975</key>
 		<dict>
+			<key>note</key>
+			<string>Settings details</string>
 			<key>xpos</key>
 			<integer>270</integer>
 			<key>ypos</key>
@@ -875,39 +860,41 @@ See included help file (enter ".u help" into Alfred).</string>
 		<key>B56A2C8A-964E-4B12-98E0-F265F34E1F13</key>
 		<dict>
 			<key>xpos</key>
-			<integer>875</integer>
+			<integer>895</integer>
 			<key>ypos</key>
-			<integer>290</integer>
+			<integer>55</integer>
 		</dict>
-		<key>D025E895-3B47-4A1D-A37A-7A57A0A532C7</key>
-		<dict>
-			<key>note</key>
-			<string>Script Filter</string>
-			<key>xpos</key>
-			<integer>270</integer>
-			<key>ypos</key>
-			<integer>60</integer>
-		</dict>
-		<key>E0379452-6CAF-4CAB-82E7-A3EF0DCC6E3F</key>
+		<key>C1CC6C51-731B-4972-942F-5A407208B50B</key>
 		<dict>
 			<key>note</key>
 			<string>Set {query} from trigger_query</string>
 			<key>xpos</key>
-			<integer>875</integer>
+			<integer>895</integer>
+			<key>ypos</key>
+			<integer>560</integer>
+		</dict>
+		<key>D025E895-3B47-4A1D-A37A-7A57A0A532C7</key>
+		<dict>
+			<key>note</key>
+			<string>Unicode search</string>
+			<key>xpos</key>
+			<integer>270</integer>
 			<key>ypos</key>
 			<integer>60</integer>
 		</dict>
 		<key>F52BC7E2-4307-4A55-9A30-367D05308B5F</key>
 		<dict>
 			<key>xpos</key>
-			<integer>875</integer>
+			<integer>750</integer>
 			<key>ypos</key>
-			<integer>175</integer>
+			<integer>260</integer>
 		</dict>
 	</dict>
 	<key>variables</key>
 	<dict>
 		<key>BACKGROUND_COLOUR</key>
+		<string></string>
+		<key>DISABLED</key>
 		<string></string>
 		<key>FONT_NAME</key>
 		<string></string>
@@ -924,15 +911,16 @@ See included help file (enter ".u help" into Alfred).</string>
 	</dict>
 	<key>variablesdontexport</key>
 	<array>
-		<string>MOD_CMD_OPT</string>
 		<string>BACKGROUND_COLOUR</string>
+		<string>MOD_CMD_OPT</string>
 		<string>FONT_NAME</string>
-		<string>TEXT_SIZE</string>
 		<string>TEXT_COLOUR</string>
+		<string>TEXT_SIZE</string>
+		<string>DISABLED</string>
 	</array>
 	<key>version</key>
 	<string>1.0.0</string>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/deanishe/alfred-unicode/</string>
 </dict>
 </plist>
