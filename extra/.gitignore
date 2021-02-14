@@ -1,3 +1,2 @@
-/fonts.txt
-ucd.nounihan.*
-*.sqlite3
+/html_entities.json
+.ipynb_checkpoints

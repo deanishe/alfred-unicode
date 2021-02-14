@@ -1,0 +1,72 @@
+#!/bin/zsh
+
+# _error <arg>.. | Write red "error" and args to STDERR
+_error() {
+  echo $(print -P '%F{red}error%f') "$@" >&2
+}
+
+# _fail <arg>.. | Write red "error" and args to STDERR, then exit with status 1
+_fail() {
+  _error "$@"
+  exit 1
+}
+
+# _staged <path> | Is path staged?
+_staged() {
+  local p="$1"
+  git diff --name-only --cached | grep --silent "$p"
+  return $?
+}
+
+exec 1>&2 # Redirect output to stderr.
+
+# exit if info.plist isn't staged
+# _staged info.plist || exit 0
+
+root="$( git rev-parse --show-toplevel )"
+ip="${root}/info.plist"
+
+# Fail if info.plist can't be found
+test -f "$ip" || { _fail "info.plist not found"; }
+
+# _getvar <name> | Retrieve value for variable <name>
+_getvar() {
+  local n=$1
+  /usr/libexec/PlistBuddy -c "Print :variables:$n" "$ip"
+}
+
+# _setvar <name> <value> | Set value for variable <name>
+# _setvar() {
+#   local n=$1
+#   local v=$2
+#   /usr/libexec/PlistBuddy -c "Set :variables:$n \"$v\"" "$ip"
+# }
+
+# exit if a variable is set
+names=(FONT_NAME TEXT_SIZE TEXT_COLOUR BACKGROUND_COLOUR DISABLED ES6_MODE)
+for name in $names; do
+  test -n "$( _getvar $name )" && _fail "info.plist: $name is not empty"
+done
+
+# ------------------------------
+# Linting
+# ------------------------------
+if hash golint; then
+	golint -set_exit_status ./...
+	[[ $? = 0 ]] || { _fail "lint: golint failed"; }
+fi
+
+if hash golangci-lint; then
+	golangci-lint run -c .golangci.toml
+	[[ $? = 0 ]] || { _fail "lint: golangci-lint failed"; }
+fi
+
+# delete errant images
+find "$root" -type f \( -name slice1.png -or -name slice2.png \) -delete
+
+set -e
+cd "$root"
+gofmt -w -s **/*.go
+go mod tidy -v
+cd -
+exit 0

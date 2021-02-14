@@ -1,6 +1,8 @@
 The MIT License (MIT)
 
-Copyright (c) 2015 deanishe@deanishe.net
+Alfred Unicode -- Explore Unicode characters in Alfred
+
+Copyright (c) 2021 Dean Jackson <deanishe@deanishe.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

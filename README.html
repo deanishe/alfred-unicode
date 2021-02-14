@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Alfred Unicode Search</title>
+	<style>
+/* Basic adjustments for text and link colors, etc. */
+.markdown-body {
+	color: #373a3c;
+}
+.markdown-body a {
+	color: #0275d8;
+	text-decoration: none;
+}
+.markdown-body a:focus, .markdown-body a:hover {
+	color: #014c8c;
+	text-decoration: underline;
+}
+
+code,pre{tab-size:4}
+
+tt,code,pre{font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;font-size:12px}
+pre{margin-top:0;margin-bottom:0}
+
+blockquote{margin:0}
+
+table{border-collapse:collapse;border-spacing:0}
+td,th{padding:0}
+
+.markdown-body{overflow:hidden;font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;word-wrap:break-word}.markdown-body>*:first-child{margin-top:0 !important}.markdown-body>*:last-child{margin-bottom:0 !important}.markdown-body .absent{color:#c00}.markdown-body .anchor{position:absolute;top:10;bottom:0;left:0;display:block;padding-right:6px;padding-left:30px;margin-left:-30px}.markdown-body .anchor:focus{outline:none}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{position:relative;margin-top:1em;margin-bottom:16px;font-weight:bold;line-height:1.4}.markdown-body h1 .octicon-link,.markdown-body h2 .octicon-link,.markdown-body h3 .octicon-link,.markdown-body h4 .octicon-link,.markdown-body h5 .octicon-link,.markdown-body h6 .octicon-link{display:none;color:#000;vertical-align:middle}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{height:1em;padding-left:8px;margin-left:-30px;line-height:1;text-decoration:none}.markdown-body h1:hover .anchor .octicon-link,.markdown-body h2:hover .anchor .octicon-link,.markdown-body h3:hover .anchor .octicon-link,.markdown-body h4:hover .anchor .octicon-link,.markdown-body h5:hover .anchor .octicon-link,.markdown-body h6:hover .anchor .octicon-link{display:inline-block}.markdown-body h1 tt,.markdown-body h1 code,.markdown-body h2 tt,.markdown-body h2 code,.markdown-body h3 tt,.markdown-body h3 code,.markdown-body h4 tt,.markdown-body h4 code,.markdown-body h5 tt,.markdown-body h5 code,.markdown-body h6 tt,.markdown-body h6 code{font-size:inherit}.markdown-body h1{padding-bottom:0.3em;font-size:2.25em;line-height:1.2;border-bottom:1px solid #eee}.markdown-body h2{padding-bottom:0.3em;font-size:1.75em;line-height:1.225;border-bottom:1px solid #eee}.markdown-body h3{font-size:1.5em;line-height:1.43}.markdown-body h4{font-size:1.25em}.markdown-body h5{font-size:1em}.markdown-body h6{font-size:1em;color:#777}.markdown-body p,.markdown-body blockquote,.markdown-body ul,.markdown-body ol,.markdown-body dl,.markdown-body table,.markdown-body pre{margin-top:0;margin-bottom:16px}.markdown-body hr{height:4px;padding:0;margin:16px 0;background-color:#e7e7e7;border:0 none}.markdown-body ul,.markdown-body ol{padding-left:2em}.markdown-body ul.no-list,.markdown-body ol.no-list{padding:0;list-style-type:none}.markdown-body ul ul,.markdown-body ul ol,.markdown-body ol ol,.markdown-body ol ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body blockquote{padding:0 15px;color:#777;border-left:4px solid #ddd}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:bold}.markdown-body table th,.markdown-body table td{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.markdown-body img{max-width:100%;-moz-box-sizing:border-box;box-sizing:border-box}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:0;padding-top:0.2em;padding-bottom:0.2em;margin:0;font-size:85%;background-color:rgba(0,0,0,0.04);border-radius:3px}.markdown-body code:before,.markdown-body code:after,.markdown-body tt:before,.markdown-body tt:after{letter-spacing:-0.2em;content:"\00a0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body pre{word-wrap:normal}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:before,.markdown-body pre code:after,.markdown-body pre tt:before,.markdown-body pre tt:after{content:normal}
+
+.highlight{background:#fff}.highlight .h{color:#333;font-style:normal;font-weight:normal}.highlight .mf,.highlight .mh,.highlight .mi,.highlight .mo,.highlight .il,.highlight .m{color:#945277}.highlight .s,.highlight .sb,.highlight .sc,.highlight .sd,.highlight .s2,.highlight .se,.highlight .sh,.highlight .si,.highlight .sx,.highlight .s1{color:#df5000}.highlight .kc,.highlight .kd,.highlight .kn,.highlight .kp,.highlight .kr,.highlight .kt,.highlight .k,.highlight .o{font-weight:bold}.highlight .kt{color:#458}.highlight .c,.highlight .cm,.highlight .c1{color:#998;font-style:italic}.highlight .cp,.highlight .cs{color:#999;font-weight:bold}.highlight .cs{font-style:italic}.highlight .n{color:#333}.highlight .na,.highlight .nv,.highlight .vc,.highlight .vg,.highlight .vi{color:#008080}.highlight .nb{color:#0086B3}.highlight .nc{color:#458;font-weight:bold}.highlight .no{color:#094e99}.highlight .ni{color:#800080}.highlight .ne{color:#990000;font-weight:bold}.highlight .nf{color:#945277;font-weight:bold}.highlight .nn{color:#555}.highlight .nt{color:#000080}.highlight .err{color:#a61717;background-color:#e3d2d2}.highlight .gd{color:#000;background-color:#fdd}.highlight .gd .x{color:#000;background-color:#faa}.highlight .ge{font-style:italic}.highlight .gr{color:#aa0000}.highlight .gh{color:#999}.highlight .gi{color:#000;background-color:#dfd}.highlight .gi .x{color:#000;background-color:#afa}.highlight .go{color:#888}.highlight .gp{color:#555}.highlight .gs{font-weight:bold}.highlight .gu{color:#800080;font-weight:bold}.highlight .gt{color:#aa0000}.highlight .ow{font-weight:bold}.highlight .w{color:#bbb}.highlight .sr{color:#017936}.highlight .ss{color:#8b467f}.highlight .bp{color:#999}.highlight .gc{color:#999;background-color:#EAF2F5}.type-csharp .highlight .k{color:#0000FF}.type-csharp .highlight .kt{color:#0000FF}.type-csharp .highlight .nf{color:#000000;font-weight:normal}.type-csharp .highlight .nc{color:#2B91AF}.type-csharp .highlight .nn{color:#000000}.type-csharp .highlight .s{color:#A31515}.type-csharp .highlight .sc{color:#A31515}
+
+#wrapper {
+  margin: 2em auto;
+  max-width: 900px;
+}
+
+.centred {
+	text-align: center !important;
+}
+
+	</style>
+</head>
+<body>
+<div id="wrapper">
+<div class="markdown-body">
+<div class="centred">
+    <img width="128" height="128" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/icons/icon-large.png" alt="workflow icon" title="workflow icon">
+</div>
+<h1><a name="alfred-unicode" class="anchor" href="#alfred-unicode" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Alfred Unicode</h1>
+
+<p>Search Unicode and copy/paste characters as HTML entities, Go or Python string literals, hexadecimal numbers etc. in Alfred 4+.</p>
+
+<div class="centred">
+    <img width="570" height="505" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/demo.gif" alt="animated workflow demo" title="animated workflow demo">
+</div>
+
+
+
+<ul>
+<li><a href="#installation" rel="nofollow">Installation</a></li>
+<li><a href="#usage" rel="nofollow">Usage</a>
+
+<ul>
+<li><a href="#input" rel="nofollow">Input</a></li>
+</ul></li>
+<li><a href="#configuration" rel="nofollow">Configuration</a>
+
+<ul>
+<li><a href="#modifiers" rel="nofollow">Modifiers</a></li>
+</ul></li>
+<li><a href="#formats" rel="nofollow">Formats</a>
+
+<ul>
+<li><a href="#notes" rel="nofollow">Notes</a></li>
+</ul></li>
+<li><a href="#licensing--thanks" rel="nofollow">Licensing &amp; thanks</a></li>
+</ul>
+
+
+
+<p><a id="installation"></a></p>
+<h2><a name="installation" class="anchor" href="#installation" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Installation</h2>
+
+<p>Download the latest version of the workflow from the <a href="https://github.com/deanishe/alfred-unicode/releases/latest" rel="nofollow">releases page</a>, then double-click the <code>Alfred Unicode-X.X.X.alfredworkflow</code> file to install.</p>
+
+<p><a id="usage"></a></p>
+<h2><a name="usage" class="anchor" href="#usage" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Usage</h2>
+
+<ul>
+<li><code>.u &lt;query&gt;</code> — Search Unicode characters (see <a href="#input" rel="nofollow">input</a> below).
+
+<ul>
+<li><code>⇧</code> or <code>⌘Y</code> — Quick Look image of selected character.</li>
+<li><code>↩</code> or <code>⇥</code> — View selected character in various formats (CSS, HTML, Python etc.).
+
+<ul>
+<li><code>↩</code> or <code>⌘C</code> — Copy selected format to clipboard.</li>
+<li><code>⌘↩</code> — Paste selected format to frontmost application.</li>
+</ul></li>
+<li><code>⌘↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste UTF-8 character.</li>
+<li><code>⌥↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste Python Unicode escape.</li>
+<li><code>^↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste Unicode ID (U+00AB).</li>
+<li><code>⇧↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste HTML hexadecimal entity.</li>
+<li><code>...</code> — Add your own hotkeys (see <a href="#modifiers" rel="nofollow">Modifiers</a>).</li>
+</ul></li>
+<li><code>.u help</code> — Open workflow help file</li>
+<li><code>.u prefs</code> — View workflow configuration
+
+<ul>
+<li><code>search</code> — Enter keyword <code>search</code> to return to Unicode search.</li>
+<li><strong>Workflow Is Up To Date</strong> / <strong>Update Available!</strong> — Whether a new version of the workflow is available. Action this item to force an update check.</li>
+<li><strong>Formatters</strong> — Disable formatters you don&#39;t want.
+
+<ul>
+<li><code>↩</code> — To view formatter list and to toggle formatters on/off.</li>
+</ul></li>
+<li><strong>ES6 Mode</strong> — Use ES6-style <code>\u{1F680}</code> escapes in JS for characters above 0xFFFF.</li>
+<li><strong>Font: Arial Unicode MS (default)</strong> — Font used to generate preview images.
+
+<ul>
+<li><code>↩</code> — Choose a different font</li>
+<li><code>⌘↩</code> — Reset to default</li>
+</ul></li>
+<li><strong>Text Colour: #FF2FA9 (default)</strong> — Colour of text in preview images.
+
+<ul>
+<li><code>↩</code> — Choose a different colour</li>
+<li><code>⌘↩</code> — Reset to default</li>
+</ul></li>
+<li><strong>Background Colour: transparent (default)</strong> — Colour of background of preview images.
+
+<ul>
+<li><code>↩</code> — Choose a different colour</li>
+<li><code>⌘↩</code> — Reset to default</li>
+</ul></li>
+<li><strong>Documentation</strong> — Open this page in your browser.</li>
+<li><strong>Report Bug</strong> — Open <a href="https://github.com/deanishe/alfred-unicode/issues" rel="nofollow">workflow issue tracker</a> in your browser.</li>
+<li><strong>Delete Cached Data</strong> — Delete Unicode database and cached preview icons, forcing the workflow to re-create them.</li>
+</ul></li>
+</ul>
+
+<p>Configure the included Hotkey to allow you to search directly from other applications (select a character or Unicode escape and hit the Hotkey).</p>
+
+<p><a id="input"></a></p>
+<h3><a name="input" class="anchor" href="#input" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Input</h3>
+
+<p>Use the special search queries <code>search</code>, <code>prefs</code> and <code>help</code> to navigate to the workflow&#39;s search, preferences and help file respectively. These work throughout the workflow.</p>
+
+<p><strong>Single-character queries</strong> are treated as exact matches for their own codepoint: if you enter <code>p</code>, you will only see the result for U+0070 <code>LATIN SMALL LETTER P</code>. To search for <em>all</em> P&#39;s, add a space after <code>p</code> (i.e. <code>p</code>).</p>
+
+<p>You can search for characters based on their <strong>names</strong> (e.g. <code>LATIN CAPITAL LETTER U WITH DIAERESIS</code>), <strong>aliases</strong> (e.g. <code>EOL</code>/<code>LF</code>/<code>NL</code>/<code>NEW LINE</code> for <code>LINE FEED (LF)</code>), <strong>hexadecimal</strong> (e.g. <code>fe</code>, <code>00fe</code>, <code>0xfe</code>) or <strong>decimal</strong> (e.g. <code>32</code>), or HTML entity name (e.g. <code>raquo</code>, <code>Uuml</code>).</p>
+
+<p>The workflow understands all formats it generates, so you can also enter a Go string escape (e.g. <code>\U0001F37B</code>) or Unicode ID (e.g. <code>U+1F4A9</code>). Configure the included Hotkey to be able to look up escapes directly from your editor.</p>
+
+<p>You can restrict search to a particular field with the syntax <code>&lt;field&gt;:&lt;query&gt;</code>, e.g. <code>entity:copy</code> to find characters whose HTML entity name matches <code>copy</code>. The available fields are:</p>
+
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Character name, e.g. <code>PILE OF POO</code></td>
+</tr>
+
+<tr>
+<td><code>aliases</code></td>
+<td>Alternate names, e.g. <code>BS</code> for <code>BACKSPACE</code></td>
+</tr>
+
+<tr>
+<td><code>hex</code></td>
+<td>4+ character hexadecimal representation, e.g. <code>00FE</code></td>
+</tr>
+
+<tr>
+<td><code>dec</code></td>
+<td>Decimal representation, e.g. <code>254</code></td>
+</tr>
+
+<tr>
+<td><code>entity</code></td>
+<td>HTML entity name (if any), e.g. <code>szlig</code></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Note</strong>: All fields are treated as text, so <code>hex:20</code> will return characters <code>0x20HH</code>, <em>not</em> <code>0x20</code> (<code>dec:32</code> will match <code>0x20</code>, but also <code>32NN</code>). Use <code>0x</code> format to specify that a query is hexadecimal, i.e. <code>0x20</code>. Append a space to <code>dec:NN</code> queries to only match that specific character (i.e. <code>dec:32</code>).</p>
+
+<p>Finally, you can also use <code>AND</code> or <code>OR</code> in your queries, e.g. <code>arrow AND left OR right</code> (note <code>AND</code> and <code>OR</code> <strong>must</strong> be uppercase).</p>
+
+<p><a id="configuration"></a></p>
+<h2><a name="configuration" class="anchor" href="#configuration" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Configuration</h2>
+
+<p>The workflow can be configured via several <a href="https://www.alfredapp.com/help/workflows/advanced/variables/#environment" rel="nofollow">workflow environment variables</a>. The most important ones can be set in the workflow by entering the query &#34;prefs&#34; in the Unicode search.</p>
+
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>BACKGROUND_COLOUR</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Background colour of generated preview images (search result icons). Uses transparent if unset.</td>
+</tr>
+
+<tr>
+<td><code>DISABLED</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Comma-separated list of disabled formatters.</td>
+</tr>
+
+<tr>
+<td><code>ES6_MODE</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Use ES6-style escapes for characters over 0xFFFF. If unset, surrogate pairs are used.</td>
+</tr>
+
+<tr>
+<td><code>FONT_NAME</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Font used to generate preview images. Uses &#34;Arial Unicode MS&#34; if unset.</td>
+</tr>
+
+<tr>
+<td><code>ICON_SIZE</code></td>
+<td><code>128</code></td>
+<td>Width/height of preview images.</td>
+</tr>
+
+<tr>
+<td><code>RESIZE_FACTOR</code></td>
+<td><code>1.0</code></td>
+<td>Use larger/smaller font size in preview images.</td>
+</tr>
+
+<tr>
+<td><code>TEXT_COLOUR</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Text colour for preview images. Uses <code>#FF2FA9</code> if unset.</td>
+</tr>
+
+<tr>
+<td><code>TEXT_SIZE</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Font size for preview images. Calculated automatically if unset.</td>
+</tr>
+</tbody>
+</table>
+
+<p>By default, the font size is calculated automatically based on the size of the image and the text. If the text is consistently too small or large with a particular font, you can increase/decrease <code>RESIZE_FACTOR</code> to increase/decrease the size of the text.</p>
+
+<p>Alternatively, you can force a specific font size for all images by setting <code>TEXT_SIZE</code>.</p>
+
+<p><a id="modifiers"></a></p>
+<h3><a name="modifiers" class="anchor" href="#modifiers" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Modifiers</h3>
+
+<p>You can assign your own modifiers to the search results to copy/paste quickly in your preferred format.</p>
+
+<p>To assign a format to a modifier, add a new <a href="https://www.alfredapp.com/help/workflows/advanced/variables/#environment" rel="nofollow">workflow environment variable</a> with the name <code>MOD_&lt;KEY1&gt;[_&lt;KEY2&gt;[_&lt;KEY3&gt;]]</code> and set its value to the <a href="#formats" rel="nofollow">short name</a> of the desired format.</p>
+
+<p>For example, to override <code>⌘↩</code> to copy/paste JavaScript instead of the UTF-8 character, add a new variable named <code>MOD_CMD</code> with the value <code>javascript</code>. To re-assign UTF-8 character to <code>⌥⌘↩</code>, add a new variable named <code>MOD_CMD_OPT</code> (or <code>MOD_OPT_CMD</code> … doesn&#39;t matter) with the value <code>character</code>.</p>
+
+<p>Valid modifiers are <code>CMD</code>, <code>OPT</code>, <code>SHIFT</code>, <code>CTRL</code>.</p>
+
+<p><a id="formats"></a></p>
+<h2><a name="formats" class="anchor" href="#formats" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Formats</h2>
+
+<p>You can copy (and paste) each character in some or all of the following formats:</p>
+
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Short name</th>
+<th>Example</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>UTF-8 character</td>
+<td><code>character</code></td>
+<td><code>🍻</code></td>
+</tr>
+
+<tr>
+<td>Character name</td>
+<td><code>name</code></td>
+<td><code>CLINKING BEER MUGS</code></td>
+</tr>
+
+<tr>
+<td>Unicode ID</td>
+<td><code>unicode</code></td>
+<td><code>U+1F37B</code></td>
+</tr>
+
+<tr>
+<td>Hex literal</td>
+<td><code>hexadecimal</code></td>
+<td><code>0x1F37B</code></td>
+</tr>
+
+<tr>
+<td>Decimal literal</td>
+<td><code>decimal</code></td>
+<td><code>127867</code></td>
+</tr>
+
+<tr>
+<td>Python or Go escaped string</td>
+<td><code>python</code></td>
+<td><code>\U0001F37B</code></td>
+</tr>
+
+<tr>
+<td>URL-encoded</td>
+<td><code>urlencoded</code></td>
+<td><code>%F0%9F%8D%BB</code></td>
+</tr>
+
+<tr>
+<td>JavaScript escaped string</td>
+<td><code>javascript</code></td>
+<td><code>\u{1F37B}</code></td>
+</tr>
+
+<tr>
+<td>CSS entity</td>
+<td><code>css</code></td>
+<td><code>\01F37B</code></td>
+</tr>
+
+<tr>
+<td>HTML entity, hexadecimal</td>
+<td><code>htmlhex</code></td>
+<td><code>&amp;#x1F37B;</code></td>
+</tr>
+
+<tr>
+<td>HTML entity, decimal</td>
+<td><code>htmldec</code></td>
+<td><code>&amp;#127867;</code></td>
+</tr>
+
+<tr>
+<td>HTML entity, named</td>
+<td><code>htmlnamed</code></td>
+<td><code>&amp;szlig;</code></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>TIP</strong>: You can get the short name for a format by using <code>⌘C</code> on its item in the detail view.</p>
+
+<p><a id="notes"></a></p>
+<h3><a name="notes" class="anchor" href="#notes" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Notes</h3>
+
+<ul>
+<li>The Python/Go formatter outputs <code>\u00AB</code>-style escapes for characters up to 0xFFFF and <code>\U000ABCDE</code>-style escapes for higher ones.</li>
+<li>The JavaScript formatter outputs <code>\xAB</code>-style escapes for characters up to 0xFF, <code>\uABCD</code>-style escapes for characters up to 0xFFFF, and surrogate pairs for characters above that. Turn on <strong>ES6 Mode</strong> in the workflow settings to use ES6 <code>\u{1ABCD}</code>-style escapes instead of surrogate pairs.</li>
+</ul>
+
+<p><a id="licensing--thanks"></a></p>
+<h2><a name="licensing-thanks" class="anchor" href="#licensing-thanks" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Licensing &amp; thanks</h2>
+
+<ul>
+<li>The workflow is released under the <a href="LICENCE.txt" rel="nofollow">MIT licence</a>.</li>
+<li>It is heavily based on the <a href="https://github.com/deanishe/awgo" rel="nofollow">AwGo</a> library, also MIT licensed.</li>
+<li>The workflow icons are based on <a href="https://github.com/FortAwesome/Font-Awesome" rel="nofollow">Font Awesome</a>, released under the <a href="https://creativecommons.org/licenses/by/4.0/legalcode" rel="nofollow">Creative Commons Attribution 4.0 licence</a>.</li>
+</ul>
+
+</div>
+</div>
+</body>
+</html>
