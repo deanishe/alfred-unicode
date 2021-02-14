@@ -50,7 +50,7 @@ td,th{padding:0}
 <h1><a name="alfred-unicode" class="anchor" href="#alfred-unicode" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 Alfred Unicode</h1>
 
-<p>Search Unicode and copy/paste codepoints as HTML entities, Go or Python string literals, hexadecimal numbers etc. in Alfred 4+.</p>
+<p>Search Unicode and copy/paste characters as HTML entities, Go or Python string literals, hexadecimal numbers etc. in Alfred 4+.</p>
 
 <div class="centred">
     <img width="570" height="505" src="https://raw.githubusercontent.com/deanishe/alfred-unicode/master/demo.gif" alt="animated workflow demo" title="animated workflow demo">
@@ -70,7 +70,11 @@ Alfred Unicode</h1>
 <ul>
 <li><a href="#modifiers" rel="nofollow">Modifiers</a></li>
 </ul></li>
-<li><a href="#formats" rel="nofollow">Formats</a></li>
+<li><a href="#formats" rel="nofollow">Formats</a>
+
+<ul>
+<li><a href="#notes" rel="nofollow">Notes</a></li>
+</ul></li>
 <li><a href="#licensing--thanks" rel="nofollow">Licensing &amp; thanks</a></li>
 </ul>
 
@@ -87,17 +91,17 @@ Installation</h2>
 Usage</h2>
 
 <ul>
-<li><code>.u &lt;query&gt;</code> — Search Unicode codepoints (see <a href="#input" rel="nofollow">input</a> below).
+<li><code>.u &lt;query&gt;</code> — Search Unicode characters (see <a href="#input" rel="nofollow">input</a> below).
 
 <ul>
-<li><code>⇧</code> or <code>⌘Y</code> — Quick Look image of selected codepoint.</li>
-<li><code>↩</code> or <code>⇥</code> — View selected codepoint in various formats (CSS, HTML, Python etc.).
+<li><code>⇧</code> or <code>⌘Y</code> — Quick Look image of selected character.</li>
+<li><code>↩</code> or <code>⇥</code> — View selected character in various formats (CSS, HTML, Python etc.).
 
 <ul>
 <li><code>↩</code> or <code>⌘C</code> — Copy selected format to clipboard.</li>
 <li><code>⌘↩</code> — Paste selected format to frontmost application.</li>
 </ul></li>
-<li><code>⌘↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste Unicode character.</li>
+<li><code>⌘↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste UTF-8 character.</li>
 <li><code>⌥↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste Python Unicode escape.</li>
 <li><code>^↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste Unicode ID (U+00AB).</li>
 <li><code>⇧↩</code> (<a href="#modifiers" rel="nofollow">configurable</a>) — Copy/paste HTML hexadecimal entity.</li>
@@ -114,6 +118,7 @@ Usage</h2>
 <ul>
 <li><code>↩</code> — To view formatter list and to toggle formatters on/off.</li>
 </ul></li>
+<li><strong>ES6 Mode</strong> — Use ES6-style <code>\u{1F680}</code> escapes in JS for characters above 0xFFFF.</li>
 <li><strong>Font: Arial Unicode MS (default)</strong> — Font used to generate preview images.
 
 <ul>
@@ -144,11 +149,55 @@ Usage</h2>
 <h3><a name="input" class="anchor" href="#input" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 Input</h3>
 
-<p>Apart from the names of codepoints, you can search by hexadecimal or decimal values (e.g. <code>fe</code>, <code>00fe</code>, <code>32</code> etc.). The workflow will also accept any format it generates, such as Go string escapes (<code>\U0001F37B</code>).</p>
+<p>Use the special search queries <code>search</code>, <code>prefs</code> and <code>help</code> to navigate to the workflow&#39;s search, preferences and help file respectively. These work throughout the workflow.</p>
 
-<p>As the workflow uses a full-text search database, you can also use <code>AND</code> or <code>OR</code> in your queries, e.g. <code>arrow AND left OR right</code> (note <code>AND</code> and <code>OR</code> <strong>must</strong> be uppercase).</p>
+<p><strong>Single-character queries</strong> are treated as exact matches for their own codepoint: if you enter <code>p</code>, you will only see the result for U+0070 <code>LATIN SMALL LETTER P</code>. To search for <em>all</em> P&#39;s, add a space after <code>p</code> (i.e. <code>p</code>).</p>
 
-<p>Use the special search queries <code>search</code>, <code>prefs</code> and <code>help</code> to navigate to the workflow&#39;s search, preferences and help file respectively.</p>
+<p>You can search for characters based on their <strong>names</strong> (e.g. <code>LATIN CAPITAL LETTER U WITH DIAERESIS</code>), <strong>aliases</strong> (e.g. <code>EOL</code>/<code>LF</code>/<code>NL</code>/<code>NEW LINE</code> for <code>LINE FEED (LF)</code>), <strong>hexadecimal</strong> (e.g. <code>fe</code>, <code>00fe</code>, <code>0xfe</code>) or <strong>decimal</strong> (e.g. <code>32</code>), or HTML entity name (e.g. <code>raquo</code>, <code>Uuml</code>).</p>
+
+<p>The workflow understands all formats it generates, so you can also enter a Go string escape (e.g. <code>\U0001F37B</code>) or Unicode ID (e.g. <code>U+1F4A9</code>). Configure the included Hotkey to be able to look up escapes directly from your editor.</p>
+
+<p>You can restrict search to a particular field with the syntax <code>&lt;field&gt;:&lt;query&gt;</code>, e.g. <code>entity:copy</code> to find characters whose HTML entity name matches <code>copy</code>. The available fields are:</p>
+
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Character name, e.g. <code>PILE OF POO</code></td>
+</tr>
+
+<tr>
+<td><code>aliases</code></td>
+<td>Alternate names, e.g. <code>BS</code> for <code>BACKSPACE</code></td>
+</tr>
+
+<tr>
+<td><code>hex</code></td>
+<td>4+ character hexadecimal representation, e.g. <code>00FE</code></td>
+</tr>
+
+<tr>
+<td><code>dec</code></td>
+<td>Decimal representation, e.g. <code>254</code></td>
+</tr>
+
+<tr>
+<td><code>entity</code></td>
+<td>HTML entity name (if any), e.g. <code>szlig</code></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Note</strong>: All fields are treated as text, so <code>hex:20</code> will return characters <code>0x20HH</code>, <em>not</em> <code>0x20</code> (<code>dec:32</code> will match <code>0x20</code>, but also <code>32NN</code>). Use <code>0x</code> format to specify that a query is hexadecimal, i.e. <code>0x20</code>. Append a space to <code>dec:NN</code> queries to only match that specific character (i.e. <code>dec:32</code>).</p>
+
+<p>Finally, you can also use <code>AND</code> or <code>OR</code> in your queries, e.g. <code>arrow AND left OR right</code> (note <code>AND</code> and <code>OR</code> <strong>must</strong> be uppercase).</p>
 
 <p><a id="configuration"></a></p>
 <h2><a name="configuration" class="anchor" href="#configuration" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
@@ -170,6 +219,18 @@ Configuration</h2>
 <td><code>BACKGROUND_COLOUR</code></td>
 <td><code>&lt;empty&gt;</code></td>
 <td>Background colour of generated preview images (search result icons). Uses transparent if unset.</td>
+</tr>
+
+<tr>
+<td><code>DISABLED</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Comma-separated list of disabled formatters.</td>
+</tr>
+
+<tr>
+<td><code>ES6_MODE</code></td>
+<td><code>&lt;empty&gt;</code></td>
+<td>Use ES6-style escapes for characters over 0xFFFF. If unset, surrogate pairs are used.</td>
 </tr>
 
 <tr>
@@ -224,7 +285,7 @@ Modifiers</h3>
 <h2><a name="formats" class="anchor" href="#formats" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
 Formats</h2>
 
-<p>You can copy (and paste) each codepoint in some or all of the following formats:</p>
+<p>You can copy (and paste) each character in some or all of the following formats:</p>
 
 <table>
 <thead>
@@ -243,7 +304,7 @@ Formats</h2>
 </tr>
 
 <tr>
-<td>Codepoint name</td>
+<td>Character name</td>
 <td><code>name</code></td>
 <td><code>CLINKING BEER MUGS</code></td>
 </tr>
@@ -312,7 +373,14 @@ Formats</h2>
 
 <p><strong>TIP</strong>: You can get the short name for a format by using <code>⌘C</code> on its item in the detail view.</p>
 
-<p><strong>NOTE:</strong> The JavaScript formatter outputs <code>\uABCD</code>-style escapes for codepoints up to 0xFFFF, and ES6 <code>\u{1ABCD}</code>-style escapes for codepoints above that.</p>
+<p><a id="notes"></a></p>
+<h3><a name="notes" class="anchor" href="#notes" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+Notes</h3>
+
+<ul>
+<li>The Python/Go formatter outputs <code>\u00AB</code>-style escapes for characters up to 0xFFFF and <code>\U000ABCDE</code>-style escapes for higher ones.</li>
+<li>The JavaScript formatter outputs <code>\xAB</code>-style escapes for characters up to 0xFF, <code>\uABCD</code>-style escapes for characters up to 0xFFFF, and surrogate pairs for characters above that. Turn on <strong>ES6 Mode</strong> in the workflow settings to use ES6 <code>\u{1ABCD}</code>-style escapes instead of surrogate pairs.</li>
+</ul>
 
 <p><a id="licensing--thanks"></a></p>
 <h2><a name="licensing-thanks" class="anchor" href="#licensing-thanks" rel="nofollow" aria-hidden="true"><span class="octicon octicon-link"></span></a>

@@ -28,13 +28,13 @@ type Codepoint struct {
 	Category       string  `db:"category"`
 	Name           string  `db:"name"`
 	Aliases        string  `db:"aliases"`
-	HTMLEntityName string  `db:"html_entity"`
+	HTMLEntityName string  `db:"entity"`
 	Rank           float64 `db:"rank"`
 }
 
 // String implements Stringer.
 func (cp Codepoint) String() string {
-	return fmt.Sprintf("%08X %q", cp.Dec, cp.Name)
+	return fmt.Sprintf("U+%04X %q", cp.Dec, cp.Name)
 }
 
 // IsZero returns true if Codepoint is zero.

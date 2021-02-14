@@ -52,7 +52,7 @@ func (repo *Repo) Search(query string) ([]Codepoint, error) {
 		cps []Codepoint
 		q   = `
 			SELECT
-				c.hex, c.dec, c.category, c.name, c.aliases, c.html_entity,
+				c.hex, c.dec, c.category, c.name, c.aliases, c.entity,
 				s.rank
 			FROM codepoints AS c
 			INNER JOIN (
@@ -68,7 +68,7 @@ func (repo *Repo) Search(query string) ([]Codepoint, error) {
 		// search for a single character
 		q2 = `
 			SELECT
-				c.hex, c.dec, c.category, c.name, c.aliases, c.html_entity
+				c.hex, c.dec, c.category, c.name, c.aliases, c.entity
 			FROM codepoints AS c
 			WHERE c.dec = ?
 		`
@@ -115,9 +115,9 @@ func (repo *Repo) Import(cps []Codepoint) error {
 func (repo *Repo) importCodepoints(cps []Codepoint) error {
 	var (
 		q = `INSERT OR REPLACE INTO codepoints (
-			hex, dec, category, name, aliases, html_entity
+			hex, dec, category, name, aliases, entity
 		) VALUES (
-			:hex, :dec, :category, :name, :aliases, :html_entity
+			:hex, :dec, :category, :name, :aliases, :entity
 		);`
 		stmt *sqlx.NamedStmt
 		tx   *sqlx.Tx
@@ -181,7 +181,7 @@ func setupDatabase(db *sqlx.DB) error {
 				category TEXT,
 				name TEXT,
 				aliases TEXT,
-				html_entity TEXT
+				entity TEXT
 			);
 			-- CREATE INDEX IF NOT EXISTS idx_hex ON codepoints(hex);
 
@@ -189,7 +189,7 @@ func setupDatabase(db *sqlx.DB) error {
 			CREATE VIRTUAL TABLE IF NOT EXISTS search USING FTS5(
 				name,
 				aliases,
-				html_entity,
+				entity,
 				hex,
 				dec,
 				content = 'codepoints',
@@ -198,20 +198,20 @@ func setupDatabase(db *sqlx.DB) error {
 
 			CREATE TRIGGER IF NOT EXISTS codepoints_ai AFTER INSERT ON codepoints
 			BEGIN
-				INSERT INTO search (rowid, name, aliases, html_entity, hex, dec)
-					VALUES (new.rowid, new.name, new.aliases, new.html_entity, new.hex, new.dec);
+				INSERT INTO search (rowid, name, aliases, entity, hex, dec)
+					VALUES (new.rowid, new.name, new.aliases, new.entity, new.hex, new.dec);
 			END;
 			CREATE TRIGGER IF NOT EXISTS codepoints_ad AFTER DELETE ON codepoints
 			BEGIN
-				INSERT INTO search (search, rowid, name, aliases, html_entity, hex, dec)
-					VALUES ('delete', old.rowid, old.name, old.aliases, old.html_entity, old.hex, old.dec);
+				INSERT INTO search (search, rowid, name, aliases, entity, hex, dec)
+					VALUES ('delete', old.rowid, old.name, old.aliases, old.entity, old.hex, old.dec);
 			END;
 			CREATE TRIGGER IF NOT EXISTS codepoints_au AFTER UPDATE ON codepoints
 			BEGIN
-				INSERT INTO search (search, rowid, name, aliases, html_entity, hex, dec)
-					VALUES ('delete', old.rowid, old.name, old.aliases, old.html_entity, old.hex, old.dec);
-				INSERT INTO search (rowid, name, aliases, html_entity, hex, dec)
-					VALUES (new.rowid, new.name, new.aliases, new.html_entity, new.hex, new.dec);
+				INSERT INTO search (search, rowid, name, aliases, entity, hex, dec)
+					VALUES ('delete', old.rowid, old.name, old.aliases, old.entity, old.hex, old.dec);
+				INSERT INTO search (rowid, name, aliases, entity, hex, dec)
+					VALUES (new.rowid, new.name, new.aliases, new.entity, new.hex, new.dec);
 			END;
 
 			PRAGMA user_version = 1;

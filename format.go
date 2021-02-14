@@ -89,26 +89,55 @@ func formatPython(cp Codepoint) string {
 }
 
 func formatJS(cp Codepoint) string {
-	if cp.Dec > 0xFFFF {
-		return fmt.Sprintf(`\u{%04X}`, cp.Dec) // ES6 only
+	if cp.Dec <= 0xFF {
+		return fmt.Sprintf(`\x%02X`, cp.Dec)
 	}
-	return fmt.Sprintf(`\u%04X`, cp.Dec)
+	if cp.Dec <= 0xFFFF {
+		return fmt.Sprintf(`\u%04X`, cp.Dec)
+	}
+	if opts.ES6Mode {
+		return fmt.Sprintf(`\u{%X}`, cp.Dec)
+	}
+	return jsSurrogatePair(cp.Dec)
 }
 
-// match input copied from source code
+// encode rune to JS surrogate pair
+// https://unicodebook.readthedocs.io/unicode_encodings.html#utf-16-surrogate-pairs
+func jsSurrogatePair(r rune) string {
+	if r <= 0xFFFF {
+		return fmt.Sprintf(`\u%04X`, r)
+	}
+	code := r - 0x10000
+	one := 0xD800 | (code >> 10)
+	two := 0xDC00 | (code & 0x3FF)
+	return fmt.Sprintf(`\u%04X\u%04X`, one, two)
+}
+
+// match various escape formats
 var (
+	// contain hex/decimal values
 	rxUnicode    = regexp.MustCompile(`^(?i)U\+([A-F0-9]{4,8})$`)
 	rxPython4    = regexp.MustCompile(`^\\u([a-fA-F0-9]{4,4})$`)
 	rxPython8    = regexp.MustCompile(`^\\U([a-fA-F0-9]{8,8})$`)
+	rxJSHex      = regexp.MustCompile(`^\\x([a-fA-F0-9]{2,2})$`)
+	rxES6        = regexp.MustCompile(`^\\u\{([a-fA-F0-9]{1,8})\}$`)
 	rxHTMLHex    = regexp.MustCompile(`^(?i)&#x([A-F0-9]+);?$`)
 	rxHTMLDec    = regexp.MustCompile(`^(?i)&#([0-9]+);?$`)
 	rxCSS        = regexp.MustCompile(`^(?i)\\([A-F0-9]{4,6})$`)
 	rxHexLiteral = regexp.MustCompile(`^(?i)0x([A-F0-9]{2,8})$`)
+	// other
+	rxHTMLNamed = regexp.MustCompile(`^(?i)&([A-Z]+);?$`)
+	// rxFieldSearch = regexp.MustCompile(`^(?i)dec:[A-Z0-9]+$`)
 )
 
-func specialQuery(s string) (string, bool) {
+// Parse specially-formatted queries. If stop is true, the returned query
+// should not be further processed.
+func specialQuery(query string) (newQuery string, stop bool) {
+	// contain hex values
 	rxs := []*regexp.Regexp{
 		rxUnicode,
+		rxES6,
+		rxJSHex,
 		rxPython4,
 		rxPython8,
 		rxHTMLHex,
@@ -116,13 +145,17 @@ func specialQuery(s string) (string, bool) {
 		rxCSS,
 		rxHexLiteral,
 	}
-	s = strings.TrimSpace(s)
+	s := strings.TrimSpace(query)
 	for _, rx := range rxs {
 		if m := rx.FindStringSubmatch(s); m != nil {
 			if n, err := parseHex(m[1]); err == nil {
-				return fmt.Sprintf("%04X", n), true
+				return fmt.Sprintf("hex:%04X", n), true
 			}
 		}
+	}
+	// named HTML entity
+	if m := rxHTMLNamed.FindStringSubmatch(s); m != nil {
+		return fmt.Sprintf("entity:%s", m[1]), true
 	}
 	var prefix string
 	// if s is valid hex, add it as a normalised OR query
@@ -131,9 +164,17 @@ func specialQuery(s string) (string, bool) {
 	}
 	// if s is valid decimal, add it as a normalised OR query
 	if n, err := strconv.ParseUint(s, 10, 32); err == nil {
-		prefix += fmt.Sprintf("hex:%04X OR ", n)
+		prefix += fmt.Sprintf("dec:%d OR ", n)
 	}
-	return prefix + s, false
+	s = prefix + query
+
+	/*
+		// append space to prevent wildcard being added to digits
+		if rxFieldSearch.MatchString(s) {
+			s += " "
+		}
+	*/
+	return s, false
 }
 
 // Script Filter to show character details

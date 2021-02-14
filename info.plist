@@ -896,6 +896,8 @@ See included help file (enter ".u help" into Alfred).</string>
 		<string></string>
 		<key>DISABLED</key>
 		<string></string>
+		<key>ES6_MODE</key>
+		<string></string>
 		<key>FONT_NAME</key>
 		<string></string>
 		<key>ICON_SIZE</key>
@@ -913,6 +915,7 @@ See included help file (enter ".u help" into Alfred).</string>
 	<array>
 		<string>BACKGROUND_COLOUR</string>
 		<string>MOD_CMD_OPT</string>
+		<string>ES6_MODE</string>
 		<string>FONT_NAME</string>
 		<string>TEXT_COLOUR</string>
 		<string>TEXT_SIZE</string>

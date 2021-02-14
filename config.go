@@ -41,7 +41,9 @@ type options struct {
 	IconSize         int
 	TextColour       string
 	BackgroundColour string
-	Disabled         string `env:"disabled"`
+	ES6Mode          bool `env:"ES6_MODE"`
+
+	Disabled string `env:"disabled"`
 
 	ActiveApp      string `env:"active_app"`
 	SpinnerCounter int    `env:"spinner_counter"`
@@ -144,6 +146,24 @@ func runConfig() {
 		Var("hide_alfred", "").
 		Var("trigger", "choose").
 		Var("trigger_query", "formatters")
+
+	// ES6 mode
+	icon = iconToggleOff
+	arg := "true"
+	if opts.ES6Mode {
+		icon = iconToggleOn
+		arg = ""
+	}
+	wf.NewItem("ES6 Mode").
+		Subtitle("Use ES6-style escapes for codepoints over 0xFFFF").
+		Arg(arg).
+		UID("es6mode").
+		Valid(true).
+		Icon(icon).
+		Var("action", "setconfig").
+		Var("varname", "ES6_MODE").
+		Var("trigger", "config").
+		Var("trigger_query", "")
 
 	// font
 	title = "Font: " + opts.FontName

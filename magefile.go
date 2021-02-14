@@ -160,7 +160,7 @@ func Run() error {
 // Dist build an .alfredworkflow file in ./dist
 func Dist() error {
 	mg.SerialDeps(Clean)
-	mg.Deps(Executable, Helper)
+	mg.Deps(Executable, Helper, Docs)
 	mg.Deps(Assets)
 	p, err := build.Export(buildDir, distDir)
 	if err != nil {
@@ -232,6 +232,7 @@ func Clean() {
 }
 
 func cleanDeps() error {
+	fmt.Println("tidying go.mod ...")
 	return mod("tidy", "-v")
 }
 
