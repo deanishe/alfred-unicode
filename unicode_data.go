@@ -112,7 +112,7 @@ func parseXML(path string) ([]Codepoint, error) {
 		return nil, fmt.Errorf("parse XML: %w", err)
 	}
 
-	for i, v := range pl.Repetoire.Chars {
+	for _, v := range pl.Repetoire.Chars {
 		if v.Codepoint == "" || v.Name == "CJK UNIFIED IDEOGRAPH-#" {
 			continue
 		}
@@ -140,9 +140,6 @@ func parseXML(path string) ([]Codepoint, error) {
 			Name:           name,
 			Aliases:        strings.Join(aliases, ", "),
 			HTMLEntityName: NamedHTMLEntities[fmt.Sprintf("%05X", n)],
-		}
-		if i == 0 {
-			log.Printf("%#v", cp)
 		}
 		cps = append(cps, cp)
 	}

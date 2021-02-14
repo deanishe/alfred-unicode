@@ -99,11 +99,11 @@ func (repo *Repo) Import(cps []Codepoint) error {
 		if i >= size {
 			break
 		}
-		j = i + batch
+		j = i + batch - 1
 		if j >= size-1 {
 			j = size - 1
 		}
-		log.Printf("[repo] importing items %d to %d of %d ...", i, j, size)
+		log.Printf("[repo] importing items %d to %d of %d ...", i+1, j+1, size)
 		if err := repo.importCodepoints(cps[i:j]); err != nil {
 			return err
 		}
